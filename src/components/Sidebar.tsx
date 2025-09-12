@@ -1,9 +1,9 @@
 import type React from "react"
-import { Building2, Calendar, FileText, Users} from "lucide-react"
+import { Building2, Calendar, FileText, Home} from "lucide-react"
 
 const Sidebar: React.FC = () => {
   const menuItems = [
-      { icon: Users, label: "Inicio", active: false },
+      { icon: Home, label: "Inicio", active: false },
       { icon: Calendar, label: "Calendario", active: true },
     { icon: Building2, label: "Documentos", active: false },
     { icon: FileText, label: "Pre-Cargados", active: false },
