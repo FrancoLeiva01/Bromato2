@@ -1,16 +1,92 @@
-/* calendar.css */
-.fc-event {
-  border: none !important;
-  margin-bottom: 1px !important;
+/* Convirtiendo todas las clases @apply a CSS normal para Tailwind v4 */
+.calendar-container {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
 }
 
-.fc-daygrid-event {
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+.calendar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.fc-event-title {
-  font-weight: 500 !important;
-  font-size: 11px !important;
+.calendar-navigation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.calendar-nav-button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.calendar-nav-button:hover {
+  background-color: #f3f4f6;
+}
+
+.calendar-today-button {
+  padding: 0.5rem 1rem;
+  background-color: #4b5563;
+  color: white;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease-in-out;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.calendar-today-button:hover {
+  background-color: #374151;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  border-left: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.calendar-day-header {
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 500;
+  color: #374151;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.calendar-event-notification {
+  font-size: 0.75rem;
+  background-color: #10b981;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.calendar-event-inspection {
+  font-size: 0.75rem;
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.calendar-event-meeting {
+  font-size: 0.75rem;
+  background-color: #8b5cf6;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

@@ -1,3 +1,55 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Actualizando imports de Tailwind v3 a v4 */
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: white;
+  --color-foreground: #0f172a;
+  --color-border: #e2e8f0;
+}
+
+/* Removiendo @layer y @apply, usando clases CSS normales */
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Convirtiendo @apply a clases CSS normales para compatibilidad v4 */
+.calendar-event {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  background-color: #10b981;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.calendar-event:hover {
+  background-color: #059669;
+}
+
+.calendar-day {
+  height: 6rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.25rem;
+  background-color: white;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.calendar-day:hover {
+  background-color: #f9fafb;
+}
+
+.calendar-day.today {
+  background-color: #fefce8;
+  border-color: #2563eb;
+}

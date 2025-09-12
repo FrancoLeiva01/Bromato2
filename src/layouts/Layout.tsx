@@ -1,19 +1,21 @@
-import type { ReactNode } from "react";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import type React from "react"
+import Navbar from "../components/Navbar"
+import Sidebar from "../components/Sidebar"
 
-type LayoutProps = {
-  children: ReactNode;
-};
+interface LayoutProps {
+  children: React.ReactNode
+}
 
-export default function Layout({ children }: LayoutProps) {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex">
         <Sidebar />
-        <main className="flex-1 overflow-auto bg-white">{children}</main>
+        <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
-  );
+  )
 }
+
+export default Layout
