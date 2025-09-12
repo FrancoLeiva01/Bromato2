@@ -83,8 +83,8 @@ const Calendar: React.FC = () => {
         new Date().getFullYear() === currentDate.getFullYear()
 
       days.push(
-        <div key={day} className={`h-24 border border-gray-200 p-1 ${isToday ? "bg-yellow-50" : "bg-white"}`}>
-          <div className={`text-sm font-medium mb-1 ${isToday ? "text-blue-600" : "text-gray-900"}`}>{day}</div>
+        <div key={day} className={`h-24 border border-gray-200 p-1 ${isToday ? "bg-yellow-200" : "bg-white"}`}>
+          <div className={`text-sm font-medium mb-1 ${isToday ? "text-red-500" : "text-gray-900"}`}>{day}</div>
           <div className="space-y-1">
             {dayEvents.map((event) => (
               <div
@@ -119,7 +119,7 @@ const Calendar: React.FC = () => {
 
             <button
               onClick={goToToday}
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
             >
               Hoy
             </button>
