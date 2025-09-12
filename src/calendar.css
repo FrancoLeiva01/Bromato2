@@ -1,0 +1,16 @@
+/* calendar.css */
+.fc-event {
+  border: none !important;
+  margin-bottom: 1px !important;
+}
+
+.fc-daygrid-event {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.fc-event-title {
+  font-weight: 500 !important;
+  font-size: 11px !important;
+}
