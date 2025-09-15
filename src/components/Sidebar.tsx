@@ -1,11 +1,14 @@
 import type React from "react"
-import { Building2, Calendar, FileText} from "lucide-react"
+import { Building2, Calendar, FileText } from "lucide-react"
+import { Link, useLocation } from "react-router-dom"
 
 const Sidebar: React.FC = () => {
+  const location = useLocation()
+
   const menuItems = [
-      { icon: Calendar, label: "Inicio", active: true },
-    { icon: Building2, label: "Documentos", active: false },
-    { icon: FileText, label: "Pre-Cargados", active: false },
+    { icon: Calendar, label: "Inicio", path: "/home" },
+    { icon: Building2, label: "Documentos", path: "/documentos" },
+    { icon: FileText, label: "Pre-Cargados", path: "/precargados" },
   ]
 
   return (
@@ -22,16 +25,20 @@ const Sidebar: React.FC = () => {
         <nav className="space-y-2">
           {menuItems.map((item, index) => {
             const Icon = item.icon
+            const isActive = location.pathname === item.path
             return (
-              <button
+              <Link
                 key={index}
+                to={item.path}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                  item.active ? "bg-blue-600 text-white" : "text-slate-300 hover:bg-slate-700 hover:text-white"
+                  isActive
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-300 hover:bg-slate-700 hover:text-white"
                 }`}
               >
                 <Icon className="w-5 h-5" />
                 <span className="font-medium">{item.label}</span>
-              </button>
+              </Link>
             )
           })}
         </nav>

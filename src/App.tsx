@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "./index.css"
+import Notifications from "./components/Notifications"
 
 function App() {
   return (
@@ -30,6 +31,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <Calendar />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Notifications />
               </Layout>
             </ProtectedRoute>
           }

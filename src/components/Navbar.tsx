@@ -16,6 +16,12 @@ const Navbar: React.FC = () => {
     navigate("/login")
   }
 
+  const handleNotificationsClick = () => {
+    console.log("[v0] Campanita clickeada, navegando a /notifications")
+    navigate("/notifications")
+    console.log("[v0] Navigate ejecutado")
+  }
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
@@ -27,7 +33,10 @@ const Navbar: React.FC = () => {
             <span className="text-sm font-medium">Tutorial guía rápida</span>
           </button>
 
-          <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative">
+          <button
+            onClick={handleNotificationsClick}
+            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative"
+          >
             <Bell className="w-5 h-5" />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
               3

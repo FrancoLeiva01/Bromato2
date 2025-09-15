@@ -36,7 +36,7 @@ const Login = () => {
       if (values.username === "admin" && values.password === "admin123") {
         toast.success("¡Bienvenido al Sistema de Bromatología!")
         localStorage.setItem("isAuthenticated", "true")
-        navigate("/dashboard")
+        navigate("/home")
       } else {
         toast.error("Credenciales incorrectas")
       }
