@@ -29,9 +29,6 @@ const Login = () => {
       // Simular llamada a API
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      // Aquí harías la llamada real con Axios
-      // const response = await axios.post('/api/login', values)
-
       // Simulación de login exitoso
       if (values.username === "admin" && values.password === "admin123") {
         toast.success("¡Bienvenido al Sistema de Bromatología!")

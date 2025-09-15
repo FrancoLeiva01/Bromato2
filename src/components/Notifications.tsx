@@ -19,7 +19,7 @@ interface Notification {
 
 const Notifications: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const [viewMode, setViewMode] = useState<"cards" | "table">("cards")
+  const [viewMode] = useState<"cards" | "table">("cards")
   const itemsPerPage = viewMode === "cards" ? 3 : 8
   const maxPages = 5
 
@@ -417,7 +417,7 @@ const Notifications: React.FC = () => {
                 <option>VENCIDA</option>
                 <option>PENDIENTE</option>
               </select>
-              <button className="flex items-center px-4 py-2 bg-blue-900 text-white text-sm rounded-lg hover:bg-blue-800 transition-colors">
+              <button className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-500 transition-colors">
                 Buscar
               </button>
             </div>
