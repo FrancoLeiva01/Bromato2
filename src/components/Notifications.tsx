@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Bell, Clock, CheckCircle, AlertTriangle, Info, ChevronLeft, ChevronRight, Eye, FolderClock } from "lucide-react"
+import { Bell, Clock, CheckCircle, AlertTriangle, Info, ChevronLeft, ChevronRight, Eye, FolderClock, ClipboardList } from "lucide-react"
 import { useState } from "react"
 
 interface Notification {
@@ -401,7 +401,10 @@ const Notifications: React.FC = () => {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-4">  
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">Lista de Notificaciones</h2>
+          <div className="flex items-center space-x-3">
+              <ClipboardList className="w-6 h-6 text-gray-700" />
+              <h1 className="text-xl font-semibold text-gray-900">Lista de Notificaciones</h1>
+            </div>
             <div className="flex items-center space-x-2">
               <select className="border border-gray-300 rounded-lg px-3 py-1 text-sm text-gray-600">
                 <option>Filtros</option>

@@ -21,7 +21,7 @@ const Sidebar: React.FC = () => {
           <img
             src={logoMunicipalidad}
             alt="logoMunicipalidad"
-            className="max-h-12 ml-2"
+            className="max-h-20 ml-3"
           />
           <div>
             <h2 className="font-bold text-lg">Catamarca</h2>
