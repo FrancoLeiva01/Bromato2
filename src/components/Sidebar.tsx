@@ -1,6 +1,8 @@
 import type React from "react"
-import { Building2, Calendar, FolderOpen , FileBadge } from "lucide-react"
+import { Calendar, FolderOpen, FileBadge } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
+import logoMunicipalidad from "../assets/logo-municipalidad.png"
+
 
 const Sidebar: React.FC = () => {
   const location = useLocation()
@@ -8,14 +10,19 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { icon: Calendar, label: "Inicio", path: "/home" },
     { icon: FolderOpen, label: "Documentos", path: "/documentos" },
-    { icon: FileBadge , label: "Pre-Cargados", path: "/precargados" },
+    { icon: FileBadge, label: "Pre-Cargados", path: "/precargados" },
   ]
 
   return (
     <aside className="w-64 bg-slate-800 text-white min-h-screen">
       <div className="p-6">
         <div className="flex items-center space-x-3 mb-8">
-          <Building2 className="w-8 h-8 text-blue-400" />
+          {/* 👇 Ahora usamos la variable importada */}
+          <img
+            src={logoMunicipalidad}
+            alt="logoMunicipalidad"
+            className="max-h-12 ml-2"
+          />
           <div>
             <h2 className="font-bold text-lg">Catamarca</h2>
             <p className="text-sm text-slate-300">Capital</p>
