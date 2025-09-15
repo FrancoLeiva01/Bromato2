@@ -1,5 +1,5 @@
 import type React from "react"
-import { Building2, Calendar, FileText } from "lucide-react"
+import { Building2, Calendar, FolderOpen , FileBadge } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
 const Sidebar: React.FC = () => {
@@ -7,8 +7,8 @@ const Sidebar: React.FC = () => {
 
   const menuItems = [
     { icon: Calendar, label: "Inicio", path: "/home" },
-    { icon: Building2, label: "Documentos", path: "/documentos" },
-    { icon: FileText, label: "Pre-Cargados", path: "/precargados" },
+    { icon: FolderOpen, label: "Documentos", path: "/documentos" },
+    { icon: FileBadge , label: "Pre-Cargados", path: "/precargados" },
   ]
 
   return (

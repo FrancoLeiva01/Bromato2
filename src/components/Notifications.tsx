@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Bell, Clock, CheckCircle, AlertTriangle, Info, ChevronLeft, ChevronRight, Eye, Search } from "lucide-react"
+import { Bell, Clock, CheckCircle, AlertTriangle, Info, ChevronLeft, ChevronRight, Eye, FolderClock } from "lucide-react"
 import { useState } from "react"
 
 interface Notification {
@@ -50,7 +50,7 @@ const Notifications: React.FC = () => {
     },
     {
       id: 3,
-      type: "alert",
+      type: "warning",
       title: "Proximo a Vencer",
       message: 'Notificacion a vencer de supermercado "Los Andes".',
       time: "2 horas",
@@ -258,19 +258,14 @@ const Notifications: React.FC = () => {
     }
   }
 
-  const unreadCount = notifications.filter((n) => !n.read).length
-
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-full mx-auto p-6">
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Bell className="w-6 h-6 text-gray-700" />
+              <FolderClock className="w-6 h-6 text-gray-700" />
               <h1 className="text-xl font-semibold text-gray-900">Notificaciones Próximas a Vencer</h1>
-              {unreadCount > 0 && (
-                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">{unreadCount} nuevas</span>
-              )}
             </div>
           </div>
         </div>
@@ -291,10 +286,6 @@ const Notifications: React.FC = () => {
                       <h3 className={`text-sm font-medium ${!notification.read ? "text-gray-900" : "text-gray-700"}`}>
                         {notification.title}
                       </h3>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xs text-gray-500">{notification.time}</span>
-                        {!notification.read && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
-                      </div>
                     </div>
                     <p className={`mt-1 text-sm ${!notification.read ? "text-gray-800" : "text-gray-600"}`}>
                       {notification.message}
@@ -406,16 +397,21 @@ const Notifications: React.FC = () => {
       </div>
 
       {/* Tabla de Notificaciones Separada */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-6">
+      
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-4">  
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">Lista de Notificaciones</h2>
             <div className="flex items-center space-x-2">
               <select className="border border-gray-300 rounded-lg px-3 py-1 text-sm text-gray-600">
                 <option>Filtros</option>
-                <option>VERIFICADA</option>
-                <option>VENCIDA</option>
-                <option>PENDIENTE</option>
+                <option>Fecha</option>
+                <option>Apellido del Inspector</option>
+                <option>Numero del Inspector</option>
+                <option>Nombre de Fantasia Comercio</option>
+                <option>Razon Social Comercio</option>
+                <option>Numero de Notificacion</option>
+              <option>Numero de Acta</option>
               </select>
               <button className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-500 transition-colors">
                 Buscar
@@ -472,7 +468,6 @@ const Notifications: React.FC = () => {
             </tbody>
           </table>
         </div>
-
         <div className="px-6 py-4 border-t border-gray-200">
           <div className="flex items-center justify-center space-x-4">
             <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
