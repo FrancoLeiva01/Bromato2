@@ -83,7 +83,7 @@ const Calendar: React.FC = () => {
         new Date().getFullYear() === currentDate.getFullYear()
 
       days.push(
-        <div key={day} className={`h-24 border border-gray-200 p-1 ${isToday ? "bg-yellow-200" : "bg-white"}`}>
+        <div key={day} className={`h-28 border border-gray-200 p-1 ${isToday ? "bg-yellow-200" : "bg-white"}`}>
           <div className={`text-sm font-medium mb-1 ${isToday ? "text-red-500" : "text-gray-900"}`}>{day}</div>
           <div className="space-y-1">
             {dayEvents.map((event) => (
