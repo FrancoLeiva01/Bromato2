@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
   }
 
   const handleNotificationsClick = () => {
-    console.log("[v0] Campanita clickeada, navegando a /notifications")
+    console.log("Campanita clickeada, navegando a /notifications")
     navigate("/notifications")
     console.log("Navigate ejecutado")
   }
@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
         <div className="flex items-center space-x-4">
           <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
             <HelpCircle className="w-5 h-5" />
-            <span className="text-sm font-medium">Tutorial guía rápida</span>
+            <button className="text-sm font-medium">Tutorial guía rápida</button>
           </button>
 
           <button

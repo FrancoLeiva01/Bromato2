@@ -6,7 +6,7 @@ import logoMunicipalidad from "../assets/logo-municipalidad.png"
 
 const Sidebar: React.FC = () => {
   const location = useLocation()
-
+  
   const menuItems = [
     { icon: Calendar, label: "Inicio", path: "/home" },
     { icon: FolderOpen, label: "Documentos", path: "/documentos" },
@@ -17,7 +17,6 @@ const Sidebar: React.FC = () => {
     <aside className="w-64 bg-slate-800 text-white min-h-screen">
       <div className="p-6">
         <div className="flex items-center space-x-3 mb-8">
-          {/* 👇 Ahora usamos la variable importada */}
           <img
             src={logoMunicipalidad}
             alt="logoMunicipalidad"
