@@ -7,7 +7,8 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "./index.css"
 import Notifications from "./components/Notifications"
-// import Documents from "./components/Documents"
+import ActasInspeccion from "./components/ActasInspeccion"
+import ActasComprobacion from "./components/ActasComprobacion"
 
 function App() {
   return (
@@ -46,20 +47,27 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/home" replace />} />
-
- {/* <Route
-          path="/documents"
+        <Route
+          path="/actas-inspeccion"
           element={
             <ProtectedRoute>
               <Layout>
-                <Documents />
+                <ActasInspeccion />
               </Layout>
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/home" replace />} /> */}
-
+        <Route
+          path="/actas-comprobacion"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ActasComprobacion />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/home" replace />} />
       </Routes>
     </>
   )
