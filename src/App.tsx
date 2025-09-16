@@ -9,6 +9,9 @@ import "./index.css"
 import Notifications from "./components/Notifications"
 import ActasInspeccion from "./components/ActasInspeccion"
 import ActasComprobacion from "./components/ActasComprobacion"
+import Rubros from "./components/Rubros"
+import Comercios from "./components/Comercios"
+import Inspectores from "./components/Inspectores"
 
 function App() {
   return (
@@ -63,6 +66,36 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <ActasComprobacion />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/rubros"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Rubros />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/comercios"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Comercios />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/inspectores"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Inspectores />
               </Layout>
             </ProtectedRoute>
           }
