@@ -72,7 +72,7 @@ const ActasInspeccion: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-gray-300 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-gray-200 rounded-lg shadow-sm border border-gray-200">
         <div className="p-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -94,7 +94,7 @@ const ActasInspeccion: React.FC = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-200">
+            <thead className="bg-gray-100">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Número de Acta
