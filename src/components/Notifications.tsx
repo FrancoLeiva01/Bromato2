@@ -398,7 +398,7 @@ const Notifications: React.FC = () => {
 
       {/* Tabla de Notificaciones Separada */}
       
-      <div className="bg-gray-200 rounded-lg shadow-sm border border-gray-100 mt-4">  
+      <div className="bg-gray-100 rounded-lg shadow-sm border border-gray-100 mt-4">  
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -444,7 +444,7 @@ const Notifications: React.FC = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-200 divide-y divide-gray-500">
+            <tbody className="bg-gray-100 divide-y divide-gray-100">
               {notifications.slice(0, 8).map((notification) => (
                 <tr key={`table-${notification.id}`} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
