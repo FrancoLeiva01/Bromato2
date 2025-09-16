@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Tag, Plus, Edit, Trash2, Eye } from "lucide-react"
+import { Tag, Edit, Trash2, Eye } from "lucide-react"
 
 interface Rubro {
   id: number
@@ -45,16 +45,13 @@ const Rubros: React.FC = () => {
           <Tag className="w-8 h-8 text-blue-600" />
           <h1 className="text-2xl font-bold text-gray-900">Rubros</h1>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
-          <Plus className="w-4 h-4" />
-          <span>Nuevo Rubro</span>
-        </button>
+
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-300">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
