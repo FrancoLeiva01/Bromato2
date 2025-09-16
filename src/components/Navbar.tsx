@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
   const handleNotificationsClick = () => {
     console.log("[v0] Campanita clickeada, navegando a /notifications")
     navigate("/notifications")
-    console.log("[v0] Navigate ejecutado")
+    console.log("Navigate ejecutado")
   }
 
   return (

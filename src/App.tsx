@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "./index.css"
 import Notifications from "./components/Notifications"
+// import Documents from "./components/Documents"
 
 function App() {
   return (
@@ -46,6 +47,19 @@ function App() {
           }
         />
         <Route path="/" element={<Navigate to="/home" replace />} />
+
+ {/* <Route
+          path="/documents"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Documents />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/home" replace />} /> */}
+
       </Routes>
     </>
   )

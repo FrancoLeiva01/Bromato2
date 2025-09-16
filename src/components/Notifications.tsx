@@ -260,7 +260,7 @@ const Notifications: React.FC = () => {
 
   return (
     <div className="max-w-full mx-auto p-6">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-gray-200 rounded-lg shadow-sm border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -271,12 +271,12 @@ const Notifications: React.FC = () => {
         </div>
 
         {viewMode === "cards" ? (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-500">
             {currentNotifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-6 hover:bg-gray-50 transition-colors border-l-4 ${getBorderColor(notification.type)} ${
-                  !notification.read ? "bg-blue-50/30" : ""
+                className={`p-6 hover:bg-yellow-200 transition-colors border-l-4 ${getBorderColor(notification.type)} ${
+                  !notification.read ? "bg-gray-200" : ""
                 }`}
               >
                 <div className="flex items-start space-x-4">
@@ -398,7 +398,7 @@ const Notifications: React.FC = () => {
 
       {/* Tabla de Notificaciones Separada */}
       
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-4">  
+      <div className="bg-gray-300 rounded-lg shadow-sm border border-gray-200 mt-4">  
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -425,7 +425,7 @@ const Notifications: React.FC = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Número de notificación
@@ -444,7 +444,7 @@ const Notifications: React.FC = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-gray-200 divide-y divide-gray-200">
               {notifications.slice(0, 8).map((notification) => (
                 <tr key={`table-${notification.id}`} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
