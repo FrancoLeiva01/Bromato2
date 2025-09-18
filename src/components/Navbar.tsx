@@ -6,9 +6,19 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { useState } from "react"
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  onTutorialClick?: () => void
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onTutorialClick }) => {
   const navigate = useNavigate()
   const [showUserMenu, setShowUserMenu] = useState(false)
+
+  const handleTutorialClick = () => {
+    if (onTutorialClick) {
+      onTutorialClick()
+    }
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated")
@@ -17,20 +27,23 @@ const Navbar: React.FC = () => {
   }
 
   const handleNotificationsClick = () => {
-    console.log("Campanita clickeada, navegando a /notifications")
+    console.log("[v0] Campanita clickeada, navegando a /notifications")
     navigate("/notifications")
-    console.log("Navigate ejecutado")
+    console.log("[v0] Navigate ejecutado")
   }
 
   return (
-    <header className=" bg-slate-700 shadow-sm border-gray-200 px-6 py-4">
+    <header className="bg-slate-700 shadow-sm border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold text-white">Administración de Bromatología Municipal</h1>
 
         <div className="flex items-center space-x-4">
-          <button className="flex items-center space-x-2 text-blue-500 hover:text-blue-300 transition-colors">
+          <button
+            onClick={handleTutorialClick}
+            className="flex items-center space-x-2 text-blue-500 hover:text-blue-300 transition-colors"
+          >
             <HelpCircle className="w-5 h-5" />
-            <button className="text-sm font-medium">Tutorial guía rápida</button>
+            <span className="text-sm font-medium">Tutorial guía rápida</span>
           </button>
 
           <button

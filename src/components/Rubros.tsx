@@ -13,6 +13,9 @@ interface Rubro {
 
 const Rubros: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filterType, setFilterType] = useState("Filtros")
+  const [riskFilter, setRiskFilter] = useState("")
   const itemsPerPage = 10
 
   const rubros: Rubro[] = Array.from({ length: 45 }, (_, i) => ({
@@ -22,9 +25,36 @@ const Rubros: React.FC = () => {
     prohibiciones: `Prohibición ${i + 1}`,
   }))
 
-  const totalPages = Math.ceil(rubros.length / itemsPerPage)
+  const filteredRubros = rubros.filter((rubro) => {
+    if (filterType === "Filtros" || filterType === "Todos") {
+      return true
+    }
+
+    if (filterType === "Nombre") {
+      return rubro.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    }
+
+    if (filterType === "Riesgo") {
+      return riskFilter === "" || rubro.riesgo === riskFilter
+    }
+
+    return true
+  })
+
+  const totalPages = Math.ceil(filteredRubros.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
-  const currentRubros = rubros.slice(startIndex, startIndex + itemsPerPage)
+  const currentRubros = filteredRubros.slice(startIndex, startIndex + itemsPerPage)
+
+  const handleSearch = () => {
+    setCurrentPage(1)
+  }
+
+  const handleFilterChange = (value: string) => {
+    setFilterType(value)
+    setSearchTerm("")
+    setRiskFilter("")
+    setCurrentPage(1)
+  }
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -45,7 +75,45 @@ const Rubros: React.FC = () => {
           <Tag className="w-8 h-8 text-blue-600" />
           <h1 className="text-2xl font-bold text-white">Rubros</h1>
         </div>
-
+        <div className="flex items-center space-x-2">
+          <select
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+            value={filterType}
+            onChange={(e) => handleFilterChange(e.target.value)}
+          >
+            <option value="Filtros">Filtros</option>
+            <option value="Todos">Todos</option>
+            <option value="Nombre">Nombre</option>
+            <option value="Riesgo">Riesgo</option>
+          </select>
+          {filterType === "Nombre" && (
+            <input
+              type="text"
+              placeholder="Buscar por nombre..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+            />
+          )}
+          {filterType === "Riesgo" && (
+            <select
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+              value={riskFilter}
+              onChange={(e) => setRiskFilter(e.target.value)}
+            >
+              <option value="">Seleccionar riesgo</option>
+              <option value="Alto">Alto</option>
+              <option value="Medio">Medio</option>
+              <option value="Bajo">Bajo</option>
+            </select>
+          )}
+          <button
+            className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-300 transition-colors"
+            onClick={handleSearch}
+          >
+            Buscar
+          </button>
+        </div>
       </div>
 
       <div className="bg-slate-900 rounded-lg shadow overflow-hidden">

@@ -70,6 +70,18 @@ const ActasInspeccion: React.FC = () => {
             <p className="text-white">Gestión de actas de inspecciones bromatologicas</p>
           </div>
         </div>
+        <div className="flex items-center space-x-2">
+              <select className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500">
+                <option>Filtros</option>
+                <option>N° de Acta</option>
+                <option>Turno</option>
+                <option>Razon Social Comercio</option>
+                <option>Nombre de Fantasia Comercio</option>
+              </select>
+              <button className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-500 transition-colors">
+                Buscar
+              </button>
+            </div>
       </div>
 
       <div className="bg-gray-200 rounded-lg shadow-sm border border-gray-200">

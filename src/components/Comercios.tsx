@@ -51,6 +51,19 @@ const Comercios: React.FC = () => {
           <Store className="w-8 h-8 text-blue-600" />
           <h1 className="text-2xl font-bold text-white">Comercios</h1>
         </div>
+         <div className="flex items-center space-x-2">
+              <select className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500">
+                <option>Filtros</option>
+                <option>Barrio</option>
+                <option>Calle</option>
+                <option>Zona</option>
+                <option>Nombre de Fantasia</option>
+                <option>Nombre/Razon Social comercio</option>
+              </select>
+              <button className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-300 transition-colors">
+                Buscar
+              </button>
+            </div>
         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
           <Plus className="w-4 h-4" />
           <span>Nuevo Comercio</span>

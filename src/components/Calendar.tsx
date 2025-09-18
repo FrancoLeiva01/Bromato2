@@ -38,7 +38,7 @@ const Calendar: React.FC = () => {
     "Diciembre",
   ]
 
-  const dayNames = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"]
+  const dayNames = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
