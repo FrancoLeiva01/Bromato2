@@ -39,16 +39,16 @@ const Rubros: React.FC = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className=" bg-slate-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <Tag className="w-8 h-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-900">Rubros</h1>
+          <h1 className="text-2xl font-bold text-white">Rubros</h1>
         </div>
 
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-slate-900 rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-300">

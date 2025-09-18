@@ -61,13 +61,13 @@ const ActasInspeccion: React.FC = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="bg-slate-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <FileCheck className="w-8 h-8 text-blue-600" />
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Actas de Inspección</h1>
-            <p className="text-gray-600">Gestión de actas de inspecciones bromatologicas</p>
+            <h1 className="text-2xl font-bold text-white">Actas de Inspección</h1>
+            <p className="text-white">Gestión de actas de inspecciones bromatologicas</p>
           </div>
         </div>
       </div>

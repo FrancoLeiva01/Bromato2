@@ -23,19 +23,19 @@ const Navbar: React.FC = () => {
   }
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+    <header className=" bg-slate-700 shadow-sm border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Administración de Bromatología Municipal</h1>
+        <h1 className="text-xl font-semibold text-white">Administración de Bromatología Municipal</h1>
 
         <div className="flex items-center space-x-4">
-          <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors">
+          <button className="flex items-center space-x-2 text-blue-500 hover:text-blue-300 transition-colors">
             <HelpCircle className="w-5 h-5" />
             <button className="text-sm font-medium">Tutorial guía rápida</button>
           </button>
 
           <button
             onClick={handleNotificationsClick}
-            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative"
+            className="p-2 text-white hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative"
           >
             <Bell className="w-5 h-5" />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">

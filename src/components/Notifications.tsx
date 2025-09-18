@@ -259,7 +259,7 @@ const Notifications: React.FC = () => {
   }
 
   return (
-    <div className="max-w-full mx-auto p-6">
+    <div className=" bg-slate-700 max-w-full mx-auto p-6">
       <div className="bg-gray-100 rounded-lg shadow-sm border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">

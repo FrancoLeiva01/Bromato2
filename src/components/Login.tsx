@@ -45,15 +45,20 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-blue-400  bg-slate-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-blue-400 to-slate-800 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <User className="w-10 h-10 text-blue-600" />
+          <div className="flex flex-col items-center justify-center mb-8" >
+            <div className="flex items-center justify-center space-x-4 mb-4">
+              <img src="/src/assets/logo-municipalidad.png" alt="Logo Municipalidad" className="h-24 w-24" />
+              <div className="text-left">
+                <h2 className="font-bold text-3xl text-gray-800">Catamarca</h2>
+                <p className="text-xl text-slate-600">Capital</p>
+              </div>
+            </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Administración de Bromatología</h1>
-          <p className="text-gray-600">Catamarca Capital</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Administración de Bromatología Municipal</h1>
         </div>
 
         {/* Formulario con Formik */}
@@ -105,7 +110,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
               >
                 {isSubmitting ? (
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>

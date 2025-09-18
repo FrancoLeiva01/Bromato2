@@ -86,7 +86,7 @@ const Sidebar: React.FC = () => {
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors ${
                       isActive || item.subItems?.some((sub) => location.pathname === sub.path)
                         ? "bg-yellow-500 text-white"
-                        : "text-slate-300 hover:bg-slate-700 hover:text-white"
+                        : "text-white hover:bg-slate-700 hover:text-white"
                     }`}
                   >
                     <div className="flex items-center space-x-3">
@@ -108,7 +108,7 @@ const Sidebar: React.FC = () => {
                             className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors ${
                               isSubActive
                                 ? "bg-green-400 text-white"
-                                : "text-slate-400 hover:bg-slate-700 hover:text-white"
+                                : "text-white hover:bg-slate-700 hover:text-white"
                             }`}
                           >
                             <SubIcon className="w-4 h-4" />
@@ -127,7 +127,7 @@ const Sidebar: React.FC = () => {
                 key={index}
                 to={item.path}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                  isActive ? "bg-yellow-500 text-white" : "text-slate-300 hover:bg-slate-700 hover:text-white"
+                  isActive ? "bg-yellow-500 text-white" : "text-white hover:bg-slate-700 hover:text-white"
                 }`}
               >
                 <Icon className="w-5 h-5" />

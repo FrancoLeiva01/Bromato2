@@ -53,8 +53,6 @@ export const authService = {
     } else {
       throw new Error("Credenciales incorrectas")
     }
-
-    // Código real para producción:
     // const response = await api.post<AuthResponse>('/auth/login', credentials)
     // return response.data
   },
