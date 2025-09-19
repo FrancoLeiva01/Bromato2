@@ -1,81 +1,106 @@
 import axios from "axios"
-import type { LoginCredentials, AuthResponse, User } from "../types/auth"
 
-// Configuración base de Axios
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3001/api",
-  timeout: 10000,
+const API_BASE_URL = "http://localhost:3001"
+
+// Create axios instance with default configuration
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true, // Important for httpOnly cookies
+  headers: {
+    "Content-Type": "application/json",
+  },
 })
 
-// Interceptor para agregar token a las requests
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken")
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-})
+// Request interceptor to add auth token if available
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
+)
 
-// Interceptor para manejar errores de autenticación
-api.interceptors.response.use(
+// Response interceptor to handle auth errors
+apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("authToken")
-      localStorage.removeItem("userData")
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
       window.location.href = "/login"
     }
     return Promise.reject(error)
   },
 )
 
-export const authService = {
-  // Simular login (reemplazar con llamada real a la API)
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    // Simulación de delay de red
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Simulación de validación
-    if (credentials.username === "admin" && credentials.password === "admin123") {
-      const mockResponse: AuthResponse = {
-        user: {
-          id: "1",
-          username: "admin",
-          email: "admin@catamarca.gov.ar",
-          role: "admin",
-          fullName: "Administrador del Sistema",
-          department: "Bromatología Municipal",
-        },
-        token: "mock-jwt-token-12345",
-        refreshToken: "mock-refresh-token-67890",
-      }
-      return mockResponse
-    } else {
-      throw new Error("Credenciales incorrectas")
-    }
-    // const response = await api.post<AuthResponse>('/auth/login', credentials)
-    // return response.data
-  },
-
-  async logout(): Promise<void> {
-    // En producción, hacer llamada al backend para invalidar el token
-    // await api.post('/auth/logout')
-
-    localStorage.removeItem("authToken")
-    localStorage.removeItem("userData")
-  },
-
-  async getCurrentUser(): Promise<User> {
-    // En producción:
-    // const response = await api.get<User>('/auth/me')
-    // return response.data
-
-    const userData = localStorage.getItem("userData")
-    if (userData) {
-      return JSON.parse(userData)
-    }
-    throw new Error("No hay usuario autenticado")
-  },
+export interface LoginCredentials {
+  email: string
+  password: string
 }
 
-export default api
+export interface User {
+  id: string
+  email: string
+  name?: string
+  role?: string
+}
+
+export interface AuthResponse {
+  message: string
+  user: User
+}
+
+class AuthService {
+  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+    try {
+      const response = await apiClient.post<AuthResponse>("/api/v1/auth/login", credentials)
+
+      // Store user data (token is handled by httpOnly cookie)
+      if (response.data.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user))
+      }
+
+      return response.data
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || "Error al iniciar sesión")
+    }
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await apiClient.post("/api/v1/auth/logout")
+    } catch (error) {
+      console.error("Error during logout:", error)
+    } finally {
+      // Clear local storage regardless of API call success
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+    }
+  }
+
+  async getProfile(): Promise<User> {
+    try {
+      const response = await apiClient.get<{ user: User }>("/api/v1/auth/profile")
+      return response.data.user
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || "Error al obtener perfil")
+    }
+  }
+
+  getCurrentUser(): User | null {
+    const userStr = localStorage.getItem("user")
+    return userStr ? JSON.parse(userStr) : null
+  }
+
+  isAuthenticated(): boolean {
+    return this.getCurrentUser() !== null
+  }
+}
+
+export const authService = new AuthService()
+export default authService

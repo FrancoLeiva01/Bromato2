@@ -1,47 +1,58 @@
-"use client"
 
-import { Formik, Form, Field, ErrorMessage } from "formik"
-import * as Yup from "yup"
+import type React from "react"
+
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { Eye, EyeOff, User, Lock } from "lucide-react"
 import { useState } from "react"
-
-// Esquema de validación con Yup
-const LoginSchema = Yup.object().shape({
-  username: Yup.string().min(3, "El usuario debe tener al menos 3 caracteres").required("El usuario es requerido"),
-  password: Yup.string()
-    .min(6, "La contraseña debe tener al menos 6 caracteres")
-    .required("La contraseña es requerida"),
-})
+import { authService } from "../services/authService"
 
 interface LoginValues {
-  username: string
+  email: string
   password: string
 }
 
 const Login = () => {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState<LoginValues>({
+    email: "",
+    password: "",
+  })
 
-  const handleSubmit = async (values: LoginValues, { setSubmitting }: any) => {
+  const handleSubmit = async (values: LoginValues) => {
+
+    setIsSubmitting(true)
     try {
-      // Simular llamada a API
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const authResponse = await authService.login({
+        email: values.email,
+        password: values.password,
+      })
 
-      // Simulación de login exitoso
-      if (values.username === "admin" && values.password === "admin123") {
-        toast.success("¡Bienvenido al Sistema de Bromatología!")
-        localStorage.setItem("isAuthenticated", "true")
-        navigate("/home")
-      } else {
-        toast.error("Credenciales incorrectas")
-      }
-    } catch (error) {
-      toast.error("Error al iniciar sesión")
+      localStorage.setItem("userData", JSON.stringify(authResponse.user))
+      localStorage.setItem("isAuthenticated", "true")
+
+      toast.success(`¡Bienvenido ${authResponse.user.name || authResponse.user.email}!`)
+      navigate("/home")
+    } catch (error: any) {
+      toast.error(error.message || "Error al iniciar sesión")
     } finally {
-      setSubmitting(false)
+      setIsSubmitting(false)
     }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    E.
+    handleSubmit(formData)
   }
 
   return (
@@ -49,7 +60,7 @@ const Login = () => {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex flex-col items-center justify-center mb-8" >
+          <div className="flex flex-col items-center justify-center mb-8">
             <div className="flex items-center justify-center space-x-4 mb-4">
               <img src="/src/assets/logo-municipalidad.png" alt="Logo Municipalidad" className="h-24 w-24" />
               <div className="text-left">
@@ -58,76 +69,75 @@ const Login = () => {
               </div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Administración de Bromatología Municipal</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Administración de Bromatología</h1>
+          <p className="text-gray-600">Catamarca Capital</p>
         </div>
 
-        {/* Formulario con Formik */}
-        <Formik initialValues={{ username: "", password: "" }} validationSchema={LoginSchema} onSubmit={handleSubmit}>
-          {({ isSubmitting }) => (
-            <Form className="space-y-6">
-              {/* Campo Usuario */}
-              <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                  Usuario
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <Field
-                    type="text"
-                    name="username"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                    placeholder="Ingrese su usuario"
-                  />
-                </div>
-                <ErrorMessage name="username" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
+        <div className="space-y-6">
+          {/* Campo Usuario */}
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                placeholder="usuario@ejemplo.com"
+              />
+            </div>
+          </div>
 
-              {/* Campo Contraseña */}
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  Contraseña
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <Field
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                    placeholder="Ingrese su contraseña"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-                <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
-
-              {/* Botón Submit */}
+          {/* Campo Contraseña */}
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              Contraseña
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                placeholder="Ingrese su contraseña"
+              />
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-yellow-500 hover:bg-yellow-400 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                {isSubmitting ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                ) : (
-                  "Iniciar Sesión"
-                )}
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
-            </Form>
-          )}
-        </Formik>
+            </div>
+          </div>
+
+          {/* Botón Submit */}
+          <button
+            type="button"
+            onClick={handleFormSubmit}
+            disabled={isSubmitting}
+            className="w-full bg-yellow-500 hover:bg-yellow-300 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+          >
+            {isSubmitting ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            ) : (
+              "Iniciar Sesión"
+            )}
+          </button>
+        </div>
 
         {/* Información de prueba */}
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <p className="text-xs text-gray-600 text-center">
-            <strong>Credenciales de prueba:</strong>
+            <strong>Usa tus credenciales del sistema</strong>
             <br />
-            Usuario: admin | Contraseña: admin123
+            Email y contraseña porporcionados por el administrador
           </p>
         </div>
       </div>

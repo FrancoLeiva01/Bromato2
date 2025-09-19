@@ -1,21 +1,18 @@
 export interface User {
   id: string
-  username: string
   email: string
-  role: "admin" | "user" | "inspector"
-  fullName: string
-  department?: string
+  name?: string
+  role?: string
 }
 
 export interface LoginCredentials {
-  username: string
+  email: string
   password: string
 }
 
 export interface AuthResponse {
+  message: string
   user: User
-  token: string
-  refreshToken: string
 }
 
 export interface AuthContextType {
