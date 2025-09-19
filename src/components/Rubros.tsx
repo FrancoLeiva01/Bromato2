@@ -200,7 +200,7 @@ const Rubros: React.FC = () => {
                 className={`px-4 py-2 text-sm font-medium rounded-md ${
                   currentPage === totalPages
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-yellow-500 text-white hover:bg-yellow-300"
                 }`}
               >
                 Siguiente

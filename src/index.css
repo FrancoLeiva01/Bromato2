@@ -1,5 +1,6 @@
-/* Actualizando imports de Tailwind v3 a v4 */
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme inline {
   --color-background: white;

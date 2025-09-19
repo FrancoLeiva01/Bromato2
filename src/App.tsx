@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom"
 import Layout from "./layouts/Layout"
 import Calendar from "./components/Calendar"
-import Login from "./components/Login"
+import Login from "./modules/Auth/views/Login"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
@@ -43,61 +43,61 @@ function App() {
         <Route
           path="/notifications"
           element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <Layout>
                 <Notifications />
               </Layout>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route
           path="/actas-inspeccion"
           element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <Layout>
                 <ActasInspeccion />
               </Layout>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route
           path="/actas-comprobacion"
           element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <Layout>
                 <ActasComprobacion />
               </Layout>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route
           path="/rubros"
           element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <Layout>
                 <Rubros />
               </Layout>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route
           path="/comercios"
           element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <Layout>
                 <Comercios />
               </Layout>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route
           path="/inspectores"
           element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <Layout>
                 <Inspectores />
               </Layout>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route path="/" element={<Navigate to="/home" replace />} />

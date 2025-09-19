@@ -18,6 +18,9 @@ const Inspectores: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
+  const [filterType, setFilterType] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
+
   // Sample data
   const inspectores: Inspector[] = [
     {
@@ -121,9 +124,22 @@ const Inspectores: React.FC = () => {
     })),
   ]
 
-  const totalPages = Math.ceil(inspectores.length / itemsPerPage)
+  const filteredInspectores = inspectores.filter((inspector) => {
+    if (!filterType || !searchTerm) return true
+
+    switch (filterType) {
+      case "apellido":
+        return inspector.apellido.toLowerCase().includes(searchTerm.toLowerCase())
+      case "identificador":
+        return inspector.identificador.includes(searchTerm)
+      default:
+        return true
+    }
+  })
+
+  const totalPages = Math.ceil(filteredInspectores.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
-  const currentInspectores = inspectores.slice(startIndex, startIndex + itemsPerPage)
+  const currentInspectores = filteredInspectores.slice(startIndex, startIndex + itemsPerPage)
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -137,6 +153,10 @@ const Inspectores: React.FC = () => {
     }
   }
 
+  const handleSearch = () => {
+    setCurrentPage(1)
+  }
+
   return (
     <div className="bg-slate-700 p-6">
       <div className="flex items-center justify-between mb-6">
@@ -145,15 +165,37 @@ const Inspectores: React.FC = () => {
           <h1 className="text-2xl font-bold text-white">Inspectores</h1>
         </div>
         <div className="flex items-center space-x-2">
-              <select className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500">
-                <option>Filtros</option>
-                <option>Apellido</option>
-                <option>Identificador</option>
-              </select>
-              <button className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-300 transition-colors">
-                Buscar
-              </button>
-            </div>
+          <select
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+            value={filterType}
+            onChange={(e) => {
+              setFilterType(e.target.value)
+              setSearchTerm("")
+              setCurrentPage(1)
+            }}
+          >
+            <option value="">Filtros</option>
+            <option value="apellido">Apellido</option>
+            <option value="identificador">Identificador</option>
+          </select>
+
+          {filterType && (
+            <input
+              type="text"
+              placeholder={`Buscar por ${filterType}...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm"
+            />
+          )}
+
+          <button
+            className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-300 transition-colors"
+            onClick={handleSearch}
+          >
+            Buscar
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -186,35 +228,42 @@ const Inspectores: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {currentInspectores.map((inspector) => (
-                <tr key={inspector.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{inspector.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.nombre}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.apellido}</td>
-                  <td className="px-6 py-4 text-sm text-gray-900">{inspector.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        inspector.activo ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {inspector.activo ? "Activo" : "Inactivo"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.funcion}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.identificador}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-gray-600 hover:text-gray-900 transition-colors">
-                      <Eye className="w-4 h-4" />
-                    </button>
+              {currentInspectores.length > 0 ? (
+                currentInspectores.map((inspector) => (
+                  <tr key={inspector.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{inspector.id}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.nombre}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.apellido}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900">{inspector.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          inspector.activo ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {inspector.activo ? "Activo" : "Inactivo"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.funcion}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.identificador}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button className="text-blue-500 hover:text-blue-500 transition-colors">
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">
+                    No se encontraron inspectores que coincidan con los criterios de búsqueda.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-2">
@@ -238,7 +287,7 @@ const Inspectores: React.FC = () => {
                 className={`px-4 py-2 text-sm font-medium rounded-md ${
                   currentPage === totalPages
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-yellow-500 text-white hover:bg-yellow-300"
                 }`}
               >
                 Siguiente

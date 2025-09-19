@@ -1,7 +1,18 @@
 "use client"
 
 import type React from "react"
-import { Bell, Clock, CheckCircle, AlertTriangle, Info, ChevronLeft, ChevronRight, Eye, FolderClock, ClipboardList } from "lucide-react"
+import {
+  Bell,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  FolderClock,
+  ClipboardList,
+} from "lucide-react"
 import { useState } from "react"
 
 interface Notification {
@@ -20,6 +31,8 @@ interface Notification {
 const Notifications: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [viewMode] = useState<"cards" | "table">("cards")
+  const [filterType, setFilterType] = useState("")
+  const [searchTerm, setSearchTerm] = useState("")
   const itemsPerPage = viewMode === "cards" ? 3 : 8
   const maxPages = 5
 
@@ -34,7 +47,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "0875",
       expirationDate: "2025-01-02",
       notificationDate: "2024-11-27",
-      status: "VERIFICADA"
+      status: "VERIFICADA",
     },
     {
       id: 2,
@@ -46,7 +59,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1868",
       expirationDate: "2025-01-13",
       notificationDate: "2025-01-06",
-      status: "VENCIDA"
+      status: "VENCIDA",
     },
     {
       id: 3,
@@ -58,7 +71,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1873",
       expirationDate: "2025-01-13",
       notificationDate: "2025-01-07",
-      status: "VENCIDA"
+      status: "VENCIDA",
     },
     {
       id: 4,
@@ -70,19 +83,19 @@ const Notifications: React.FC = () => {
       notificationNumber: "1857",
       expirationDate: "2025-01-14",
       notificationDate: "2025-01-07",
-      status: "VENCIDA"
+      status: "VENCIDA",
     },
     {
       id: 5,
       type: "alert",
       title: "Documentación Pendiente",
-      message: 'Notificacion a vencer de supermercado "Los Andes".',      
+      message: 'Notificacion a vencer de supermercado "Los Andes".',
       time: "1 día",
       read: true,
       notificationNumber: "1869",
       expirationDate: "2025-01-14",
       notificationDate: "2025-01-07",
-      status: "VERIFICADA"
+      status: "VERIFICADA",
     },
     {
       id: 6,
@@ -94,19 +107,19 @@ const Notifications: React.FC = () => {
       notificationNumber: "1874",
       expirationDate: "2025-01-14",
       notificationDate: "2025-01-07",
-      status: "VERIFICADA"
+      status: "VERIFICADA",
     },
     {
       id: 7,
       type: "alert",
       title: "Habilitación Aprobada",
-      message: 'Notificacion a vencer de supermercado "Los Andes".',      
+      message: 'Notificacion a vencer de supermercado "Los Andes".',
       time: "3 días",
       read: true,
       notificationNumber: "1896",
       expirationDate: "2025-01-17",
       notificationDate: "2025-01-03",
-      status: "VENCIDA"
+      status: "VENCIDA",
     },
     {
       id: 8,
@@ -118,7 +131,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1845",
       expirationDate: "2025-01-17",
       notificationDate: "2025-01-03",
-      status: "VENCIDA"
+      status: "VENCIDA",
     },
     {
       id: 9,
@@ -130,7 +143,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1892",
       expirationDate: "2025-01-18",
       notificationDate: "2025-01-04",
-      status: "PENDIENTE"
+      status: "PENDIENTE",
     },
     {
       id: 10,
@@ -142,7 +155,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1834",
       expirationDate: "2025-01-18",
       notificationDate: "2025-01-04",
-      status: "PENDIENTE"
+      status: "PENDIENTE",
     },
     {
       id: 11,
@@ -154,7 +167,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1823",
       expirationDate: "2025-01-19",
       notificationDate: "2025-01-05",
-      status: "VERIFICADA"
+      status: "VERIFICADA",
     },
     {
       id: 12,
@@ -166,7 +179,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1812",
       expirationDate: "2025-01-20",
       notificationDate: "2025-01-06",
-      status: "VERIFICADA"
+      status: "VERIFICADA",
     },
     {
       id: 13,
@@ -178,7 +191,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1801",
       expirationDate: "2025-01-21",
       notificationDate: "2025-01-07",
-      status: "PENDIENTE"
+      status: "PENDIENTE",
     },
     {
       id: 14,
@@ -190,7 +203,7 @@ const Notifications: React.FC = () => {
       notificationNumber: "1789",
       expirationDate: "2025-01-22",
       notificationDate: "2025-01-08",
-      status: "VERIFICADA"
+      status: "VERIFICADA",
     },
     {
       id: 15,
@@ -202,14 +215,43 @@ const Notifications: React.FC = () => {
       notificationNumber: "1778",
       expirationDate: "2025-01-23",
       notificationDate: "2025-01-09",
-      status: "PENDIENTE"
+      status: "PENDIENTE",
     },
   ]
 
-  const totalPages = Math.min(Math.ceil(notifications.length / itemsPerPage), maxPages)
+  const filteredNotifications = notifications.filter((notification) => {
+    if (!filterType || !searchTerm) return true
+
+    switch (filterType) {
+      case "Fecha":
+        return notification.notificationDate.includes(searchTerm) || notification.expirationDate.includes(searchTerm)
+      case "Numero de Notificacion":
+        return notification.notificationNumber.toLowerCase().includes(searchTerm.toLowerCase())
+      default:
+        return true
+    }
+  })
+
+  const totalPages = Math.min(Math.ceil(filteredNotifications.length / itemsPerPage), maxPages)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
-  const currentNotifications = notifications.slice(startIndex, endIndex)
+  const currentNotifications = filteredNotifications.slice(startIndex, endIndex)
+
+  const handleFilterChange = (value: string) => {
+    setFilterType(value)
+    setSearchTerm("")
+    setCurrentPage(1)
+  }
+
+  const handleSearch = () => {
+    setCurrentPage(1)
+  }
+
+  const clearFilters = () => {
+    setFilterType("")
+    setSearchTerm("")
+    setCurrentPage(1)
+  }
 
   const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1))
@@ -323,14 +365,14 @@ const Notifications: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {notification.notificationNumber}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {notification.expirationDate}
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{notification.expirationDate}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {notification.notificationDate}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(notification.status)}`}>
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(notification.status)}`}
+                      >
                         {notification.status}
                       </span>
                     </td>
@@ -381,7 +423,8 @@ const Notifications: React.FC = () => {
                 </button>
               </div>
               <div className="text-sm text-gray-500">
-                Mostrando {startIndex + 1} a {Math.min(endIndex, notifications.length)} de {notifications.length} notificaciones
+                Mostrando {startIndex + 1} a {Math.min(endIndex, filteredNotifications.length)} de{" "}
+                {filteredNotifications.length} notificaciones
               </div>
             </div>
           </div>
@@ -396,29 +439,54 @@ const Notifications: React.FC = () => {
         )}
       </div>
 
-      {/* Tabla de Notificaciones Separada */}
-      
-      <div className="bg-gray-100 rounded-lg shadow-sm border border-gray-100 mt-4">  
+      <div className="bg-gray-100 rounded-lg shadow-sm border border-gray-100 mt-4">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3">
               <ClipboardList className="w-6 h-6 text-gray-700" />
               <h1 className="text-xl font-semibold text-gray-900">Lista de Notificaciones</h1>
             </div>
             <div className="flex items-center space-x-2">
-              <select className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-gray-600">
-                <option>Filtros</option>
-                <option>Fecha</option>
-                <option>Apellido del Inspector</option>
-                <option>Numero del Inspector</option>
-                <option>Nombre de Fantasia Comercio</option>
-                <option>Razon Social Comercio</option>
-                <option>Numero de Notificacion</option>
-                <option>Numero de Acta</option>
+              <select
+                className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-gray-600"
+                value={filterType}
+                onChange={(e) => handleFilterChange(e.target.value)}
+              >
+                <option value="">Filtros</option>
+                <option value="Fecha">Fecha</option>
+                <option value="Apellido del Inspector">Apellido del Inspector</option>
+                <option value="Numero del Inspector">Numero del Inspector</option>
+                <option value="Nombre de Fantasia Comercio">Nombre de Fantasia Comercio</option>
+                <option value="Razon Social Comercio">Razon Social Comercio</option>
+                <option value="Numero de Notificacion">Numero de Notificacion</option>
+                <option value="Numero de Acta">Numero de Acta</option>
               </select>
-              <button className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-500 transition-colors">
+
+              {filterType && (
+                <input
+                  type="text"
+                  placeholder={`Buscar por ${filterType.toLowerCase()}...`}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-1 text-sm"
+                />
+              )}
+
+              <button
+                className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-500 transition-colors"
+                onClick={handleSearch}
+              >
                 Buscar
               </button>
+
+              {(filterType || searchTerm) && (
+                <button
+                  className="flex items-center px-4 py-2 bg-gray-500 text-white text-sm rounded-lg hover:bg-gray-600 transition-colors"
+                  onClick={clearFilters}
+                >
+                  Limpiar
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -440,24 +508,22 @@ const Notifications: React.FC = () => {
                   Estado notificación
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                 Detalles
+                  Detalles
                 </th>
               </tr>
             </thead>
             <tbody className="bg-gray-100 divide-y divide-gray-100">
-              {notifications.slice(0, 8).map((notification) => (
+              {filteredNotifications.slice(0, 8).map((notification) => (
                 <tr key={`table-${notification.id}`} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {notification.notificationNumber}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {notification.expirationDate}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {notification.notificationDate}
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{notification.expirationDate}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{notification.notificationDate}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(notification.status)}`}>
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(notification.status)}`}
+                    >
                       {notification.status}
                     </span>
                   </td>
