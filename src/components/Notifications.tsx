@@ -317,7 +317,7 @@ const Notifications: React.FC = () => {
             {currentNotifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`p-6 hover:bg-yellow-200 transition-colors border-l-4 ${getBorderColor(notification.type)} ${
+                className={`p-6 hover:bg-red-300 transition-colors border-l-4 ${getBorderColor(notification.type)} ${
                   !notification.read ? "bg-gray-100" : ""
                 }`}
               >

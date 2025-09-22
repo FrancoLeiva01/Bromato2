@@ -1,5 +1,3 @@
-"use client"
-
 import { Eye, EyeOff, User, Lock, Mail, Shield } from "lucide-react"
 import { useState } from "react"
 // import { useRegisterFormik } from "../formik/useRegisterFormik"
@@ -108,7 +106,7 @@ const Register = () => {
                 name="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors appearance-none bg-white"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors appearance-none bg-white text-gray-400" 
               >
                 <option value="">Seleccione un rol</option>
                 <option value="administrador">Administrador</option>
@@ -138,7 +136,9 @@ const Register = () => {
             Completa todos los campos para registrarte
           </p>
 
-          <button className="w-full bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-4">
+          <button
+
+           className="w-full bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-4">
             ¿Ya tienes cuenta? Inicia sesión aquí
           </button>
         </div>
