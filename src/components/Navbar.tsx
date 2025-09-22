@@ -33,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick }) => {
   }
 
   return (
-    <header className="bg-slate-700 shadow-sm border-gray-200 px-6 py-4">
+    <header className=" bg-slate-800 shadow-[4px_0_10px_rgba(0,0,0,0.1)] shadow-gray-500 px-6 py-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold text-white">Administración de Bromatología Municipal</h1>
 
@@ -59,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick }) => {
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition-colors"
+             className=" br-0.5rem flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition-colors"
             >
               <User className="w-4 h-4 text-gray-600" />
               <span className="text-sm font-medium text-gray-900">ADMIN</span>

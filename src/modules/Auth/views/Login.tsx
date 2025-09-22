@@ -15,7 +15,7 @@ const Login = () => {
 const useLogin = useLoginFormik();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-blue-400 to-slate-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-blue-400 to-slate-800 flex items-center justify-center p-4 rounded-lg">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         {/* Header */}
         <div className="text-center mb-8">

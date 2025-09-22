@@ -83,7 +83,7 @@ const Calendar: React.FC = () => {
         new Date().getFullYear() === currentDate.getFullYear()
 
       days.push(
-        <div key={day} className={`h-28 border border-gray-400 p-1 ${isToday ? "bg-yellow-200" : "bg-white"}`}>
+        <div key={day} className={`h-28 border border-gray-400 p-1 ${isToday ? "bg-yellow-200" : "bg-gray-200"}`}>
           <div className={`text-sm font-medium mb-1 ${isToday ? "text-red-500" : "text-gray-900"}`}>{day}</div>
           <div className="space-y-1">
             {dayEvents.map((event) => (
@@ -104,7 +104,7 @@ const Calendar: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-white rounded-lg shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-gray-600 border border-gray-300">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-900">Calendario de Notificaciones</h2>

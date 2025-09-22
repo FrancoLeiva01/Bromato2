@@ -57,7 +57,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <aside className="w-64 bg-slate-800 text-white min-h-screen">
-      <div className="p-6">
+      <div className="h-screen w-64 bg-slate-800 shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-slate-500 p-6">
         <div className="flex items-center space-x-3 mb-8">
           <img
             src={logoMunicipalidad}

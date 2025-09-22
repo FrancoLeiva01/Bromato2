@@ -33,11 +33,11 @@ function App() {
         <Route
           path="/home"
           element={
-            <ProtectedRoute>
+            //<ProtectedRoute>
               <Layout>
                 <Calendar />
               </Layout>
-            </ProtectedRoute>
+            //</ProtectedRoute>
           }
         />
         <Route

@@ -158,7 +158,7 @@ const Inspectores: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-700 p-6">
+    <div className="bg-slate-700 p-6 rounded-lg">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <UserCheck className="w-8 h-8 text-blue-600" />

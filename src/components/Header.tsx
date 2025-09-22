@@ -11,7 +11,7 @@ export function Header({ onTutorialClick }: HeaderProps) {
 
   return (
     <header className="bg-card border-b border-border px-6 py-4 shadow-sm">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         <div>
           <h1 className="text-xl font-bold text-card-foreground">Administración de Bromatología Municipal</h1>
           <p className="text-sm text-muted-foreground mt-1">Sistema de Gestión - Catamarca Capital</p>
