@@ -143,7 +143,7 @@ const Comercios: React.FC = () => {
           )}
           {filterType === "Zona" && (
             <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
               value={zonaFilter}
               onChange={(e) => setZonaFilter(e.target.value)}
             >
@@ -155,7 +155,7 @@ const Comercios: React.FC = () => {
           )}
           {filterType === "Activo" && (
             <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
               value={activoFilter}
               onChange={(e) => setActivoFilter(e.target.value)}
             >

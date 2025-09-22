@@ -92,12 +92,12 @@ const Rubros: React.FC = () => {
               placeholder="Buscar por nombre..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
             />
           )}
           {filterType === "Riesgo" && (
             <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
               value={riskFilter}
               onChange={(e) => setRiskFilter(e.target.value)}
             >

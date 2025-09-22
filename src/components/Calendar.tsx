@@ -107,7 +107,7 @@ const Calendar: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-300 rounded-lg shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-gray-600 border border-gray-300">
+    <div className="bg-gray-200 rounded-lg shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-gray-600 border border-gray-500">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-gray-900">Calendario de Notificaciones</h2>
