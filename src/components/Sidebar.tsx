@@ -13,11 +13,17 @@ import {
   Tag,
   Store,
   UserCheck,
-  FolderOpen 
+  FolderOpen,
+  X,
 } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isOpen?: boolean
+  onClose?: () => void
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
   const [isDocumentosOpen, setIsDocumentosOpen] = useState(false)
   const [isPrecargadosOpen, setIsPrecargadosOpen] = useState(false)
   const location = useLocation()
@@ -25,7 +31,7 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { icon: Home, label: "Inicio", path: "/home" },
     {
-      icon: ClipboardList ,
+      icon: ClipboardList,
       label: "Pre-Cargados",
       path: "/precargados",
       hasDropdown: true,
@@ -36,7 +42,7 @@ const Sidebar: React.FC = () => {
       ],
     },
     {
-      icon: FolderOpen ,
+      icon: FolderOpen,
       label: "Documentos",
       path: "/documentos",
       hasDropdown: true,
@@ -55,89 +61,113 @@ const Sidebar: React.FC = () => {
     setIsPrecargadosOpen(!isPrecargadosOpen)
   }
 
+  const handleLinkClick = () => {
+    if (onClose && window.innerWidth < 1024) {
+      onClose()
+    }
+  }
+
   return (
-    <aside className="w-64 bg-slate-800 text-white min-h-screen">
-      <div className="h-screen w-64 bg-slate-800 shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-slate-500 p-6">
-        <div className="flex items-center space-x-3 mb-8">
-          <img
-            src={logoMunicipalidad}
-            alt="logoMunicipalidad"
-            className="max-h-20 ml-3"
-          />
-          <div>
-            <h2 className="font-bold text-lg">Catamarca</h2>
-            <p className="text-sm text-slate-300">Capital</p>
+    <>
+      {isOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={onClose} />}
+
+      <aside
+        className={`
+        fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
+        w-64 bg-slate-800 text-white min-h-screen shadow-lg
+        transform transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}
+      >
+        <div className="h-screen w-64 bg-slate-700 shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-slate-500 p-6">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-3">
+              <img src={logoMunicipalidad || "/placeholder.svg"} alt="logoMunicipalidad" className="max-h-20 ml-3" />
+              <div>
+                <h2 className="font-bold text-lg">Catamarca</h2>
+                <p className="text-sm text-slate-300">Capital</p>
+              </div>
+            </div>
+
+            <button
+              onClick={onClose}
+              className="lg:hidden p-2 text-slate-300 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
-        </div>
 
-        <nav className="space-y-2">
-          {menuItems.map((item, index) => {
-            const Icon = item.icon
-            const isActive = location.pathname === item.path
+          <nav className="space-y-2">
+            {menuItems.map((item, index) => {
+              const Icon = item.icon
+              const isActive = location.pathname === item.path
 
-            if (item.hasDropdown) {
-              const isOpen = item.label === "Documentos" ? isDocumentosOpen : isPrecargadosOpen
-              const handleClick = item.label === "Documentos" ? handleDocumentosClick : handlePrecargadosClick
+              if (item.hasDropdown) {
+                const isOpen = item.label === "Documentos" ? isDocumentosOpen : isPrecargadosOpen
+                const handleClick = item.label === "Documentos" ? handleDocumentosClick : handlePrecargadosClick
+
+                return (
+                  <div key={index}>
+                    <button
+                      onClick={handleClick}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors ${
+                        isActive || item.subItems?.some((sub) => location.pathname === sub.path)
+                          ? "bg-blue-400 text-white"
+                          : "text-white hover:to-blue-700 hover:text-white"
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <Icon className="w-5 h-5" />
+                        <span className="font-medium">{item.label}</span>
+                      </div>
+                      {isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                    </button>
+
+                    {isOpen && item.subItems && (
+                      <div className="ml-4 mt-1 space-y-1">
+                        {item.subItems.map((subItem, subIndex) => {
+                          const SubIcon = subItem.icon
+                          const isSubActive = location.pathname === subItem.path
+                          return (
+                            <Link
+                              key={subIndex}
+                              to={subItem.path}
+                              onClick={handleLinkClick}
+                              className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors ${
+                                isSubActive
+                                  ? "bg-green-400 text-white"
+                                  : "text-white hover:bg-slate-700 hover:text-white"
+                              }`}
+                            >
+                              <SubIcon className="w-4 h-4" />
+                              <span className="text-sm font-medium">{subItem.label}</span>
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )
+              }
 
               return (
-                <div key={index}>
-                  <button
-                    onClick={handleClick}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors ${
-                      isActive || item.subItems?.some((sub) => location.pathname === sub.path)
-                        ? "bg-yellow-500 text-white"
-                        : "text-white hover:bg-slate-700 hover:text-white"
-                    }`}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <Icon className="w-5 h-5" />
-                      <span className="font-medium">{item.label}</span>
-                    </div>
-                    {isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-                  </button>
-
-                  {isOpen && item.subItems && (
-                    <div className="ml-4 mt-1 space-y-1">
-                      {item.subItems.map((subItem, subIndex) => {
-                        const SubIcon = subItem.icon
-                        const isSubActive = location.pathname === subItem.path
-                        return (
-                          <Link
-                            key={subIndex}
-                            to={subItem.path}
-                            className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors ${
-                              isSubActive
-                                ? "bg-green-400 text-white"
-                                : "text-white hover:bg-slate-700 hover:text-white"
-                            }`}
-                          >
-                            <SubIcon className="w-4 h-4" />
-                            <span className="text-sm font-medium">{subItem.label}</span>
-                          </Link>
-                        )
-                      })}
-                    </div>
-                  )}
-                </div>
+                <Link
+                  key={index}
+                  to={item.path}
+                  onClick={handleLinkClick}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                    isActive ? "bg-blue-400 text-white" : "text-white hover:bg-blue-700 hover:text-white"
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
               )
-            }
-
-            return (
-              <Link
-                key={index}
-                to={item.path}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                  isActive ? "bg-yellow-500 text-white" : "text-white hover:bg-slate-700 hover:text-white"
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                <span className="font-medium">{item.label}</span>
-              </Link>
-            )
-          })}
-        </nav>
-      </div>
-    </aside>
+            })}
+          </nav>
+        </div>
+      </aside>
+    </>
   )
 }
 

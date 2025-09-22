@@ -95,15 +95,15 @@ const Comercios: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
+   <div className=" bg-slate-700 p-6 rounded-lg ">
+   <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0 pb-5">
+        <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+         <div className="flex items-center space-x-3">
           <Store className="w-8 h-8 text-blue-600" />
           <h1 className="text-2xl font-bold text-white">Comercios</h1>
         </div>
-        <div className="flex items-center space-x-2">
           <select
-            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
             value={filterType}
             onChange={(e) => handleFilterChange(e.target.value)}
           >
@@ -124,12 +124,12 @@ const Comercios: React.FC = () => {
               placeholder={`Buscar por ${filterType.toLowerCase()}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
             />
           )}
           {filterType === "Barrio" && (
             <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500"
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
               value={barrioFilter}
               onChange={(e) => setBarrioFilter(e.target.value)}
             >
@@ -165,13 +165,13 @@ const Comercios: React.FC = () => {
             </select>
           )}
           <button
-            className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-300 transition-colors"
+            className="flex items-center px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-400 transition-colors"
             onClick={handleSearch}
           >
             Buscar
           </button>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2">
           <Plus className="w-4 h-4" />
           <span>Nuevo Comercio</span>
         </button>
@@ -262,7 +262,7 @@ const Comercios: React.FC = () => {
                 className={`px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                   currentPage === 1
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-white text-orange-600 hover:bg-orange-100 shadow-sm hover:shadow-md border"
+                    : "bg-white text-blue-700 hover:bg-blue-400 shadow-sm hover:shadow-md border"
                 }`}
               >
                 Anterior
@@ -278,7 +278,7 @@ const Comercios: React.FC = () => {
                 className={`px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                   currentPage === totalPages
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-yellow-500 text-white hover:to-amber-600"
+                    : "bg-blue-700 text-white hover:to-blue-400"
                 }`}
               >
                 Siguiente

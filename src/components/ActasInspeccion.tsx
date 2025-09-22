@@ -61,42 +61,30 @@ const ActasInspeccion: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg">
+    <div className="p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <FileCheck className="w-8 h-8 text-blue-600" />
           <div>
-            <h1 className="text-2xl font-bold text-white">Actas de Inspección</h1>
-            <p className="text-white">Gestión de actas de inspecciones bromatologicas</p>
+            <h1 className="text-2xl font-bold text-gray-900">Actas de Inspección</h1>
+            <p className="text-gray-600">Gestión de actas de inspecciones bromatologicas</p>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-              <select className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-yellow-500">
-                <option>Filtros</option>
-                <option>N° de Acta</option>
-                <option>Turno</option>
-                <option>Razon Social Comercio</option>
-                <option>Nombre de Fantasia Comercio</option>
-              </select>
-              <button className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-500 transition-colors">
-                Buscar
-              </button>
-            </div>
       </div>
 
-      <div className="bg-gray-200 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-slate-600 rounded-lg shadow-sm border border-gray-200">
         <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0">
+            <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-y-0 md:space-x-4">
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Buscar actas..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              <button className="flex items-center space-x-2 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+              <button className="flex items-center justify-center space-x-2 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-500 text-white">
                 <Filter className="w-4 h-4" />
                 <span>Filtros</span>
               </button>
@@ -106,7 +94,7 @@ const ActasInspeccion: React.FC = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-100">
+            <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Número de Acta
@@ -131,7 +119,7 @@ const ActasInspeccion: React.FC = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-100 divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200">
               {currentActas.map((acta) => (
                 <tr key={acta.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{acta.numero}</td>
@@ -188,13 +176,13 @@ const ActasInspeccion: React.FC = () => {
               className={`px-4 py-2 rounded-lg text-sm font-medium ${
                 currentPage === 1
                   ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  : "bg-gray-100 text-white hover:bg-gray-200"
               }`}
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
 
-            <span className="px-4 py-2 text-sm font-medium text-gray-700">
+            <span className="px-4 py-2 text-sm font-medium text-white">
               Página {currentPage} de {totalPages}
             </span>
 
@@ -204,7 +192,7 @@ const ActasInspeccion: React.FC = () => {
               className={`px-4 py-2 rounded-lg text-sm font-medium ${
                 currentPage === totalPages
                   ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "bg-green-600 text-white hover:bg-green-400"
+                  : "bg-blue-700 text-white hover:bg-blue-400"
               }`}
             >
               <ChevronRight className="w-4 h-4" />

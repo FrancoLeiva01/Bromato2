@@ -39,7 +39,7 @@ const Notifications: React.FC = () => {
   const notifications: Notification[] = [
     {
       id: 1,
-      type: "warning",
+      type: "alert",
       title: "Proximo a Vencer",
       message: 'Restaurante "El Buen Sabor" requiere inspección inmediata por denuncia sanitaria.',
       time: "2 min",
@@ -51,7 +51,7 @@ const Notifications: React.FC = () => {
     },
     {
       id: 2,
-      type: "warning",
+      type: "alert",
       title: "Proximo a Vencer",
       message: 'Notificacion a vencer de supermercado "Los Andes"',
       time: "1 hora",
@@ -63,7 +63,7 @@ const Notifications: React.FC = () => {
     },
     {
       id: 3,
-      type: "warning",
+      type: "alert",
       title: "Proximo a Vencer",
       message: 'Notificacion a vencer de supermercado "Los Andes".',
       time: "2 horas",
@@ -306,7 +306,7 @@ const Notifications: React.FC = () => {
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <FolderClock className="w-6 h-6 text-gray-700" />
+              <FolderClock className="w-6 h-6 text-blue-700" />
               <h1 className="text-xl font-semibold text-gray-900">Notificaciones Próximas a Vencer</h1>
             </div>
           </div>
@@ -422,10 +422,6 @@ const Notifications: React.FC = () => {
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </button>
               </div>
-              <div className="text-sm text-gray-500">
-                Mostrando {startIndex + 1} a {Math.min(endIndex, filteredNotifications.length)} de{" "}
-                {filteredNotifications.length} notificaciones
-              </div>
             </div>
           </div>
         )}
@@ -440,13 +436,14 @@ const Notifications: React.FC = () => {
       </div>
 
       <div className="bg-gray-100 rounded-lg shadow-sm border border-gray-100 mt-4">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <ClipboardList className="w-6 h-6 text-gray-700" />
-              <h1 className="text-xl font-semibold text-gray-900">Lista de Notificaciones</h1>
-            </div>
-            <div className="flex items-center space-x-2">
+        <div className=" bg-gray-100 p-6 rounded-lg ">
+   <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0 pb-5">
+        <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+         <div className="flex items-center space-x-3">
+          <ClipboardList className="w-8 h-8 text-blue-600" />
+          <h1 className="text-2xl font-bold text-black">Lista de Notificaciones</h1>
+        </div>
+
               <select
                 className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-gray-600"
                 value={filterType}
@@ -473,7 +470,7 @@ const Notifications: React.FC = () => {
               )}
 
               <button
-                className="flex items-center px-4 py-2 bg-yellow-500 text-white text-sm rounded-lg hover:bg-yellow-500 transition-colors"
+                className="flex items-center px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-400 transition-colors"
                 onClick={handleSearch}
               >
                 Buscar

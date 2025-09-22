@@ -1,18 +1,22 @@
+"use client"
 
-import { Eye, EyeOff, User, Lock } from "lucide-react"
+import { Eye, EyeOff, User, Lock, Mail, Shield } from "lucide-react"
 import { useState } from "react"
-import { useLoginFormik } from "../formik/useLoginFormik"
+// import { useRegisterFormik } from "../formik/useRegisterFormik"
 
-interface LoginValues {
+interface RegisterValues {
+  username: string
   email: string
   password: string
+  role: string
 }
 
-const Login = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
- 
-const useLogin = useLoginFormik();
+  const [role, setRole] = useState("")
+
+  // const useRegister = useRegisterFormik();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-500 via-blue-400 to-slate-800 flex items-center justify-center p-4 rounded-lg">
@@ -28,25 +32,42 @@ const useLogin = useLoginFormik();
               </div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Administración de Bromatología</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Registro - Bromatología</h1>
           <p className="text-gray-600">Catamarca Capital</p>
         </div>
 
         <div className="space-y-6">
-          {/* Campo Usuario */}
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+              Nombre de Usuario
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                name="username"
+                // value={useRegister.values.username}
+                // onChange={useRegister.handleChange}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                placeholder="Ingrese su nombre de usuario"
+              />
+            </div>
+          </div>
+
+          {/* Campo Email */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
               Email
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="email"
                 name="email"
-                value={useLogin.values.email}
-                onChange={useLogin.handleChange}
+                // value={useRegister.values.email}
+                // onChange={useRegister.handleChange}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                placeholder="Usuario@ejemplo.com"
+                placeholder="usuario@ejemplo.com"
               />
             </div>
           </div>
@@ -57,12 +78,12 @@ const useLogin = useLoginFormik();
               Contraseña
             </label>
             <div className="relative">
-              <Lock className = "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                value={useLogin.values.password}
-                onChange={useLogin.handleChange}
+                // value={useRegister.values.password}
+                // onChange={useRegister.handleChange}
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 placeholder="Ingrese su contraseña"
               />
@@ -75,34 +96,55 @@ const useLogin = useLoginFormik();
               </button>
             </div>
           </div>
-          {/* Botón Submit */}
+
+          {/* Campo Rol */}
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
+              Rol
+            </label>
+            <div className="relative">
+              <Shield className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <select
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors appearance-none bg-white"
+              >
+                <option value="">Seleccione un rol</option>
+                <option value="administrador">Administrador</option>
+                <option value="visualizador">Visualizador</option>
+                <option value="gestor_datos">Gestor de Datos</option>
+              </select>
+            </div>
+          </div>
+
           <button
-            onClick={() => useLogin.handleSubmit()}
+            // onClick={() => useRegister.handleSubmit()}
             disabled={isSubmitting}
             className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
           >
             {isSubmitting ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
             ) : (
-              "Iniciar Sesión"
+              "Crear Cuenta"
             )}
           </button>
         </div>
 
-        {/* Información de prueba */}
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <p className="text-xs text-gray-600 text-center">
-            <strong>Usa tus credenciales del sistema</strong>
+            <strong>Crea tu cuenta del sistema</strong>
             <br />
-            Email y contraseña proporcionados por el administrador
+            Completa todos los campos para registrarte
           </p>
 
-            <button className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-8">No tienes una cuenta? Creala aqui</button>
-
+          <button className="w-full bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-4">
+            ¿Ya tienes cuenta? Inicia sesión aquí
+          </button>
         </div>
       </div>
     </div>
   )
 }
 
-export default Login
+export default Register

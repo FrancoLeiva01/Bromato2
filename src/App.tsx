@@ -12,6 +12,7 @@ import ActasComprobacion from "./components/ActasComprobacion"
 import Rubros from "./components/Rubros"
 import Comercios from "./components/Comercios"
 import Inspectores from "./components/Inspectores"
+import Register from "./components/Register"
 
 function App() {
   return (
@@ -36,6 +37,17 @@ function App() {
             //<ProtectedRoute>
               <Layout>
                 <Calendar />
+              </Layout>
+            //</ProtectedRoute>
+          }
+        />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/register"
+          element={
+            //<ProtectedRoute>
+              <Layout>
+                <Register />
               </Layout>
             //</ProtectedRoute>
           }

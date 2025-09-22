@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 :root {
-  --radius: 0.5rem; /* o el valor que quieras */
+  --radius: 0.5rem; 
 }
