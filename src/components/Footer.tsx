@@ -119,7 +119,7 @@ const Footer = () => {
         <div className="border-t border-green-700 mt-8 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-green-100 text-sm">
-              © 2025 Municipalidad de Catamarca Capital.
+              © 2025 Municipalidad de Catamarca Capital. Todos los derechos reservados.
             </p>
             <p className="text-green-200 text-xs">Sistema de Bromatología Municipal v1.0</p>
           </div>

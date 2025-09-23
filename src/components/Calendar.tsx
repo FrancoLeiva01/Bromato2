@@ -85,7 +85,7 @@ const Calendar: React.FC = () => {
       days.push(
         <div
           key={day}
-          className={`h-28 border border-gray-300 p-1 ${isToday ? "bg-gradient-to-b from-orange-300 to-gray-100 h-40 w-full" : "bg-gradient-to-b from-gray-100 to-white h-40 w-full"}`}
+          className={`h-28 border border-gray-300 p-1 ${isToday ? "bg-gradient-to-b from-orange-400 to-gray-100 h-40 w-full" : "bg-gradient-to-b from-gray-100 to-white h-40 w-full"}`}
         >
           <div className={`text-sm font-medium mb-1 ${isToday ? "text-black-500" : "text-gray-900"}`}>{day}</div>
           <div className="space-y-1">
