@@ -4,6 +4,7 @@ import type React from "react"
 import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
+import Footer from "../components/Footer"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -31,6 +32,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex-1">{children}</div>
         </main>
       </div>
+
+      <Footer />
     </div>
   )
 }

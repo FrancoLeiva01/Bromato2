@@ -74,12 +74,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       <aside
         className={`
         fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
-        w-64 bg-slate-800 text-white min-h-screen shadow-lg
+        w-64 bg-gradient-to-b from-slate-700 to-slate-900 text-white min-h-screen shadow-lg
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
       >
-        <div className="h-screen w-64 bg-slate-700 shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-slate-500 p-6">
+        <div className="h-screen w-64 shadow-slate-500 p-6">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-3">
               <img src={logoMunicipalidad || "/placeholder.svg"} alt="logoMunicipalidad" className="max-h-20 ml-3" />
