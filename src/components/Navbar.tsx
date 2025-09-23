@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
   }
 
   return (
-    <header className="bg-gradient-to-r  from-slate-700 to-slate-900 shadow-[4px_0_10px_rgba(0,0,0,0.1)] shadow-gray-500 px-4 py-4">
+    <header className="bg-slate-800 shadow-[4px_0_10px_rgba(0,0,0,0.1)] shadow-gray-500 px-4 py-4">
       <div className="flex items-center justify-between max-w-full">
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           <button
@@ -54,11 +54,10 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
         <div className="flex items-center space-x-2 flex-shrink-0">
           <button
             onClick={handleTutorialClick}
-            className="flex items-center space-x-1 text-blue-500 hover:text-blue-300 transition-colors"
+            className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg transition-colors text-sm font-medium flex items-center space-x-2"
           >
-            <HelpCircle className="w-5 h-5 flex-shrink-0" />
-            <span className="text-sm font-medium hidden md:inline">Tutorial guía rápida</span>
-            <span className="text-sm font-medium md:hidden">Tutorial</span>
+            <HelpCircle className="w-4 h-4" />
+            <span>Tutorial</span>
           </button>
 
           <button
