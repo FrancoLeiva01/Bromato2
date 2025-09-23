@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Youtube } from "lucide-react"
+import { Facebook, Instagram, Youtube, Twitter } from "lucide-react"
 import logoMunicipalidad from "../assets/logo-municipalidad.png"
 const Footer = () => {
   return (
@@ -83,6 +83,14 @@ const Footer = () => {
                 className="w-10 h-10 bg-green-700 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
               >
                 <Facebook size={20} />
+              </a>
+              <a
+                href="https://x.com/MuniSFVC"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-green-700 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
+              >
+                <Twitter size={20} />
               </a>
               <a
                 href="https://www.instagram.com/catamarcacapital/#"
