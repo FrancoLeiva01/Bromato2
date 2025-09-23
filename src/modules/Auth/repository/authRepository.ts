@@ -4,8 +4,7 @@ export const authRepository =  {
         login: async (credentials: LoginCredentials): Promise<AuthResponse> =>  {
         try {
           const response = await apiClient.post<AuthResponse>("/api/v1/auth/login", credentials)
-    
-          // Store user data (token is handled by httpOnly cookie)
+  
           if (response.data.user) {
             localStorage.setItem("user", JSON.stringify(response.data.user))
           }

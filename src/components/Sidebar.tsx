@@ -135,7 +135,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                               onClick={handleLinkClick}
                               className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors ${
                                 isSubActive
-                                  ? "bg-green-400 text-white"
+                                  ? "bg-orange-400 text-white"
                                   : "text-white hover:bg-slate-700 hover:text-white"
                               }`}
                             >
@@ -156,7 +156,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                   to={item.path}
                   onClick={handleLinkClick}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                    isActive ? "bg-blue-400 text-white" : "text-white hover:bg-blue-700 hover:text-white"
+                    isActive ? "bg-green-600 text-white" : "text-white hover:bg-slate-400 hover:text-white"
                   }`}
                 >
                   <Icon className="w-5 h-5" />

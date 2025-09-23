@@ -74,7 +74,7 @@ const Footer = () => {
 
           {/* Redes sociales y politicas */}
           <div className="md:col-span-1">
-            <h4 className="font-semibold text-lg mb-4">Síguenos</h4>
+            <h4 className="font-semibold text-lg mb-4">Seguinos</h4>
             <div className="flex gap-4 mb-6">
               <a
                 href="https://www.facebook.com/catamarcatucapital"
