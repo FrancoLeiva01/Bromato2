@@ -391,14 +391,14 @@ const Notifications: React.FC = () => {
         {totalPages > 1 && (
           <div className="px-6 py-4 border-t border-gray-200">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-3">
                 <button
                   onClick={handlePreviousPage}
                   disabled={currentPage === 1}
                   className={`flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                     currentPage === 1
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-blue-900 text-white hover:bg-blue-800"
                   }`}
                 >
                   <ChevronLeft className="w-4 h-4 mr-1" />

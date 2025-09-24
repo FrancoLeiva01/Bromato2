@@ -11,7 +11,6 @@ interface TutorialModalProps {
 
 const TutorialModal: React.FC<TutorialModalProps> = ({ isVisible, onClose }) => {
   const [currentStep, setCurrentStep] = useState(0)
-  const [selectedPersonType, setSelectedPersonType] = useState("")
   const [completedSteps, setCompletedSteps] = useState<boolean[]>([false, false, false])
 
   if (!isVisible) return null
@@ -32,7 +31,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ isVisible, onClose }) => 
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                 <span className="text-blue-600 font-semibold">?</span>
               </div>
-              <span className="font-medium text-gray-900">¿Cómo creo Notificaciones??</span>
+              <span className="font-medium text-gray-900">Como creo Notificaciones?</span>
             </div>
           </div>
 
@@ -62,30 +61,22 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ isVisible, onClose }) => 
         <div className="space-y-4">
           <div className="space-y-3">
             <div
-              className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                selectedPersonType === "humana" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
-              }`}
+              className= "p-4 border rounded-lg cursor-pointer transition-colors"
               onClick={() => {
-                setSelectedPersonType("humana")
                 markStepComplete(1)
               }}
             >
               <div className="flex items-center space-x-3">
                 <FileCheck className="w-10 h-6 text-gray-600" />
                 <div>
-                  <h5 className="font-semibold text-gray-900">Para crear Actas de Inspección tienes que hacerlo desde la tabla de comercios</h5>
+                  <h5 className="font-semibold text-gray-900">Para crear Actas de Inspección tienes que hacerlo desde la Tabla de Comercios</h5>
                 </div>
               </div>
             </div>
 
             <div
-              className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                selectedPersonType === "juridica"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
+              className="p-4 border rounded-lg cursor-pointer transition-colors"
               onClick={() => {
-                setSelectedPersonType("juridica")
                 markStepComplete(1)
               }}
             >
@@ -129,7 +120,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ isVisible, onClose }) => 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+        <div className="sticky top-0 bg-green-400 border-b border-gray-200 p-6 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Guía rápida</h2>
           </div>
@@ -138,7 +129,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ isVisible, onClose }) => 
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-6 bg-gray-100">
           <div className="mb-6">
             <h3 className="text-xl font-bold text-gray-900 mb-2">Guía Rápida del Sistema</h3>
             <p className="text-gray-600">Resuelve tus dudas sobre los procesos de la pagina municipal de Bromatologia</p>
