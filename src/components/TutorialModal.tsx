@@ -109,7 +109,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({ isVisible, onClose }) => 
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
             <div className="flex items-center space-x-3">
               <FileText className="w-10 h-6 text-gray-600" />
-              <span className="font-medium text-gray-900">Para crear comercios tienes que hacerlo desde la pestaña precargados , seleccionando la pestaña comercios y dando al boton "Nuevo Comercio"</span>
+              <span className="font-medium text-gray-900">Para crear comercios tienes que hacerlo desde la pestaña Pre-cargados , seleccionando la pestaña Comercios y dando al boton "Nuevo Comercio"</span>
             </div>
           </div>
         </div>
