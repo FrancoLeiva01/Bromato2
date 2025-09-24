@@ -13,6 +13,7 @@ import Rubros from "./components/Rubros"
 import Comercios from "./components/Comercios"
 import Inspectores from "./components/Inspectores"
 import Register from "./components/Register"
+import MapComponent from "./components/MapComponent"
 
 function App() {
   return (
@@ -108,6 +109,16 @@ function App() {
             //<ProtectedRoute>
               <Layout>
                 <Inspectores />
+              </Layout>
+            //</ProtectedRoute>
+          }
+        />
+         <Route
+          path="/mapa"
+          element={
+            //<ProtectedRoute>
+              <Layout>
+                <MapComponent />
               </Layout>
             //</ProtectedRoute>
           }

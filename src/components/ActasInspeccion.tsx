@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { FileCheck, Search, Filter, ChevronLeft, ChevronRight, Eye } from "lucide-react"
+import { Search, ChevronLeft, ChevronRight, Eye } from "lucide-react"
 
 const ActasInspeccion: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)

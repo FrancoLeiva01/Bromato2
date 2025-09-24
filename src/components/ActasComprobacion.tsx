@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { ClipboardCheck, Search, Plus, Filter, ChevronLeft, ChevronRight, Eye } from "lucide-react"
+import { ClipboardCheck, ChevronLeft, ChevronRight, Eye } from "lucide-react"
 
 const ActasComprobacion: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)

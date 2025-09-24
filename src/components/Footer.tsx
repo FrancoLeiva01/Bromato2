@@ -1,11 +1,21 @@
-import { Facebook, Instagram, Youtube, Twitter } from "lucide-react"
+"use client"
+
+import { Facebook, Instagram, Youtube, MapPin, Twitter } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 import logoMunicipalidad from "../assets/logo-municipalidad.png"
+
 const Footer = () => {
+  const navigate = useNavigate()
+
+  const handleMapClick = () => {
+    navigate("/mapa")
+  }
+
   return (
     <footer className="bg-gradient-to-r from-slate-700 to-slate-900 text-white mt-auto">
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo */}
+           {/* Logo */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <div className="flex items-center space-x-3">
@@ -21,7 +31,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Sobre nosotros */}
+          {/* Enlaces institucionales */}
           <div className="md:col-span-1">
             <h4 className="font-semibold text-lg mb-4">Institucional</h4>
             <ul className="space-y-2">
@@ -32,7 +42,7 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-green-100 hover:text-white transition-colors duration-200 text-sm">
-                  Nuestra Mision
+                  Misión y visión
                 </a>
               </li>
               <li>
@@ -41,11 +51,14 @@ const Footer = () => {
                 </a>
               </li>
               <li>
+                <a href="#" className="text-green-100 hover:text-white transition-colors duration-200 text-sm">
+                  Transparencia
+                </a>
               </li>
             </ul>
           </div>
 
-          {/* Enlaces de interes */}
+          {/* Enlaces de servicios */}
           <div className="md:col-span-1">
             <h4 className="font-semibold text-lg mb-4">Servicios</h4>
             <ul className="space-y-2">
@@ -56,7 +69,7 @@ const Footer = () => {
               </li>
               <li>
                 <a href="#" className="text-green-100 hover:text-white transition-colors duration-200 text-sm">
-                  Ayuda
+                  Mesa de ayuda
                 </a>
               </li>
               <li>
@@ -68,6 +81,15 @@ const Footer = () => {
                 <a href="#" className="text-green-100 hover:text-white transition-colors duration-200 text-sm">
                   Denuncias
                 </a>
+              </li>
+              <li>
+                <button
+                  onClick={handleMapClick}
+                  className="flex items-center gap-2 text-green-100 hover:text-white transition-colors duration-200 text-sm bg-transparent border-none cursor-pointer p-0"
+                >
+                  <MapPin size={16} />
+                  Soy el mapa soy el mapa, soy el mapa soy el mmmmmaapaaaa
+                </button>
               </li>
             </ul>
           </div>
@@ -124,6 +146,7 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Línea divisoria y copyright */}
         <div className="border-t border-green-700 mt-8 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-green-100 text-sm">
