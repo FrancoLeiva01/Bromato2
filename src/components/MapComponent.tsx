@@ -82,13 +82,13 @@ const MapComponent: React.FC = () => {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-gray-400 shadow-sm border-b border-gray-500 p-4 rounded-lg">
+      <div className="bg-gray-400 shadow-sm border-b border-gray-500 p-4 rounded-lg mt-0.5">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
-            <MapPin className="text-green-600" size={24} />
+            <MapPin className="text-red-500" size={30} />
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Mapa de Ubicaciones</h1>
-              <p className="text-gray-600 text-sm">Haz clic en el mapa para agregar una nueva ubicación</p>
+              <p className="text-gray-600 text-sm">Haz click en el Mapa para agregar una Nueva Ubicación</p>
             </div>
           </div>
         </div>
