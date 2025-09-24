@@ -88,7 +88,7 @@ const Footer = () => {
                   className="flex items-center gap-2 text-green-100 hover:text-white transition-colors duration-200 text-sm bg-transparent border-none cursor-pointer p-0"
                 >
                   <MapPin size={16} />
-                  Soy el mapa soy el mapa, soy el mapa soy el mmmmmaapaaaa
+                  Mapa Mapin Mapita
                 </button>
               </li>
             </ul>
