@@ -61,36 +61,30 @@ const ActasInspeccion: React.FC = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-3">
-          <FileCheck className="w-8 h-8 text-blue-600" />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Actas de Inspección</h1>
-            <p className="text-gray-600">Gestión de actas de inspecciones bromatologicas</p>
-          </div>
+    <div className=" bg-slate-700 p-6 rounded-lg ">
+   <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0 pb-5">
+        <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+         <div className="flex items-center space-x-3">
+          <Search className="w-8 h-8 text-blue-600" />
+          <h1 className="text-2xl font-bold text-white">Actas de Inspeccion</h1>
+        </div>
+          <select
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
+          >
+            <option value="Filtros">Filtros</option>
+            <option value="Todos">N° de Acta</option>
+            <option value="Nombre">Turno</option>
+            <option value="Riesgo">Nombre de Fantasia Comercio</option>
+            <option value="Riesgo">Razon Social Comercio</option>
+          </select>
+          <button
+            className="flex items-center px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-400 transition-colors"
+
+          >
+            Buscar
+          </button>
         </div>
       </div>
-
-      <div className="bg-slate-600 rounded-lg shadow-sm border border-gray-200">
-        <div className="p-4 border-b border-gray-200">
-          <div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0">
-            <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-y-0 md:space-x-4">
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Buscar actas..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-              <button className="flex items-center justify-center space-x-2 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-500 text-white">
-                <Filter className="w-4 h-4" />
-                <span>Filtros</span>
-              </button>
-            </div>
-          </div>
-        </div>
 
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -200,7 +194,7 @@ const ActasInspeccion: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+
   )
 }
 

@@ -64,9 +64,9 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
             onClick={handleNotificationsClick}
             className="p-2 text-white hover:text-gray-900 hover:bg-red-300 rounded-lg transition-colors relative flex-shrink-0"
           >
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-              3
+            <Bell className="w-8 h-5" />
+            <span className="absolute -top-1 -right-1 bg-red-400 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              !
             </span>
           </button>
 
