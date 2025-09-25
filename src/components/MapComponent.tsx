@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet"
 import type { LatLngExpression } from "leaflet"
 import { MapPin, Trash2, Save } from "lucide-react"
@@ -38,15 +38,61 @@ function MapClickHandler({ onMapClick }: { onMapClick: (latlng: LatLngExpression
 }
 
 const MapComponent: React.FC = () => {
-  // Coordenadas de catamarca
+  // Catamarca COORDENADAS
   const defaultCenter: LatLngExpression = [-28.4696, -65.7852]
-  const [markers, setMarkers] = useState<MarkerData[]>([])
+  const [markers, setMarkers] = useState<MarkerData[]>(() => {
+  try {
+    const saved = localStorage.getItem("mapMarkers")
+    return saved ? JSON.parse(saved) : []
+  } catch {
+    return []
+  }
+})
+
   const [selectedPosition, setSelectedPosition] = useState<LatLngExpression | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     title: "",
     description: "",
   })
+
+  useEffect(() => {
+    const loadMarkersFromStorage = () => {
+      try {
+        console.log("Loading markers from localStorage...")
+        const savedMarkers = localStorage.getItem("mapMarkers")
+        console.log("Raw data from localStorage:", savedMarkers)
+
+        if (savedMarkers) {
+          const parsedMarkers = JSON.parse(savedMarkers)
+          console.log("Parsed markers:", parsedMarkers)
+          setMarkers(parsedMarkers)
+          console.log("Markers loaded successfully:", parsedMarkers.length, "markers")
+        } else {
+          console.log("No saved markers found in localStorage")
+        }
+      } catch (error) {
+        console.error("Error loading markers from localStorage:", error)
+      }
+    }
+
+    loadMarkersFromStorage()
+  }, [])
+
+  useEffect(() => {
+    try {
+      console.log("[v0] Saving markers to localStorage:", markers.length, "markers")
+      console.log("[v0] Markers data:", markers)
+      localStorage.setItem("mapMarkers", JSON.stringify(markers))
+      console.log("[v0] Markers saved successfully to localStorage")
+
+      // Verify the save worked
+      const verification = localStorage.getItem("mapMarkers")
+      console.log("[v0] Verification - data in localStorage:", verification)
+    } catch (error) {
+      console.error("[v0] Error saving markers to localStorage:", error)
+    }
+  }, [markers])
 
   const handleMapClick = useCallback((position: LatLngExpression) => {
     setSelectedPosition(position)
@@ -56,21 +102,44 @@ const MapComponent: React.FC = () => {
 
   const handleSaveMarker = () => {
     if (selectedPosition && formData.title.trim()) {
+      console.log("[v0] Creating new marker with data:", {
+        position: selectedPosition,
+        title: formData.title,
+        description: formData.description,
+      })
+
       const newMarker: MarkerData = {
         id: Date.now().toString(),
         position: selectedPosition,
         title: formData.title,
         description: formData.description,
       }
-      setMarkers((prev) => [...prev, newMarker])
+
+      console.log("[v0] New marker created:", newMarker)
+      setMarkers((prev) => {
+        const updated = [...prev, newMarker]
+        console.log("[v0] Updated markers array:", updated)
+        return updated
+      })
+
       setShowForm(false)
       setSelectedPosition(null)
       setFormData({ title: "", description: "" })
+    } else {
+      console.log("[v0] Cannot save marker - missing data:", {
+        selectedPosition,
+        title: formData.title.trim(),
+      })
     }
   }
 
   const handleDeleteMarker = (id: string) => {
-    setMarkers((prev) => prev.filter((marker) => marker.id !== id))
+    console.log("[v0] Deleting marker with id:", id)
+    setMarkers((prev) => {
+      const updated = prev.filter((marker) => marker.id !== id)
+      console.log("[v0] Markers after deletion:", updated)
+      return updated
+    })
   }
 
   const handleCancelForm = () => {
@@ -82,13 +151,13 @@ const MapComponent: React.FC = () => {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-gray-400 shadow-sm border-b border-gray-500 p-4 rounded-lg mt-0.5">
+      <div className="bg-gray-400 shadow-sm border-b border-black p-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
             <MapPin className="text-red-500" size={30} />
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Mapa de Ubicaciones</h1>
-              <p className="text-gray-600 text-sm">Haz click en el Mapa para agregar una Nueva Ubicación</p>
+              <h1 className="text-2xl font-bold text-white">Mapa de Ubicaciones</h1>
+              <p className="text-gray-100 text-sm">Haz clic en el mapa para agregar una nueva ubicación</p>
             </div>
           </div>
         </div>
@@ -104,7 +173,7 @@ const MapComponent: React.FC = () => {
 
           <MapClickHandler onMapClick={handleMapClick} />
 
-          {/* markers */}
+          {/* Existing markers */}
           {markers.map((marker) => (
             <Marker key={marker.id} position={marker.position}>
               <Popup>
