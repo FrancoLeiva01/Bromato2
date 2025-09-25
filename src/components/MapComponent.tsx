@@ -38,7 +38,7 @@ function MapClickHandler({ onMapClick }: { onMapClick: (latlng: LatLngExpression
 }
 
 const MapComponent: React.FC = () => {
-  // Catamarca COORDENADAS
+  // Catamarca COORDENADAS y Guardado de pines
   const defaultCenter: LatLngExpression = [-28.4696, -65.7852]
   const [markers, setMarkers] = useState<MarkerData[]>(() => {
   try {
@@ -56,28 +56,28 @@ const MapComponent: React.FC = () => {
     description: "",
   })
 
-  useEffect(() => {
-    const loadMarkersFromStorage = () => {
-      try {
-        console.log("Loading markers from localStorage...")
-        const savedMarkers = localStorage.getItem("mapMarkers")
-        console.log("Raw data from localStorage:", savedMarkers)
+  // [useEffect(() => {
+  //   const loadMarkersFromStorage = () => {
+  //     try {
+  //       console.log("Loading markers from localStorage...")
+  //       const savedMarkers = localStorage.getItem("mapMarkers")
+  //       console.log("Raw data from localStorage:", savedMarkers)
 
-        if (savedMarkers) {
-          const parsedMarkers = JSON.parse(savedMarkers)
-          console.log("Parsed markers:", parsedMarkers)
-          setMarkers(parsedMarkers)
-          console.log("Markers loaded successfully:", parsedMarkers.length, "markers")
-        } else {
-          console.log("No saved markers found in localStorage")
-        }
-      } catch (error) {
-        console.error("Error loading markers from localStorage:", error)
-      }
-    }
+  //       if (savedMarkers) {
+  //         const parsedMarkers = JSON.parse(savedMarkers)
+  //         console.log("Parsed markers:", parsedMarkers)
+  //         setMarkers(parsedMarkers)
+  //         console.log("Markers loaded successfully:", parsedMarkers.length, "markers")
+  //       } else {
+  //         console.log("No saved markers found in localStorage")
+  //       }
+  //     } catch (error) {
+  //       console.error("Error loading markers from localStorage:", error)
+  //     }
+  //   }
 
-    loadMarkersFromStorage()
-  }, [])
+  //   loadMarkersFromStorage()
+  // }, [])]
 
   useEffect(() => {
     try {
