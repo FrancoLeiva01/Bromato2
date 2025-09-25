@@ -56,6 +56,9 @@ const MapComponent: React.FC = () => {
     description: "",
   })
 
+
+//UseEffect que no es necesario segun gpt
+
   // [useEffect(() => {
   //   const loadMarkersFromStorage = () => {
   //     try {
@@ -81,16 +84,16 @@ const MapComponent: React.FC = () => {
 
   useEffect(() => {
     try {
-      console.log("[v0] Saving markers to localStorage:", markers.length, "markers")
-      console.log("[v0] Markers data:", markers)
+      console.log("Saving markers to localStorage:", markers.length, "markers")
+      console.log("Markers data:", markers)
       localStorage.setItem("mapMarkers", JSON.stringify(markers))
-      console.log("[v0] Markers saved successfully to localStorage")
+      console.log("Markers saved successfully to localStorage")
 
       // Verify the save worked
       const verification = localStorage.getItem("mapMarkers")
-      console.log("[v0] Verification - data in localStorage:", verification)
+      console.log("Verification - data in localStorage:", verification)
     } catch (error) {
-      console.error("[v0] Error saving markers to localStorage:", error)
+      console.error("Error saving markers to localStorage:", error)
     }
   }, [markers])
 
@@ -157,7 +160,7 @@ const MapComponent: React.FC = () => {
             <MapPin className="text-red-500" size={30} />
             <div>
               <h1 className="text-2xl font-bold text-white">Mapa de Ubicaciones</h1>
-              <p className="text-gray-100 text-sm">Haz clic en el mapa para agregar una nueva ubicación</p>
+              <p className="text-gray-100 text-sm">Haz click en el mapa para agregar una Nueva Ubicación</p>
             </div>
           </div>
         </div>
@@ -179,10 +182,10 @@ const MapComponent: React.FC = () => {
               <Popup>
                 <div className="p-2 min-w-[200px]">
                   <h3 className="font-semibold text-gray-900 mb-1">{marker.title}</h3>
-                  {marker.description && <p className="text-gray-600 text-sm mb-3">{marker.description}</p>}
+                  {marker.description && <p className="text-black text-sm mb-3">{marker.description}</p>}
                   <button
                     onClick={() => handleDeleteMarker(marker.id)}
-                    className="flex items-center gap-1 text-red-600 hover:text-red-700 text-sm"
+                    className="flex items-center gap-1 text-red-600 hover:text-red-400 text-sm"
                   >
                     <Trash2 size={14} />
                     Eliminar
@@ -193,7 +196,7 @@ const MapComponent: React.FC = () => {
           ))}
 
           {/* Temporary marker for selected position */}
-          {selectedPosition && (
+          {/* {selectedPosition && (
             <Marker position={selectedPosition}>
               <Popup>
                 <div className="p-2">
@@ -201,7 +204,7 @@ const MapComponent: React.FC = () => {
                 </div>
               </Popup>
             </Marker>
-          )}
+          )} */}
         </MapContainer>
 
         {/* Form Modal */}
