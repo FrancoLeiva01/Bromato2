@@ -1,6 +1,6 @@
 import type React from "react"
 import { useState, useCallback, useEffect } from "react"
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet"
 import type { LatLngExpression } from "leaflet"
 import { MapPin, Trash2, Save } from "lucide-react"
 import "leaflet/dist/leaflet.css"
@@ -23,6 +23,14 @@ interface MarkerData {
   position: LatLngExpression
   title: string
   description: string
+}
+
+const FlyToMarker = ({ position }: { position: LatLngExpression | null }) => {
+  const map = useMap()
+  if (position) {
+    map.flyTo(position, 17)
+  }
+  return null
 }
 
 // Component to handle map clicks
@@ -53,32 +61,6 @@ const MapComponent: React.FC = () => {
     title: "",
     description: "",
   })
-
-
-//UseEffect que no es necesario segun gpt
-
-  // [useEffect(() => {
-  //   const loadMarkersFromStorage = () => {
-  //     try {
-  //       console.log("Loading markers from localStorage...")
-  //       const savedMarkers = localStorage.getItem("mapMarkers")
-  //       console.log("Raw data from localStorage:", savedMarkers)
-
-  //       if (savedMarkers) {
-  //         const parsedMarkers = JSON.parse(savedMarkers)
-  //         console.log("Parsed markers:", parsedMarkers)
-  //         setMarkers(parsedMarkers)
-  //         console.log("Markers loaded successfully:", parsedMarkers.length, "markers")
-  //       } else {
-  //         console.log("No saved markers found in localStorage")
-  //       }
-  //     } catch (error) {
-  //       console.error("Error loading markers from localStorage:", error)
-  //     }
-  //   }
-
-  //   loadMarkersFromStorage()
-  // }, [])]
 
   useEffect(() => {
     try {
@@ -149,6 +131,14 @@ const MapComponent: React.FC = () => {
     setFormData({ title: "", description: "" })
   }
 
+const [query, setQuery] = useState("")
+const [selectedMarker, setSelectedMarker] = useState<MarkerData | null>(null)
+
+const filtered = markers.filter((m) =>
+  m.title.toLowerCase().includes(query.toLowerCase())
+)
+
+
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
@@ -160,13 +150,47 @@ const MapComponent: React.FC = () => {
               <h1 className="text-2xl font-bold text-white">Mapa de Ubicaciones</h1>
               <p className="text-gray-200 text-sm">Haz click en el mapa para agregar una Nueva Ubicación</p>
             </div>
+{/* Buscador */}
+<div className="p-4 bg-gray-300 shadow rounded-lg max-w-md mx-auto mt-4">
+  <input
+    type="text"
+    placeholder="Buscar ubicación..."
+    className="p-2 border rounded w-full mb-2"
+    value={query}
+    onChange={(e) => setQuery(e.target.value)}
+  />
+
+  {query && (
+    <ul className="border rounded max-h-40 overflow-y-auto bg-white">
+      {filtered.length > 0 ? (
+        filtered.map((m) => (
+          <li
+            key={m.id}
+            className="p-2 hover:bg-gray-100 cursor-pointer"
+            onClick={() => {
+              setSelectedMarker(m)
+              setQuery(m.title) // opcional
+            }}
+          >
+            {m.title}
+          </li>
+        ))
+      ) : (
+        <li className="p-2 text-gray-500">No se encontraron resultados</li>
+      )}
+    </ul>
+  )}
+</div>
           </div>
         </div>
       </div>
 
+
+
+
       {/* Map Container */}
       <div className="flex-1 relative">
-        <MapContainer center={defaultCenter} zoom={13} className="h-full w-full" zoomControl={true}>
+        <MapContainer center={defaultCenter} zoom={13} className="h-full w-full" zoomControl={false}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -203,6 +227,11 @@ const MapComponent: React.FC = () => {
               </Popup>
             </Marker>
           )} */}
+
+{selectedMarker && <FlyToMarker position={selectedMarker.position} />}
+
+
+
         </MapContainer>
 
         {/* Form Modal */}

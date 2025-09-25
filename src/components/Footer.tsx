@@ -50,11 +50,6 @@ const Footer = () => {
                   Autoridades
                 </a>
               </li>
-              <li>
-                <a href="#" className="text-green-100 hover:text-white transition-colors duration-200 text-sm">
-                  Transparencia
-                </a>
-              </li>
             </ul>
           </div>
 
