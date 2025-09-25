@@ -4,12 +4,13 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from "re
 import type { LatLngExpression } from "leaflet"
 import { MapPin, Trash2, Save } from "lucide-react"
 import "leaflet/dist/leaflet.css"
-
-// Fix for default markers in react-leaflet
 import L from "leaflet"
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
 import markerRetina from "leaflet/dist/images/marker-icon-2x.png"
+
+
+
 
 delete (L.Icon.Default.prototype as any)._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -28,7 +29,7 @@ interface MarkerData {
 const FlyToMarker = ({ position }: { position: LatLngExpression | null }) => {
   const map = useMap()
   if (position) {
-    map.flyTo(position, 17)
+    map.flyTo(position, 16)
   }
   return null
 }
@@ -139,6 +140,7 @@ const filtered = markers.filter((m) =>
 )
 
 
+
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
@@ -150,12 +152,15 @@ const filtered = markers.filter((m) =>
               <h1 className="text-2xl font-bold text-white">Mapa de Ubicaciones</h1>
               <p className="text-gray-200 text-sm">Haz click en el mapa para agregar una Nueva Ubicación</p>
             </div>
+
+
+
 {/* Buscador */}
 <div className="p-4 bg-gray-300 shadow rounded-lg max-w-md mx-auto mt-4">
   <input
     type="text"
     placeholder="Buscar ubicación..."
-    className="p-2 border rounded w-full mb-2"
+    className="p-2 border rounded w-full mb-1"
     value={query}
     onChange={(e) => setQuery(e.target.value)}
   />
@@ -181,6 +186,7 @@ const filtered = markers.filter((m) =>
     </ul>
   )}
 </div>
+
           </div>
         </div>
       </div>
@@ -190,7 +196,7 @@ const filtered = markers.filter((m) =>
 
       {/* Map Container */}
       <div className="flex-1 relative">
-        <MapContainer center={defaultCenter} zoom={13} className="h-full w-full" zoomControl={false}>
+        <MapContainer center={defaultCenter} zoom={13} className="h-full w-full z-0" zoomControl={false}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -287,7 +293,7 @@ const filtered = markers.filter((m) =>
 
         {/* Markers Counter */}
         {markers.length > 0 && (
-          <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 z-[999]">
+          <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 z-0">
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <MapPin size={16} className="text-green-600" />
               <span>
