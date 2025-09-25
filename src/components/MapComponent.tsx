@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState, useCallback, useEffect } from "react"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet"
@@ -154,13 +152,13 @@ const MapComponent: React.FC = () => {
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-gray-400 shadow-sm border-b border-black p-4">
+      <div className="bg-gray-400 shadow-sm rounded-lg border-black p-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
+          <div className="flex justify-center items-center gap-3">
             <MapPin className="text-red-500" size={30} />
             <div>
               <h1 className="text-2xl font-bold text-white">Mapa de Ubicaciones</h1>
-              <p className="text-gray-100 text-sm">Haz click en el mapa para agregar una Nueva Ubicación</p>
+              <p className="text-gray-200 text-sm">Haz click en el mapa para agregar una Nueva Ubicación</p>
             </div>
           </div>
         </div>
