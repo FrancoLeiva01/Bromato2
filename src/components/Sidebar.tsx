@@ -1,4 +1,3 @@
-"use client"
 
 import type React from "react"
 import { useState } from "react"
@@ -15,6 +14,7 @@ import {
   UserCheck,
   FolderOpen,
   X,
+  Users
 } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
@@ -51,6 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         { icon: ClipboardCheck, label: "Actas de comprobación", path: "/actas-comprobacion" },
       ],
     },
+    { icon: Users, label: "Usuarios", path: "/usuarios" },
   ]
 
   const handleDocumentosClick = () => {

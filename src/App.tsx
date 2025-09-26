@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import Layout from "./layouts/Layout"
 import Calendar from "./components/Calendar"
 import Login from "./modules/Auth/views/Login"
-//import ProtectedRoute from "./components/ProtectedRoute"
+import ProtectedRoute from "./components/ProtectedRoute"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "./index.css"
@@ -14,6 +14,7 @@ import Comercios from "./components/Comercios"
 import Inspectores from "./components/Inspectores"
 import Register from "./components/Register"
 import MapComponent from "./components/MapComponent"
+import Usuarios from "./components/Usuarios"
 
 function App() {
   return (
@@ -123,6 +124,16 @@ function App() {
             //</ProtectedRoute>
           }
         />
+         <Route 
+        path="/usuarios" 
+        element={
+          //<ProtectedRoute requiredRole="administrador">
+            <Layout>
+            <Usuarios />
+            </Layout>
+          //</ProtectedRoute>
+        } 
+      />
         <Route path="/" element={<Navigate to="/home" replace />} />
       </Routes>
     </>

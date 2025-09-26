@@ -1,10 +1,9 @@
-"use client"
-
 import type React from "react"
 import { Bell, HelpCircle, User, LogOut, ChevronDown, Menu } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { getCurrentUser, User as UserType } from "../utils/auth"
 
 interface NavbarProps {
   onTutorialClick?: () => void
@@ -15,6 +14,12 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSidebarOpen }) => {
   const navigate = useNavigate()
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [currentUser, setCurrentUser] = useState<UserType | null>(null)
+
+  useEffect(() => {
+    const user = getCurrentUser()
+    setCurrentUser(user)
+  }, [])
 
   const handleTutorialClick = () => {
     if (onTutorialClick) {
@@ -24,6 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated")
+    localStorage.removeItem("currentUser")
     toast.success("Sesión cerrada correctamente")
     navigate("/login")
   }
@@ -33,6 +39,26 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
     navigate("/notifications")
     console.log("[v0] Navigate ejecutado")
   }
+
+  const getRoleDisplayName = (role: string) => {
+    const roleNames = {
+      'administrador': 'ADMIN',
+      'moderador': 'MOD',
+      'usuario': 'USER'
+    };
+    return roleNames[role as keyof typeof roleNames] || 'USER';
+  };
+
+  const getRoleColor = (role: string) => {
+    const roleColors = {
+      'administrador': 'text-red-600',
+      'moderador': 'text-blue-600',
+      'usuario': 'text-gray-600'
+    };
+    return roleColors[role as keyof typeof roleColors] || 'text-gray-600';
+  };
+
+  if (!currentUser) return null;
 
   return (
     <header className="bg-slate-800 shadow-[4px_0_10px_rgba(0,0,0,0.1)] shadow-gray-500 px-4 py-4">
@@ -76,15 +102,20 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
               className="flex items-center space-x-1 bg-gray-100 hover:bg-gray-200 px-2 py-2 rounded-lg transition-colors"
             >
               <User className="w-4 h-4 text-gray-600 flex-shrink-0" />
-              <span className="text-sm font-medium text-gray-900 hidden sm:inline">ADMIN</span>
+              <span className={`text-sm font-medium hidden sm:inline ${getRoleColor(currentUser.role)}`}>
+                {getRoleDisplayName(currentUser.role)}
+              </span>
               <ChevronDown className="w-4 h-4 text-gray-600 flex-shrink-0" />
             </button>
 
             {showUserMenu && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                 <div className="px-4 py-2 border-b border-gray-100">
-                  <p className="text-sm font-medium text-gray-900">Administrador</p>
-                  <p className="text-xs text-gray-500">admin@catamarca.gov.ar</p>
+                  <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
+                  <p className="text-xs text-gray-500">{currentUser.email}</p>
+                  <p className={`text-xs font-medium mt-1 ${getRoleColor(currentUser.role)}`}>
+                    {currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)}
+                  </p>
                 </div>
                 <button
                   onClick={handleLogout}

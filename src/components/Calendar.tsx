@@ -107,17 +107,17 @@ const Calendar: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-200 rounded-lg shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-gray-600 border border-gray-500">
+    <div className="bg-slate-500 rounded-lg shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-gray-600 border border-gray-500">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Calendario de Notificaciones</h2>
+          <h2 className="text-2xl font-bold text-white">Calendario de Notificaciones</h2>
 
           <div className="flex items-center space-x-2 rounded">
             <button
               onClick={() => navigateMonth("prev")}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-400 rounded-lg transition-colors"
             >
-              <ChevronLeft className="w-5 h-5 text-gray-600" />
+              <ChevronLeft className="w-5 h-5 text-white" />
             </button>
 
             <button
@@ -129,14 +129,14 @@ const Calendar: React.FC = () => {
 
             <button
               onClick={() => navigateMonth("next")}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-400 rounded-lg transition-colors"
             >
-              <ChevronRight className="w-5 h-5 text-gray-600" />
+              <ChevronRight className="w-5 h-5 text-white" />
             </button>
           </div>
         </div>
 
-        <h3 className="text-xl font-semibold text-gray-800 text-center">
+        <h3 className="text-xl font-semibold text-white text-center">
           {monthNames[currentDate.getMonth()]} de {currentDate.getFullYear()}
         </h3>
       </div>

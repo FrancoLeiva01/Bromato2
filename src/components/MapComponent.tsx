@@ -252,7 +252,7 @@ const filtered = markers.filter((m) =>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Título (*)</label>
                   <input
                     type="text"
                     value={formData.title}
