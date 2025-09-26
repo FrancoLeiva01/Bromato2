@@ -101,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
               onClick={() => setShowUserMenu(!showUserMenu)}
               className="flex items-center space-x-1 bg-gray-100 hover:bg-gray-200 px-2 py-2 rounded-lg transition-colors"
             >
-              <User className="w-4 h-4 text-gray-600 flex-shrink-0" />
+              <User className="w-4 h-4 text-black flex-shrink-0" />
               <span className={`text-sm font-medium hidden sm:inline ${getRoleColor(currentUser.role)}`}>
                 {getRoleDisplayName(currentUser.role)}
               </span>

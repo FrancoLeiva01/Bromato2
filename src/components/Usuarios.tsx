@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Edit, Trash2 } from 'lucide-react';
+import { Users, Edit, Trash2, Plus } from 'lucide-react';
 
 const UsuariosTable = () => {
   // Estados para filtros y paginación
@@ -123,7 +123,7 @@ const UsuariosTable = () => {
   const totalPages = Math.ceil(filteredUsuarios.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentUsuarios = filteredUsuarios.slice(startIndex, startIndex + itemsPerPage); 
-  
+
   const handleFilterChange = (value: string) => {
     setFilterType(value);
     setSearchTerm("");
@@ -216,6 +216,11 @@ const UsuariosTable = () => {
             Buscar
           </button>
         </div>
+         <button 
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2">
+          <Plus className="w-4 h-4" />
+          <span>Crear Usuario</span>
+        </button>
       </div>
 
       <div className="bg-slate-900 rounded-lg shadow overflow-hidden">
