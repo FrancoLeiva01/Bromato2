@@ -144,7 +144,7 @@ const filtered = markers.filter((m) =>
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-gray-400 shadow-sm rounded-lg border-black p-4">
+      <div className="bg-slate-800 shadow-sm rounded-lg border-black p-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center items-center gap-3">
             <MapPin className="text-red-500" size={30} />
@@ -156,7 +156,7 @@ const filtered = markers.filter((m) =>
 
 
 {/* Buscador */}
-<div className="p-4 bg-gray-300 shadow rounded-lg max-w-md mx-auto mt-4">
+<div className=" flex-auto p-4 bg-gray-300 shadow rounded-lg max-w-md mx-auto mt-4 mb-4">
   <div className="relative">
     <input
       type="text"
@@ -197,14 +197,9 @@ const filtered = markers.filter((m) =>
     </ul>
   )}
 </div>
-
-
           </div>
         </div>
       </div>
-
-
-
 
       {/* Map Container */}
       <div className="flex-1 relative">
@@ -246,10 +241,7 @@ const filtered = markers.filter((m) =>
             </Marker>
           )} */}
 
-{selectedMarker && <FlyToMarker position={selectedMarker.position} />}
-
-
-
+         {selectedMarker && <FlyToMarker position={selectedMarker.position} />}
         </MapContainer>
 
         {/* Form Modal */}
