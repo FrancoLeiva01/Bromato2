@@ -157,16 +157,27 @@ const filtered = markers.filter((m) =>
 
 {/* Buscador */}
 <div className="p-4 bg-gray-300 shadow rounded-lg max-w-md mx-auto mt-4">
-  <input
-    type="text"
-    placeholder="Buscar ubicación..."
-    className="p-2 border rounded w-full mb-1"
-    value={query}
-    onChange={(e) => setQuery(e.target.value)}
-  />
+  <div className="relative">
+    <input
+      type="text"
+      placeholder="Buscar ubicación..."
+      className="p-2 border rounded w-full pr-8" 
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
+    {query && (
+      <button
+        type="button"
+        onClick={() => setQuery("")}
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+      >
+        ✕
+      </button>
+    )}
+  </div>
 
   {query && (
-    <ul className="border rounded max-h-40 overflow-y-auto bg-white">
+    <ul className="border rounded max-h-40 overflow-y-auto bg-white mt-1">
       {filtered.length > 0 ? (
         filtered.map((m) => (
           <li
@@ -174,7 +185,7 @@ const filtered = markers.filter((m) =>
             className="p-2 hover:bg-gray-100 cursor-pointer"
             onClick={() => {
               setSelectedMarker(m)
-              setQuery(m.title) // opcional
+              setQuery(m.title)
             }}
           >
             {m.title}
@@ -186,6 +197,7 @@ const filtered = markers.filter((m) =>
     </ul>
   )}
 </div>
+
 
           </div>
         </div>

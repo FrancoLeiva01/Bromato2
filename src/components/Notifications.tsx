@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import {
   Bell,
@@ -483,8 +481,10 @@ const Notifications: React.FC = () => {
                 >
                   Limpiar
                 </button>
+                
               )}
             </div>
+            
           </div>
         </div>
 
