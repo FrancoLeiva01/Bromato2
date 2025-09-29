@@ -1,5 +1,6 @@
 import { Eye, EyeOff, User, Lock, Mail, Shield } from "lucide-react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 // import { useRegisterFormik } from "../formik/useRegisterFormik"
 
 interface RegisterValues {
@@ -15,6 +16,15 @@ const Register = () => {
   const [role, setRole] = useState("")
 
   // const useRegister = useRegisterFormik();
+
+  {/* navigate al login si ya tienes cuenta */}
+const navigate = useNavigate();
+const handleLoginClick = () => {
+    navigate("/login")
+    console.log("Navigate ejecutado")
+  }
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-500 via-blue-400 to-slate-800 flex items-center justify-center p-4 rounded-lg">
@@ -137,7 +147,7 @@ const Register = () => {
           </p>
 
           <button
-
+           onClick={handleLoginClick}
            className="w-full bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-4">
             ¿Ya tienes cuenta? Inicia sesión aquí
           </button>

@@ -35,9 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
   }
 
   const handleNotificationsClick = () => {
-    console.log("[v0] Campanita clickeada, navegando a /notifications")
     navigate("/notifications")
-    console.log("[v0] Navigate ejecutado")
   }
 
   const getRoleDisplayName = (role: string) => {

@@ -260,8 +260,8 @@ const UsuariosTable = () => {
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                         usuario.rol === "Administrador"
                           ? "bg-purple-100 text-purple-800"
-                          : usuario.rol === "Moderador"
-                            ? "bg-blue-100 text-blue-800"
+                          : usuario.rol === "Digitalizador"
+                            ? "bg-blue-100 text-blue-600"
                             : "bg-gray-100 text-gray-800"
                       }`}
                     >

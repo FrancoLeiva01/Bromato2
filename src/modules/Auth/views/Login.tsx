@@ -2,6 +2,7 @@
 import { Eye, EyeOff, User, Lock } from "lucide-react"
 import { useState } from "react"
 import { useLoginFormik } from "../formik/useLoginFormik"
+import { useNavigate } from "react-router-dom"
 
 interface LoginValues {
   email: string
@@ -13,6 +14,16 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
  
 const useLogin = useLoginFormik();
+
+
+{/* navigate al register sino tienes cuenta */}
+const navigate = useNavigate();
+const handleCreateClick = () => {
+    navigate("/register")
+    console.log("Navigate ejecutado")
+  }
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-500 via-blue-400 to-slate-800 flex items-center justify-center p-4 rounded-lg">
@@ -97,7 +108,10 @@ const useLogin = useLoginFormik();
             Email y contraseña proporcionados por el administrador
           </p>
 
-            <button className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-8">No tienes una cuenta? Creala aqui</button>
+            <button 
+            onClick={handleCreateClick}
+            className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-8">No tienes una cuenta? Creala aqui
+            </button>
 
         </div>
       </div>
