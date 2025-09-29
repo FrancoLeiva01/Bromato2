@@ -7,6 +7,7 @@ export interface User {
 
 export const getCurrentUser = (): User | null => {
   const userData = localStorage.getItem('currentUser');
+  
   if (userData) {
     return JSON.parse(userData);
   }

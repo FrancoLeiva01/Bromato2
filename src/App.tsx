@@ -1,11 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom"
-import Layout from "./layouts/Layout"
-import Calendar from "./components/Calendar"
-import Login from "./modules/Auth/views/Login"
-import ProtectedRoute from "./components/ProtectedRoute"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "./index.css"
+
+import Calendar from "./components/Calendar"
 import Notifications from "./components/Notifications"
 import ActasInspeccion from "./components/ActasInspeccion"
 import ActasComprobacion from "./components/ActasComprobacion"
@@ -15,6 +13,11 @@ import Inspectores from "./components/Inspectores"
 import Register from "./components/Register"
 import MapComponent from "./components/MapComponent"
 import Usuarios from "./components/Usuarios"
+
+import Login from "./modules/Auth/views/Login"
+import Layout from "./layouts/Layout"
+//import ProtectedRoute from "./components/ProtectedRoute"
+
 
 function App() {
   return (

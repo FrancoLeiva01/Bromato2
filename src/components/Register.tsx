@@ -1,7 +1,7 @@
 import { Eye, EyeOff, User, Lock, Mail, Shield } from "lucide-react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-// import { useRegisterFormik } from "../formik/useRegisterFormik"
+//import { useRegisterFormik } from "../formik/useRegisterFormik"
 
 interface RegisterValues {
   username: string
@@ -17,7 +17,7 @@ const Register = () => {
 
   // const useRegister = useRegisterFormik();
 
-  {/* navigate al login si ya tenes cuenta */}
+  {/*Navigate al Login*/}
 const navigate = useNavigate();
 const handleLoginClick = () => {
     navigate("/login")

@@ -37,7 +37,7 @@ apiClient.interceptors.response.use(
     return Promise.reject(error)
   },
 )
-export { apiClient}
+export { apiClient }
 export interface LoginCredentials {
   email: string
   password: string

@@ -11,19 +11,17 @@ interface LoginValues {
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
- 
-const useLogin = useLoginFormik();
+  const [isSubmitting, setIsSubmitting] = useState(false)  
+  
+  const useLogin = useLoginFormik();
 
 
-{/* navigate al register sino tenes cuenta */}
+{/* Navigate al Register*/}
 const navigate = useNavigate();
 const handleCreateClick = () => {
     navigate("/register")
     console.log("Navigate ejecutado")
   }
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-500 via-blue-400 to-slate-800 flex items-center justify-center p-4 rounded-lg">

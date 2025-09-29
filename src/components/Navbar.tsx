@@ -27,7 +27,6 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
     }
   }
   
-  
   const handleNotificationsClick = () => {
     navigate("/notifications")
   }
