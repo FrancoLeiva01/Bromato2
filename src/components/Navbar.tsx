@@ -15,29 +15,29 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
   const navigate = useNavigate()
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [currentUser, setCurrentUser] = useState<UserType | null>(null)
-
+  
   useEffect(() => {
     const user = getCurrentUser()
     setCurrentUser(user)
   }, [])
-
+  
   const handleTutorialClick = () => {
     if (onTutorialClick) {
       onTutorialClick()
     }
   }
-
+  
+  
+  const handleNotificationsClick = () => {
+    navigate("/notifications")
+  }
+  
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated")
     localStorage.removeItem("currentUser")
     toast.success("Sesión cerrada correctamente")
     navigate("/login")
   }
-
-  const handleNotificationsClick = () => {
-    navigate("/notifications")
-  }
-
   const getRoleDisplayName = (role: string) => {
     const roleNames = {
       'administrador': 'ADMIN',

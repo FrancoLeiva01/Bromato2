@@ -17,7 +17,7 @@ const Register = () => {
 
   // const useRegister = useRegisterFormik();
 
-  {/* navigate al login si ya tienes cuenta */}
+  {/* navigate al login si ya tenes cuenta */}
 const navigate = useNavigate();
 const handleLoginClick = () => {
     navigate("/login")

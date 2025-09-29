@@ -45,16 +45,6 @@ function App() {
         />
         <Route path="/register" element={<Register />} />
         <Route
-          path="/register"
-          element={
-            //<ProtectedRoute>
-              <Layout>
-                <Register />
-              </Layout>
-            //</ProtectedRoute>
-          }
-        />
-        <Route
           path="/notifications"
           element={
             //<ProtectedRoute>
