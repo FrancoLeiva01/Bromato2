@@ -10,7 +10,7 @@ const UsuariosTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Datos de ejemplo para usuarios
+  // Datos de ejemplo
   const usuarios = [
     { 
       id: 1, 

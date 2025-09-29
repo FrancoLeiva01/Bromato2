@@ -34,7 +34,7 @@ const FlyToMarker = ({ position }: { position: LatLngExpression | null }) => {
   return null
 }
 
-// Component to handle map clicks
+// Component map clicks
 function MapClickHandler({ onMapClick }: { onMapClick: (latlng: LatLngExpression) => void }) {
   useMapEvents({
     click: (e) => {
@@ -99,10 +99,10 @@ const MapComponent: React.FC = () => {
         description: formData.description,
       }
 
-      console.log("[v0] New marker created:", newMarker)
+      console.log("New marker created:", newMarker)
       setMarkers((prev) => {
         const updated = [...prev, newMarker]
-        console.log("[v0] Updated markers array:", updated)
+        console.log("Updated markers array:", updated)
         return updated
       })
 
@@ -110,7 +110,7 @@ const MapComponent: React.FC = () => {
       setSelectedPosition(null)
       setFormData({ title: "", description: "" })
     } else {
-      console.log("[v0] Cannot save marker - missing data:", {
+      console.log("Cannot save marker - missing data:", {
         selectedPosition,
         title: formData.title.trim(),
       })
@@ -118,10 +118,10 @@ const MapComponent: React.FC = () => {
   }
 
   const handleDeleteMarker = (id: string) => {
-    console.log("[v0] Deleting marker with id:", id)
+    console.log("Deleting marker with id:", id)
     setMarkers((prev) => {
       const updated = prev.filter((marker) => marker.id !== id)
-      console.log("[v0] Markers after deletion:", updated)
+      console.log("Markers after deletion:", updated)
       return updated
     })
   }

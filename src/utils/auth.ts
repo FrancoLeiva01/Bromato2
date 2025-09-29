@@ -10,7 +10,7 @@ export const getCurrentUser = (): User | null => {
   if (userData) {
     return JSON.parse(userData);
   }
-  // Datos por defecto para testing (puedes cambiarlos)
+  // Datos por defecto para testing 
   return {
     id: '1',
     name: 'ADMIN',
