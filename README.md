@@ -1,69 +1,33 @@
-# React + TypeScript + Vite
+STACK TECNOLOGICO
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Estructura base
+React + TypeScript → componentes tipados, código más mantenible.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React Router DOM → navegación entre secciones (Inicio, Documentos, Pre-cargados).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+React Query → manejo de datos globales y asincrónicos (caché de notificaciones, actas, etc.).
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+ Estilos y UI
+Tailwind CSS + Flowbite/DaisyUI → estilos modernos y rápidos de aplicar.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Lucide React → íconos limpios para sidebar, botones, notificaciones, etc.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Formularios y validaciones
+Formik → manejo de formularios (ej: carga de actas, precargados).
+
+
+Yup → validación de inputs (ej: fechas, números de expediente).
+
+
+ Notificaciones y feedback
+React Toastify → mostrar mensajes (éxito, error, advertencias).
+
+
+API y datos
+Axios → llamadas al backend (ej: traer notificaciones por mes, guardar cambios).
+------------------------------------------------------------------------
