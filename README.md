@@ -30,4 +30,4 @@ React Toastify → mostrar mensajes (éxito, error, advertencias).
 
 API y datos
 Axios → llamadas al backend (ej: traer notificaciones por mes, guardar cambios).
-------------------------------------------------------------------------
+
