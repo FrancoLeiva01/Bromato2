@@ -1,4 +1,3 @@
-import type React from "react"
 import { Bell, HelpCircle, User, LogOut, ChevronDown, Menu } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -32,11 +31,13 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
   }
   
   const handleLogout = () => {
+    console.log('asdds')
     localStorage.removeItem("isAuthenticated")
     localStorage.removeItem("currentUser")
-    toast.success("Sesión cerrada correctamente")
+    // toast.success("Sesión cerrada correctamente")
     navigate("/login")
-  }
+  }    
+
   const getRoleDisplayName = (role: string) => {
     const roleNames = {
       'administrador': 'ADMIN',
