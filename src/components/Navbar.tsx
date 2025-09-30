@@ -36,8 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
     localStorage.removeItem("currentUser")
     // toast.success("Sesión cerrada correctamente")
     navigate("/login")
-  }    
-
+  }
   const getRoleDisplayName = (role: string) => {
     const roleNames = {
       'administrador': 'ADMIN',
