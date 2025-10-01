@@ -199,7 +199,7 @@ const Comercios: React.FC = () => {
                 <th className="px-6 py-4 text-left text-sm font-bold text-white uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-orange-100">
+            <tbody className="bg-white divide-y">
               {currentComercios.length > 0 ? (
                 currentComercios.map((comercio, index) => (
                   <tr
@@ -254,7 +254,7 @@ const Comercios: React.FC = () => {
           </table>
         </div>
 
-        <div className="bg-white to-amber-50 px-6 py-4 border-t border-orange-200">
+        <div className="bg-white to-amber-50 px-6 py-4 border-t ">
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-3">
               <button

@@ -16,11 +16,16 @@ const Calendar: React.FC = () => {
 
   const events: CalendarEvent[] = [
     { id: "2025-3221", title: "2025-3221", date: 1, type: "notification" },
-    { id: "2025-3371", title: "2025-3371", date: 1, type: "notification" },
+    { id: "2025-3371", title: "2025-3371", date: 1, type: "inspection" },
     { id: "2025-3069", title: "2025-3069", date: 2, type: "notification" },
     { id: "2025-3183", title: "2025-3183", date: 2, type: "notification" },
     { id: "2025-3047", title: "2025-3047", date: 9, type: "notification" },
     { id: "2025-3161", title: "2025-3161", date: 10, type: "notification" },
+    { id: "2025-3161", title: "2025-3161", date: 15, type: "notification" },
+    { id: "2025-3161", title: "2025-3161", date: 15, type: "notification" },
+    { id: "2025-3161", title: "2025-3161", date: 15, type: "notification" },
+    { id: "2025-3161", title: "2025-3161", date: 30, type: "notification" },
+    { id: "2025-3161", title: "2025-3161", date: 20, type: "notification" },
   ]
 
   const monthNames = [
@@ -71,7 +76,7 @@ const Calendar: React.FC = () => {
 
     // Empty cells for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-24 border border-gray-200"></div>)
+      days.push(<div key={`empty-${i}`} className="h-24 border-gray-200"></div>)
     }
 
     // Days of the month
