@@ -1,6 +1,6 @@
 import { Bell, HelpCircle, User, LogOut, ChevronDown, Menu } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
+// import { toast } from "react-toastify"
 import { useState, useEffect } from "react"
 import { getCurrentUser, User as UserType } from "../utils/auth"
 
@@ -37,6 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
     // toast.success("Sesión cerrada correctamente")
     navigate("/login")
   }
+  
   const getRoleDisplayName = (role: string) => {
     const roleNames = {
       'administrador': 'ADMIN',

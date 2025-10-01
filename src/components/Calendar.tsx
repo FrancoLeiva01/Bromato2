@@ -1,4 +1,3 @@
-"use client"
 
 import type React from "react"
 import { useState } from "react"
@@ -12,7 +11,8 @@ interface CalendarEvent {
 }
 
 const Calendar: React.FC = () => {
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 8)) 
+ const [currentDate, setCurrentDate] = useState(new Date())
+
 
   const events: CalendarEvent[] = [
     { id: "2025-3221", title: "2025-3221", date: 1, type: "notification" },
