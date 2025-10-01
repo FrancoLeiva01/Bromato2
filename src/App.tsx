@@ -4,19 +4,19 @@ import "react-toastify/dist/ReactToastify.css"
 import "./index.css"
 
 import Calendar from "./components/Calendar"
-import Notifications from "./components/Notifications"
-import ActasInspeccion from "./components/ActasInspeccion"
-import ActasComprobacion from "./components/ActasComprobacion"
-import Rubros from "./components/Rubros"
-import Comercios from "./components/Comercios"
-import Inspectores from "./components/Inspectores"
-import Register from "./components/Register"
-import MapComponent from "./components/MapComponent"
-import Usuarios from "./components/Usuarios"
+import Notifications from "./pages/Notifications"
+import ActasInspeccion from "./pages/ActasInspeccion"
+import ActasComprobacion from "./pages/ActasComprobacion"
+import Rubros from "./pages/Rubros"
+import Comercios from "./pages/Comercios"
+import Inspectores from "./pages/Inspectores"
+import Register from "./pages/Register"
+import MapComponent from "./pages/MapComponent"
+import Usuarios from "./pages/Usuarios"
 
 import Login from "./modules/Auth/views/Login"
 import Layout from "./layouts/Layout"
-//import ProtectedRoute from "./components/ProtectedRoute"
+// import ProtectedRoute from "./components/ProtectedRoute"
 
 
 function App() {
@@ -120,11 +120,11 @@ function App() {
          <Route 
         path="/usuarios" 
         element={
-          //<ProtectedRoute requiredRole="administrador">
+          // <ProtectedRoute requiredRole="administrador">
             <Layout>
             <Usuarios />
             </Layout>
-          //</ProtectedRoute>
+          // </ProtectedRoute>
         } 
       />
         <Route path="/" element={<Navigate to="/home" replace />} />
