@@ -29,7 +29,7 @@ const Register = () => {
       className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center"
       style={{ backgroundImage: "url('/src/assets/bromato.png')" }}
     >
-      <div className="bg-slate-600 rounded-2xl shadow-2xl w-full max-w-md p-8 backdrop-blur-sm">
+      <div className="bg-slate-600 rounded-2xl shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600  w-full max-w-md p-8 backdrop-blur-sm">
         
         {/* Header */}
         <div className="text-center mb-8">

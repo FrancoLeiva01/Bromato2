@@ -5,3 +5,12 @@
 :root {
   --radius: 0.5rem; 
 }
+
+/* 🔹 Estilo global para que todo el fondo sea del mismo color */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #ee280e; /* ejemplo gris oscuro */
+  color: white; /* opcional, texto blanco */
+}

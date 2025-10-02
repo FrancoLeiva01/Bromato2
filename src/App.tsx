@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import "./index.css"
 
 import Calendar from "./components/Calendar"
 import Notifications from "./pages/Notifications"
@@ -13,11 +12,11 @@ import Inspectores from "./pages/Inspectores"
 import Register from "./pages/Register"
 import MapComponent from "./pages/MapComponent"
 import Usuarios from "./pages/Usuarios"
+import Header from "./components/Header"
 
 import Login from "./modules/Auth/views/Login"
 import Layout from "./layouts/Layout"
 // import ProtectedRoute from "./components/ProtectedRoute"
-
 
 function App() {
   return (
@@ -40,7 +39,8 @@ function App() {
           path="/home"
           element={
             //<ProtectedRoute>
-              <Layout>
+            <Layout>
+              <Header username="Franco" />
                 <Calendar />
               </Layout>
             //</ProtectedRoute>

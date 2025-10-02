@@ -142,11 +142,11 @@ const filtered = markers.filter((m) =>
 
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-gray-50 rounded-lg">
       {/* Header */}
       <div className="bg-slate-800 shadow-sm rounded-lg border-black p-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-center items-center gap-3">
+        <div className="max-w-7xl mx-auto ">
+          <div className="flex justify-center items-center gap-3 ">
             <MapPin className="text-red-500" size={40} />
             <div>
               <h1 className="text-2xl font-bold text-white">Mapa de Ubicaciones</h1>
@@ -202,7 +202,7 @@ const filtered = markers.filter((m) =>
       </div>
 
       {/* Map Container */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative ">
         <MapContainer center={defaultCenter} zoom={13} className="h-full w-full z-0" zoomControl={false}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
