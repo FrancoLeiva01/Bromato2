@@ -1,7 +1,7 @@
 import { Eye, EyeOff, User, Lock, Mail, Shield } from "lucide-react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-//import { useRegisterFormik } from "../formik/useRegisterFormik"
+// import { useRegisterFormik } from "../formik/useRegisterFormik"
 
 interface RegisterValues {
   username: string
@@ -17,36 +17,39 @@ const Register = () => {
 
   // const useRegister = useRegisterFormik();
 
-  {/*Navigate al Login*/}
-const navigate = useNavigate();
-const handleLoginClick = () => {
+  // Navigate al Login
+  const navigate = useNavigate();
+  const handleLoginClick = () => {
     navigate("/login")
     console.log("Navigate ejecutado")
   }
 
-
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-500 via-blue-400 to-slate-800 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center"
+      style={{ backgroundImage: "url('/src/assets/bromato.png')" }}
+    >
+      <div className="bg-slate-600 rounded-2xl shadow-2xl w-full max-w-md p-8 backdrop-blur-sm">
+        
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex flex-col items-center justify-center mb-8">
             <div className="flex items-center justify-center space-x-4 mb-4">
               <img src="/src/assets/logo-municipalidad.png" alt="Logo Municipalidad" className="h-24 w-24" />
               <div className="text-left">
-                <h2 className="font-bold text-3xl text-gray-800">Catamarca</h2>
-                <p className="text-xl text-slate-600">Capital</p>
+                <h2 className="font-bold text-3xl text-white">Catamarca</h2>
+                <p className="text-xl text-gray-200">Capital</p>
               </div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Registro - Bromatología</h1>
+          <h1 className="text-2xl font-bold text-white mb-2">Registro - Bromatología</h1>
           <p className="text-gray-600">Catamarca Capital</p>
         </div>
 
         <div className="space-y-6">
+          {/* Campo Usuario */}
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="username" className="block text-sm font-medium text-white mb-2">
               Nombre de Usuario
             </label>
             <div className="relative">
@@ -54,8 +57,6 @@ const handleLoginClick = () => {
               <input
                 type="text"
                 name="username"
-                // value={useRegister.values.username}
-                // onChange={useRegister.handleChange}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 placeholder="Ingrese su nombre de usuario"
               />
@@ -64,7 +65,7 @@ const handleLoginClick = () => {
 
           {/* Campo Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
               Email
             </label>
             <div className="relative">
@@ -72,8 +73,6 @@ const handleLoginClick = () => {
               <input
                 type="email"
                 name="email"
-                // value={useRegister.values.email}
-                // onChange={useRegister.handleChange}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 placeholder="usuario@ejemplo.com"
               />
@@ -82,7 +81,7 @@ const handleLoginClick = () => {
 
           {/* Campo Contraseña */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
               Contraseña
             </label>
             <div className="relative">
@@ -90,8 +89,6 @@ const handleLoginClick = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
-                // value={useRegister.values.password}
-                // onChange={useRegister.handleChange}
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                 placeholder="Ingrese su contraseña"
               />
@@ -107,7 +104,7 @@ const handleLoginClick = () => {
 
           {/* Campo Rol */}
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="role" className="block text-sm font-medium text-white mb-2">
               Rol
             </label>
             <div className="relative">
@@ -116,7 +113,7 @@ const handleLoginClick = () => {
                 name="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors appearance-none bg-white text-gray-400" 
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors appearance-none bg-white text-gray-600" 
               >
                 <option value="">Seleccione un rol</option>
                 <option value="administrador">Administrador</option>
@@ -126,8 +123,8 @@ const handleLoginClick = () => {
             </div>
           </div>
 
+          {/* Botón Submit */}
           <button
-            // onClick={() => useRegister.handleSubmit()}
             disabled={isSubmitting}
             className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
           >
@@ -139,7 +136,8 @@ const handleLoginClick = () => {
           </button>
         </div>
 
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+        {/* Info extra */}
+        <div className="mt-6 p-7 bg-gray-100 rounded-lg">
           <p className="text-xs text-gray-600 text-center">
             <strong>Crea tu cuenta del sistema</strong>
             <br />
@@ -147,8 +145,9 @@ const handleLoginClick = () => {
           </p>
 
           <button
-           onClick={handleLoginClick}
-           className="w-full bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-4">
+            onClick={handleLoginClick}
+            className="w-full bg-green-500 hover:bg-green-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-4"
+          >
             ¿Ya tienes cuenta? Inicia sesión aquí
           </button>
         </div>

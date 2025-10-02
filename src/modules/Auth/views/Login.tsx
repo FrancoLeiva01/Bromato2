@@ -1,4 +1,3 @@
-
 import { Eye, EyeOff, User, Lock } from "lucide-react"
 import { useState } from "react"
 import { useLoginFormik } from "../formik/useLoginFormik"
@@ -14,36 +13,40 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)  
   const useLogin = useLoginFormik();
 
-
-{/* Navigate al Register*/}
-const navigate = useNavigate();
-const handleCreateClick = () => {
+  // Navigate al Register
+  const navigate = useNavigate();
+  const handleCreateClick = () => {
     navigate("/register")
     console.log("Navigate ejecutado")
   }
 
   return (
-    <div className="min-h-screen  bg-[linear-gradient(140deg,blue_50%,gray_50%)] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center"
+      style={{ backgroundImage: "url('/src/assets/bromato.png')" }} // 👈 cambiá "mi-fondo.jpg" por tu imagen
+    >
+      {/* Fondo semitransparente para mejor contraste */}
+      <div className="bg-slate-600 rounded-2xl shadow-2xl w-full max-w-md p-8">
+        
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex flex-col items-center justify-center mb-8">
             <div className="flex items-center justify-center space-x-4 mb-4">
               <img src="/src/assets/logo-municipalidad.png" alt="Logo Municipalidad" className="h-24 w-24" />
               <div className="text-left">
-                <h2 className="font-bold text-3xl text-gray-800">Catamarca</h2>
-                <p className="text-xl text-slate-600">Capital</p>
+                <h2 className="font-bold text-3xl text-white">Catamarca</h2>
+                <p className="text-xl text-gray-200">Capital</p>
               </div>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Administración de Bromatología</h1>
-          <p className="text-gray-600">Catamarca Capital</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Administración de Bromatología</h1>
+          <p className="text-white">Catamarca Capital</p>
         </div>
 
         <div className="space-y-6">
           {/* Campo Usuario */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
               Email
             </label>
             <div className="relative">
@@ -61,11 +64,11 @@ const handleCreateClick = () => {
 
           {/* Campo Contraseña */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
               Contraseña
             </label>
             <div className="relative">
-              <Lock className = "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -83,6 +86,7 @@ const handleCreateClick = () => {
               </button>
             </div>
           </div>
+
           {/* Botón Submit */}
           <button
             onClick={() => useLogin.handleSubmit()}
@@ -98,18 +102,19 @@ const handleCreateClick = () => {
         </div>
 
         {/* Información de prueba */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+        <div className="mt-6 p-7 bg-gray-100 rounded-lg">
           <p className="text-xs text-gray-600 text-center">
             <strong>Usa tus credenciales del sistema</strong>
             <br />
             Email y contraseña proporcionados por el administrador
           </p>
 
-            <button 
+          <button 
             onClick={handleCreateClick}
-            className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-8">No tienes una cuenta? Creala aqui
-            </button>
-
+            className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-blue-400 text-white font-semibold py-2 px-2 rounded-lg transition-colors duration-200 flex items-center justify-center mt-8"
+          >
+            No tienes una cuenta? Creala aqui
+          </button>
         </div>
       </div>
     </div>

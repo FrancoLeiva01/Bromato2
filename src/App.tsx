@@ -124,7 +124,7 @@ function App() {
             <Layout>
             <Usuarios />
             </Layout>
-          // </ProtectedRoute>
+        //  </ProtectedRoute>
         } 
       />
         <Route path="/" element={<Navigate to="/home" replace />} />

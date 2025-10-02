@@ -29,7 +29,7 @@ interface MarkerData {
 const FlyToMarker = ({ position }: { position: LatLngExpression | null }) => {
   const map = useMap()
   if (position) {
-    map.flyTo(position, 16)
+    map.flyTo(position, 17)
   }
   return null
 }
@@ -147,7 +147,7 @@ const filtered = markers.filter((m) =>
       <div className="bg-slate-800 shadow-sm rounded-lg border-black p-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-center items-center gap-3">
-            <MapPin className="text-red-500" size={30} />
+            <MapPin className="text-red-500" size={40} />
             <div>
               <h1 className="text-2xl font-bold text-white">Mapa de Ubicaciones</h1>
               <p className="text-gray-200 text-sm">Haz click en el mapa para agregar una Nueva Ubicación</p>
@@ -156,7 +156,7 @@ const filtered = markers.filter((m) =>
 
 
 {/* Buscador */}
-<div className=" flex-auto p-4 bg-gray-300 shadow rounded-lg max-w-md mx-auto mt-4 mb-4">
+<div className=" flex-auto p-4 bg-slate-600 shadow rounded-lg max-w-md mx-auto mt-4 mb-4">
   <div className="relative">
     <input
       type="text"
@@ -169,7 +169,7 @@ const filtered = markers.filter((m) =>
       <button
         type="button"
         onClick={() => setQuery("")}
-        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+        className="absolute right-2 top-1/2 -translate-y-1/2 text-black hover:text-red-700"
       >
         ✕
       </button>
@@ -182,7 +182,7 @@ const filtered = markers.filter((m) =>
         filtered.map((m) => (
           <li
             key={m.id}
-            className="p-2 hover:bg-gray-100 cursor-pointer"
+            className="p-2 hover:bg-gray-200 cursor-pointer"
             onClick={() => {
               setSelectedMarker(m)
               setQuery(m.title)
@@ -216,13 +216,13 @@ const filtered = markers.filter((m) =>
             <Marker key={marker.id} position={marker.position}>
               <Popup>
                 <div className="p-2 min-w-[200px]">
-                  <h3 className="font-semibold text-gray-900 mb-1">{marker.title}</h3>
+                  <h3 className="font-semibold text-black mb-2">{marker.title}</h3>
                   {marker.description && <p className="text-black text-sm mb-3">{marker.description}</p>}
                   <button
                     onClick={() => handleDeleteMarker(marker.id)}
                     className="flex items-center gap-1 text-red-600 hover:text-red-400 text-sm"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={17} />
                     Eliminar
                   </button>
                 </div>
@@ -264,17 +264,19 @@ const filtered = markers.filter((m) =>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Descripción (Opcional)</label>
                   <textarea
                     value={formData.description}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="Descripción opcional..."
+                    onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))} 
+                    maxLength={200}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent break-words" //hace que las cadenas de texto largas hagan quiebre
+                    placeholder="Descripción..."
                     rows={3}
                   />
-                </div>
-              </div>
-
+                   {/* Contador caracteres */}
+                   <p className="text-xs text-gray-500 mt-1">
+                   {formData.description.length}/200
+                   </p>
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={handleSaveMarker}
@@ -291,8 +293,11 @@ const filtered = markers.filter((m) =>
                   Cancelar
                 </button>
               </div>
+</div>
+                </div>
+              </div>
+
             </div>
-          </div>
         )}
 
         {/* Markers Counter */}
@@ -301,7 +306,7 @@ const filtered = markers.filter((m) =>
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <MapPin size={16} className="text-green-600" />
               <span>
-                {markers.length} ubicación{markers.length !== 1 ? "es" : ""} marcada{markers.length !== 1 ? "s" : ""}
+                {markers.length} Ubicación{markers.length !== 1 ? "es" : ""} marcada{markers.length !== 1 ? "s" : ""}
               </span>
             </div>
           </div>
