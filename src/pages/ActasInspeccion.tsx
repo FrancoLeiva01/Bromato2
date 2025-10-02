@@ -108,7 +108,7 @@ const ActasInspeccion: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg">
+    <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
       {/* 🔹 Barra de filtros */}
       <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0 pb-5">
         <div className="flex items-center space-x-3">

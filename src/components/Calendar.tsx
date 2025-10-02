@@ -22,11 +22,6 @@ const Calendar: React.FC = () => {
     { id: "2025-3183", title: "2025-3183", date: 2, type: "notification" },
     { id: "2025-3047", title: "2025-3047", date: 9, type: "notification" },
     { id: "2025-3161", title: "2025-3161", date: 10, type: "notification" },
-    { id: "2025-3161", title: "2025-3161", date: 15, type: "notification" },
-    { id: "2025-3161", title: "2025-3161", date: 15, type: "notification" },
-    { id: "2025-3161", title: "2025-3161", date: 15, type: "notification" },
-    { id: "2025-3161", title: "2025-3161", date: 30, type: "notification" },
-    { id: "2025-3161", title: "2025-3161", date: 20, type: "notification" },
   ]
 
   const monthNames = [
@@ -113,7 +108,7 @@ const Calendar: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-500 rounded-lg shadow-[4px_0_6px_rgba(0,0,0,0.1)] shadow-gray-600 border border-gray-500">
+    <div className="bg-slate-500 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 border border-gray-500">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-white">Calendario de Notificaciones</h2>
