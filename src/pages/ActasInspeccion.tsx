@@ -9,7 +9,6 @@ const ActasInspeccion: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterField, setFilterField] = useState("Todos")
   const [filterTurno, setFilterTurno] = useState("Todos")
-
   const itemsPerPage = 10
 
   const actas = [
@@ -24,31 +23,9 @@ const ActasInspeccion: React.FC = () => {
       razonSocial: "Supermercado Catamarca SA",
       fantasia: "SuperCata",
     },
-    {
-      id: 2,
-      numero: "AI-2024-002",
-      denuncia: "-",
-      fecha: "2024-01-16",
-      turno: "Mañana",
-      cargado: "Completada",
-      numeroNotificacion: "Aprobada",
-      razonSocial: "Panadería El Sol",
-      fantasia: "PanSol",
-    },
-    {
-      id: 3,
-      numero: "AI-2024-003",
-      denuncia: "-",
-      fecha: "2024-01-17",
-      turno: "Finde",
-      cargado: "Completada",
-      numeroNotificacion: "Aprobada",
-      razonSocial: "Carnicería Los Hermanos",
-      fantasia: "CarneExpress",
-    },
-    ...Array.from({ length: 50 }, (_, i) => ({
-      id: i + 4,
-      numero: `AI-2024-${String(i + 4).padStart(3, "0")}`,
+    ...Array.from({ length: 52 }, (_, i) => ({
+      id: i + 2,
+      numero: `AI-2024-${String(i + 2).padStart(3, "0")}`,
       denuncia: "-",
       fecha: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
       turno: ["Tarde", "Mañana", "Finde", "Noche"][i % 4],
@@ -59,18 +36,10 @@ const ActasInspeccion: React.FC = () => {
     })),
   ]
 
-  // 🔹 Filtro principal
   const filteredActas = actas.filter((acta) => {
     const term = searchTerm.toLowerCase()
-
-    // Filtro por turno
-    if (filterTurno !== "Todos" && acta.turno !== filterTurno) {
-      return false
-    }
-
-    // Filtros de texto
+    if (filterTurno !== "Todos" && acta.turno !== filterTurno) return false
     if (!term.trim()) return true
-
     switch (filterField) {
       case "Todos":
         return (
@@ -96,72 +65,63 @@ const ActasInspeccion: React.FC = () => {
 
   const totalPages = Math.ceil(filteredActas.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const currentActas = filteredActas.slice(startIndex, endIndex)
+  const currentActas = filteredActas.slice(startIndex, startIndex + itemsPerPage)
 
-  const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1))
-  }
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-  }
+  const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1))
+  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages))
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
-      {/* 🔹 Barra de filtros */}
-      <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0 pb-5">
-        <div className="flex items-center space-x-3">
-          <Search className="w-8 h-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-white">Actas de Inspección</h1>
+    <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600">
+
+      {/* 🔹 Título centrado con ícono */}
+      <div className="mb-6">
+        <div className="bg-slate-800 p-4 rounded-lg flex justify-center items-center shadow-inner">
+          <Search className="w-8 h-8 text-blue-500 mr-2" />
+          <h1 className="text-3xl font-bold text-white text-center">Actas de Inspección</h1>
         </div>
+      </div>
 
-        {/* Selección de campo a filtrar */}
-        <select
-          className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-          value={filterField}
-          onChange={(e) => setFilterField(e.target.value)}
-        >
-          <option value="Todos">Todos</option>
-          <option value="Numero">N° de Acta</option>
-          <option value="Notificacion">Notificación</option>
-          <option value="RazonSocial">Razón Social Comercio</option>
-          <option value="Fantasia">Nombre de Fantasía</option>
-        </select>
+      {/* 🔹 Filtros */}
+      <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
+          <select
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
+            value={filterField}
+            onChange={(e) => setFilterField(e.target.value)}
+          >
+            <option value="Todos">Todos</option>
+            <option value="Numero">N° de Acta</option>
+            <option value="Notificacion">Notificación</option>
+            <option value="RazonSocial">Razón Social Comercio</option>
+            <option value="Fantasia">Nombre de Fantasía</option>
+          </select>
 
-        {/* Input de búsqueda */}
-        <input
-          type="text"
-          placeholder="Buscar..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value)
-            setCurrentPage(1)
-          }}
-          className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-        />
+          <input
+            type="text"
+            placeholder="Buscar..."
+            value={searchTerm}
+            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1) }}
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
+          />
 
-        {/* Filtro de turno con select */}
-        <select
-          className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-          value={filterTurno}
-          onChange={(e) => {
-            setFilterTurno(e.target.value)
-            setCurrentPage(1)
-          }}
-        >
-          <option value="Todos">Todos los turnos</option>
-          <option value="Mañana">Mañana</option>
-          <option value="Tarde">Tarde</option>
-          <option value="Noche">Noche</option>
-          <option value="Finde">Finde</option>
-        </select>
+          <select
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
+            value={filterTurno}
+            onChange={(e) => { setFilterTurno(e.target.value); setCurrentPage(1) }}
+          >
+            <option value="Todos">Todos los turnos</option>
+            <option value="Mañana">Mañana</option>
+            <option value="Tarde">Tarde</option>
+            <option value="Noche">Noche</option>
+            <option value="Finde">Finde</option>
+          </select>
+        </div>
       </div>
 
       {/* 🔹 Tabla */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-gray-200">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Número de Acta</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Denuncia</th>
@@ -174,7 +134,7 @@ const ActasInspeccion: React.FC = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Detalles</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200">
             {currentActas.map((acta) => (
               <tr key={acta.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 text-sm font-medium text-gray-900">{acta.numero}</td>
@@ -210,10 +170,7 @@ const ActasInspeccion: React.FC = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <button
-                    className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-lg"
-                    onClick={() => console.log(`Ver detalles del acta ${acta.numero}`)}
-                  >
+                  <button className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-lg">
                     <Eye className="w-4 h-4" />
                   </button>
                 </td>
@@ -224,34 +181,24 @@ const ActasInspeccion: React.FC = () => {
       </div>
 
       {/* 🔹 Paginación */}
-      <div className="px-6 py-4 border-t border-gray-200">
-        <div className="flex items-center justify-center space-x-2">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              currentPage === 1
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <span className="px-4 py-2 text-sm font-medium text-white">
-            Página {currentPage} de {totalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              currentPage === totalPages
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-blue-700 text-white hover:bg-blue-400"
-            }`}
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
+      <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-center space-x-2">
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded-lg text-sm font-medium ${currentPage === 1 ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <span className="px-4 py-2 text-sm font-medium text-gray-700">
+          Página {currentPage} de {totalPages}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className={`px-4 py-2 rounded-lg text-sm font-medium ${currentPage === totalPages ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-blue-700 text-white hover:bg-blue-400"}`}
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   )

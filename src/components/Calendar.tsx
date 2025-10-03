@@ -17,7 +17,7 @@ const Calendar: React.FC = () => {
 
   const events: CalendarEvent[] = [
     { id: "2025-3221", title: "2025-3221", date: 1, type: "notification" },
-    { id: "2025-3371", title: "2025-3371", date: 1, type: "inspection" },
+    { id: "2025-3371", title: "2025-3371", date: 1, type: "notification" },
     { id: "2025-3069", title: "2025-3069", date: 2, type: "notification" },
     { id: "2025-3183", title: "2025-3183", date: 2, type: "notification" },
     { id: "2025-3047", title: "2025-3047", date: 9, type: "notification" },
@@ -111,7 +111,7 @@ const Calendar: React.FC = () => {
     <div className="bg-slate-500 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 border border-gray-500">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-white">Calendario de Notificaciones</h2>
+          <h2 className="text-3xl font-bold text-white">Calendario de Notificaciones</h2>
 
           <div className="flex items-center space-x-2 rounded">
             <button

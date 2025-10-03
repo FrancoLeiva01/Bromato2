@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { UserCheck, Eye } from "lucide-react"
+import { UserCheck, Eye, Plus } from "lucide-react"
 
 interface Inspector {
   id: number
@@ -17,11 +17,10 @@ interface Inspector {
 const Inspectores: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
-
   const [filterType, setFilterType] = useState("")
   const [searchTerm, setSearchTerm] = useState("")
 
-  // Sample data
+  // Datos de ejemplo
   const inspectores: Inspector[] = [
     {
       id: 1,
@@ -41,83 +40,11 @@ const Inspectores: React.FC = () => {
       funcion: "Oeste",
       identificador: "46833456",
     },
-    {
-      id: 3,
-      nombre: "Inspector 3",
-      apellido: "Apellido 3",
-      email: "inspector3@catamarca.gov.ar",
-      activo: false,
-      funcion: "Sur",
-      identificador: "17738965",
-    },
-    {
-      id: 4,
-      nombre: "Inspector 4",
-      apellido: "Apellido 4",
-      email: "inspector4@catamarca.gov.ar",
-      activo: false,
-      funcion: "Norte",
-      identificador: "83031522",
-    },
-    {
-      id: 5,
-      nombre: "Inspector 5",
-      apellido: "Apellido 5",
-      email: "inspector5@catamarca.gov.ar",
-      activo: false,
-      funcion: "Oeste",
-      identificador: "90732665",
-    },
-    {
-      id: 6,
-      nombre: "Inspector 6",
-      apellido: "Apellido 6",
-      email: "inspector6@catamarca.gov.ar",
-      activo: true,
-      funcion: "Norte",
-      identificador: "53817754",
-    },
-    {
-      id: 7,
-      nombre: "Inspector 7",
-      apellido: "Apellido 7",
-      email: "inspector7@catamarca.gov.ar",
-      activo: false,
-      funcion: "Oeste",
-      identificador: "66667428",
-    },
-    {
-      id: 8,
-      nombre: "Inspector 8",
-      apellido: "Apellido 8",
-      email: "inspector8@catamarca.gov.ar",
-      activo: true,
-      funcion: "Oeste",
-      identificador: "61076714",
-    },
-    {
-      id: 9,
-      nombre: "Inspector 9",
-      apellido: "Apellido 9",
-      email: "inspector9@catamarca.gov.ar",
-      activo: false,
-      funcion: "Norte",
-      identificador: "39065578",
-    },
-    {
-      id: 10,
-      nombre: "Inspector 10",
-      apellido: "Apellido 10",
-      email: "inspector10@catamarca.gov.ar",
-      activo: true,
-      funcion: "Centro",
-      identificador: "79865787",
-    },
-    ...Array.from({ length: 24 }, (_, i) => ({
-      id: i + 11,
-      nombre: `Inspector ${i + 11}`,
-      apellido: `Apellido ${i + 11}`,
-      email: `inspector${i + 11}@catamarca.gov.ar`,
+    ...Array.from({ length: 32 }, (_, i) => ({
+      id: i + 3,
+      nombre: `Inspector ${i + 3}`,
+      apellido: `Apellido ${i + 3}`,
+      email: `inspector${i + 3}@catamarca.gov.ar`,
       activo: Math.random() > 0.5,
       funcion: ["Sur", "Norte", "Este", "Oeste", "Centro"][Math.floor(Math.random() * 5)],
       identificador: `${Math.floor(Math.random() * 90000000) + 10000000}`,
@@ -126,53 +53,37 @@ const Inspectores: React.FC = () => {
 
   const filteredInspectores = inspectores.filter((inspector) => {
     if (!filterType || !searchTerm) return true
-
-    switch (filterType) {
-      case "apellido":
-        return inspector.apellido.toLowerCase().includes(searchTerm.toLowerCase())
-      case "identificador":
-        return inspector.identificador.includes(searchTerm)
-      default:
-        return true
-    }
+    if (filterType === "apellido") return inspector.apellido.toLowerCase().includes(searchTerm.toLowerCase())
+    if (filterType === "identificador") return inspector.identificador.includes(searchTerm)
+    return true
   })
 
   const totalPages = Math.ceil(filteredInspectores.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const currentInspectores = filteredInspectores.slice(startIndex, startIndex + itemsPerPage)
 
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-  }
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  const handleSearch = () => {
-    setCurrentPage(1)
-  }
+  const handlePrevious = () => { if (currentPage > 1) setCurrentPage(currentPage - 1) }
+  const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1) }
+  const handleSearch = () => setCurrentPage(1)
 
   return (
-   <div className=" bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
-   <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0 pb-5">
-        <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0">
-         <div className="flex items-center space-x-3">
-          <UserCheck className="w-8 h-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-white">Inspectores</h1>
+    <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
+
+      {/* Titulo */}
+      <div className="mb-6">
+        <div className="bg-slate-800 rounded-lg p-4 flex justify-center items-center">
+          <UserCheck className="w-8 h-8 text-blue-500 mr-2" />
+          <h1 className="text-3xl font-bold text-white text-center">Inspectores</h1>
         </div>
+      </div>
+
+      {/* Filtros + boton nuevo inspector */}
+      <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
           <select
             className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
             value={filterType}
-            onChange={(e) => {
-              setFilterType(e.target.value)
-              setSearchTerm("")
-              setCurrentPage(1)
-            }}
+            onChange={(e) => { setFilterType(e.target.value); setSearchTerm(""); setCurrentPage(1) }}
           >
             <option value="">Filtros</option>
             <option value="apellido">Apellido</option>
@@ -196,35 +107,29 @@ const Inspectores: React.FC = () => {
             Buscar
           </button>
         </div>
+
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Nuevo Inspector</span>
+        </button>
       </div>
 
+      {/* Tabla */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-300">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Nombre
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Apellido
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Activo
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Funcion
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Identificador
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Detalles
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellido</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activo</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Funcion</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Identificador</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -236,11 +141,7 @@ const Inspectores: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.apellido}</td>
                     <td className="px-6 py-4 text-sm text-gray-900">{inspector.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          inspector.activo ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                        }`}
-                      >
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${inspector.activo ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                         {inspector.activo ? "Activo" : "Inactivo"}
                       </span>
                     </td>
@@ -264,31 +165,22 @@ const Inspectores: React.FC = () => {
           </table>
         </div>
 
+        {/* Paginación */}
         <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-2">
               <button
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${
-                  currentPage === 1
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
+                className={`px-4 py-2 text-sm font-medium rounded-md ${currentPage === 1 ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
               >
                 Anterior
               </button>
-              <span className="px-4 py-2 text-sm font-medium text-gray-700">
-                Página {currentPage} de {totalPages}
-              </span>
+              <span className="px-4 py-2 text-sm font-medium text-gray-700">Página {currentPage} de {totalPages}</span>
               <button
                 onClick={handleNext}
                 disabled={currentPage === totalPages}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${
-                  currentPage === totalPages
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-blue-700 text-white hover:bg-blue-400"
-                }`}
+                className={`px-4 py-2 text-sm font-medium rounded-md ${currentPage === totalPages ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-blue-700 text-white hover:bg-blue-400"}`}
               >
                 Siguiente
               </button>

@@ -59,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
   if (!currentUser) return null;
 
   return (
-    <header className="bg-slate-800 shadow-[4px_0_10px_rgba(0,0,0,0.1)] shadow-gray-500 px-4 py-4">
+    <header className="bg-slate-800 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 px-4 py-4">
       <div className="flex items-center justify-between max-w-full">
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           <button
