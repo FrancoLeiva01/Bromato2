@@ -1,6 +1,8 @@
+"use client"
+
 import type React from "react"
 import { useState } from "react"
-import { Tag, Edit, Trash2, Eye } from "lucide-react"
+import { Tag, Edit, Trash2, Eye, X } from "lucide-react"
 
 interface Rubro {
   id: number
@@ -14,6 +16,8 @@ const Rubros: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterType, setFilterType] = useState("Filtros")
   const [riskFilter, setRiskFilter] = useState("")
+  const [selectedRubro, setSelectedRubro] = useState<Rubro | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const itemsPerPage = 10
 
   const rubros: Rubro[] = Array.from({ length: 45 }, (_, i) => ({
@@ -66,9 +70,18 @@ const Rubros: React.FC = () => {
     }
   }
 
+  const handleViewDetails = (rubro: Rubro) => {
+    setSelectedRubro(rubro)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedRubro(null)
+  }
+
   return (
     <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 font">
-
       {/* Titulo*/}
       <div className="mb-6">
         <div className="bg-slate-800 rounded-lg p-4 flex items-center justify-center">
@@ -128,10 +141,18 @@ const Rubros: React.FC = () => {
             <thead className="bg-gray-300">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Riesgo</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prohibiciones</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Nombre
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Riesgo
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Prohibiciones
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Detalles
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -145,8 +166,8 @@ const Rubros: React.FC = () => {
                         rubro.riesgo === "Alto"
                           ? "bg-red-100 text-red-800"
                           : rubro.riesgo === "Medio"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-green-100 text-green-800"
                       }`}
                     >
                       {rubro.riesgo}
@@ -157,7 +178,7 @@ const Rubros: React.FC = () => {
                     <div className="flex space-x-2">
                       <button
                         className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
-                        onClick={() => console.log(`Ver detalles del rubro ${rubro.id}`)}
+                        onClick={() => handleViewDetails(rubro)}
                       >
                         <Eye className="w-4 h-4" />
                       </button>
@@ -175,7 +196,7 @@ const Rubros: React.FC = () => {
           </table>
         </div>
 
-        {/* Paginación */}
+        {/* Paginacion */}
         <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-2">
@@ -208,6 +229,39 @@ const Rubros: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {isModalOpen && selectedRubro && (
+        <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-600 rounded-lg shadow-xl max-w-2xl w-full p-8 relative">
+            {/* Boton de cerrar */}
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Contenido del modal */}
+            <div className="space-y-6">
+
+              <div className="text-center">
+                <h3 className="text-sm font-medium text-white mb-2">Nombre</h3>
+                <h2 className="text-2xl font-bold text-gray-200">{selectedRubro.nombre}</h2>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-sm font-medium text-white mb-2">Riesgo</h3>
+                <p className="text-4xl font-bold text-orange-500">{selectedRubro.riesgo.charAt(0)}</p>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-sm font-medium text-white mb-2">Prohibiciones</h3>
+                <p className="text-gray-200">{selectedRubro.prohibiciones}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

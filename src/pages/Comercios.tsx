@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Store, Plus, Eye } from "lucide-react"
+import { Store, Plus, Eye, X } from "lucide-react"
 
 interface Comercio {
   id: number
@@ -21,6 +21,7 @@ const Comercios: React.FC = () => {
   const [barrioFilter, setBarrioFilter] = useState("")
   const [zonaFilter, setZonaFilter] = useState("")
   const [activoFilter, setActivoFilter] = useState("")
+  const [selectedComercio, setSelectedComercio] = useState<Comercio | null>(null) // 👈 agregado
   const itemsPerPage = 10
 
   const comercios: Comercio[] = Array.from({ length: 67 }, (_, i) => ({
@@ -191,7 +192,11 @@ const Comercios: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="text-blue-500 hover:text-blue-500 transition-colors" title="Ver detalles">
+                      <button
+                        className="text-blue-500 hover:text-blue-500 transition-colors"
+                        title="Ver detalles"
+                        onClick={() => setSelectedComercio(comercio)} // 👈 abre modal
+                      >
                         <Eye className="w-4 h-4" />
                       </button>
                     </td>
@@ -237,6 +242,39 @@ const Comercios: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Detalles ojito */}
+      {selectedComercio && (
+        <div className="fixed inset-0 bg-orange-100 bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-600 rounded-xl p-6 w-[700px] shadow-lg relative">
+            <button
+              onClick={() => setSelectedComercio(null)}
+              className="absolute top-4 right-4 text-white hover:text-red-500"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <h2 className="text-xl font-bold text-center mb-4 text-orange-500">
+              Comercio ID N° {selectedComercio.id}
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="bg-gray-200 p-2 rounded">Razón Social <br/> <b>{selectedComercio.nombreRazonSocial}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Nombre de Fantasía <br/> <b>{selectedComercio.nombreFantasia}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Barrio <br/> <b>{selectedComercio.barrio}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Calle <br/> <b>{selectedComercio.calle}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Zona <br/> <b>{selectedComercio.zona}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Activo <br/> <b>{selectedComercio.activo ? "Sí" : "No"}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Habilitación Bromatologica <br/> <b>-</b></div>
+              <div className="bg-gray-200 p-2 rounded">Habilitación Comercial Municipal <br/> <b>-</b></div>
+              <div className="bg-gray-200 p-2 rounded">CUIT <br/> <b>000000000</b></div>
+              <div className="bg-gray-200 p-2 rounded">Es movil? <br/> <b>{selectedComercio.activo ? "Sí" : "No"}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Expediente N° <br/> <b>S/N</b></div>
+              <div className="bg-gray-200 p-2 rounded">N° de Suministro <br/> <b>S/N</b></div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

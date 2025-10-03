@@ -32,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-500 flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-gray-400 flex flex-col overflow-x-hidden">
       <Navbar onSidebarToggle={toggleSidebar} isSidebarOpen={isSidebarOpen} onTutorialClick={openTutorial} />
 
       <div className="flex flex-1 min-w-0">
