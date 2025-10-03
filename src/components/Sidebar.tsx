@@ -1,7 +1,7 @@
 
 import type React from "react"
 import { useState } from "react"
-import logoMunicipalidad from "../assets/logo-municipalidad.png"
+import logoMunicipalidad from "../assets/logo_CATACAPI_color.png"
 import {
   ChevronDown,
   ChevronRight,
@@ -80,14 +80,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
       >
-        <div className="h-screen w-64 shadow-slate-500 p-6">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center space-x-3">
+        <div className="h-screen w-64 shadow-slate-500 p-8 ">
+          <div className="flex items-center justify-between mb-8 ">
+            <div className="flex items-center space-x-3 font-semibold">
               <img src={logoMunicipalidad || "/placeholder.svg"} alt="logoMunicipalidad" className="max-h-20 ml-3" />
-              <div>
-                <h2 className="font-bold text-lg">Catamarca</h2>
-                <p className="text-sm text-slate-300">Capital</p>
-              </div>
             </div>
 
             <button
@@ -117,7 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                           : "text-white hover:to-blue-700 hover:text-white"
                       }`}
                     >
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 ">
                         <Icon className="w-5 h-5" />
                         <span className="font-medium">{item.label}</span>
                       </div>

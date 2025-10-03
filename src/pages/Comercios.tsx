@@ -63,7 +63,7 @@ const Comercios: React.FC = () => {
   const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1) }
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
+    <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 " >
 
       {/* Titulo */}
       <div className="mb-6">
@@ -212,7 +212,7 @@ const Comercios: React.FC = () => {
           </table>
         </div>
 
-        {/* Paginación */}
+        {/* Paginacion */}
         <div className="bg-white px-6 py-4 border-t">
           <div className="flex items-center justify-center">
             <div className="flex items-center space-x-3">

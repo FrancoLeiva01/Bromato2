@@ -81,7 +81,7 @@ const ActasComprobacion: React.FC = () => {
   const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages))
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600">
+    <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600 ">
       {/* Título centrado con ícono */}
       <div className="mb-6">
         <div className="bg-slate-800 p-4 rounded-lg flex justify-center items-center shadow-inner">
@@ -94,11 +94,12 @@ const ActasComprobacion: React.FC = () => {
 
       {/* Filtros */}
       <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
           className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-        >
+          >
           <option value="Todos">Todos</option>
           <option value="Numero">N° de Acta de Comprobación</option>
           <option value="Propietario">Propietario</option>
@@ -115,8 +116,9 @@ const ActasComprobacion: React.FC = () => {
             setFilterValue(e.target.value)
           }}
           className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-        />
+          />
       </div>
+          </div>
 
       {/* Tabla */}
       <div className="overflow-x-auto bg-white rounded-lg shadow">
@@ -180,7 +182,7 @@ const ActasComprobacion: React.FC = () => {
           <ChevronLeft className="w-4 h-4" />
         </button>
 
-        <span className="px-4 py-2 text-sm font-medium text-gray-700">
+        <span className="px-4 py-2 text-sm font-medium text-white">
           Página {currentPage} de {totalPages}
         </span>
 

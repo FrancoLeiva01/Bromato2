@@ -71,7 +71,7 @@ const ActasInspeccion: React.FC = () => {
   const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages))
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600">
+    <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600 ">
 
       {/* 🔹 Título centrado con ícono */}
       <div className="mb-6">
@@ -189,7 +189,7 @@ const ActasInspeccion: React.FC = () => {
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <span className="px-4 py-2 text-sm font-medium text-gray-700">
+        <span className="px-4 py-2 text-sm font-medium text-white">
           Página {currentPage} de {totalPages}
         </span>
         <button

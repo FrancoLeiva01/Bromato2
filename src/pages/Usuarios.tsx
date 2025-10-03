@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Users, Edit, Trash2, Plus } from "lucide-react";
+import { Users, Edit, Trash2 } from "lucide-react";
 
 const UsuariosTable: React.FC = () => {
   const [filterType, setFilterType] = useState("Filtros");
@@ -18,12 +18,12 @@ const UsuariosTable: React.FC = () => {
     { id: 4, nombre: "Ana Martínez", email: "ana.martinez@email.com", rol: "Administrador", estado: "Activo", fechaRegistro: "2024-03-05" },
     { id: 5, nombre: "Pedro Rodríguez", email: "pedro.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
     { id: 6, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
-    { id: 7, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
-    { id: 8, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
-    { id: 9, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
-    { id: 10, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
-    { id: 11, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
-    { id: 12, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-28" },
+    { id: 7, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-23" },
+    { id: 8, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-21" },
+    { id: 9, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-24" },
+    { id: 10, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-19" },
+    { id: 11, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-10" },
+    { id: 12, nombre: "Franco Rodríguez", email: "franco.rodriguez@email.com", rol: "Visualizador", estado: "Suspendido", fechaRegistro: "2024-02-11" },
   ];
 
   const filteredUsuarios = usuarios.filter((usuario) => {
@@ -66,7 +66,7 @@ const UsuariosTable: React.FC = () => {
   const handleNext = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   return (
-    <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
+    <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
       
      {/* Titulo */}
       <div className="mb-6">

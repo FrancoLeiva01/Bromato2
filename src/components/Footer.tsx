@@ -12,7 +12,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-gradient-to-r from-slate-700 to-slate-900 text-white mt-auto">
+    <footer className="bg-gradient-to-r from-slate-700 to-slate-900 text-white mt-auto ">
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
            {/* Logo */}

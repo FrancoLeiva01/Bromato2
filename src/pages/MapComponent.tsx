@@ -144,7 +144,7 @@ const filtered = markers.filter((m) =>
   return (
     <div className="h-screen flex flex-col bg-gray-50 rounded-lg">
       {/* Header */}
-      <div className="bg-slate-800 shadow-sm rounded-lg border-black p-4">
+      <div className="bg-slate-800 shadow-sm rounded-lg border-black p-4 ">
         <div className="max-w-7xl mx-auto ">
           <div className="flex justify-center items-center gap-3 ">
             <MapPin className="text-red-500" size={40} />
