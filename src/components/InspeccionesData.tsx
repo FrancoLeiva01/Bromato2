@@ -79,7 +79,7 @@ const InspeccionesData: React.FC<InspeccionesDataProps> = ({
             <p className="text-gray-700">
               <span className="font-semibold">Carnet Vigentes:</span> -
             </p>
-            <p className="font-semibold text-gray-800 mt-3">Carnets:</p>
+            <p className="font-semibold text-gray-800 mt-3">Carnts:</p>
             <div className="grid grid-cols-2 gap-4 mt-2 bg-white p-3 rounded">
               <div className="text-center">
                 <p className="text-xs text-gray-500 mb-1">
@@ -121,7 +121,7 @@ const InspeccionesData: React.FC<InspeccionesDataProps> = ({
               <span className="font-semibold">Acta Comprobacion Nro:</span> -
             </p>
             <p className="text-gray-700">
-              <span className="font-semibold">Acta Comprobacion Motivo:</span> -
+              <span className="font-semibold">Acta Comprobcaion Motivo:</span> -
             </p>
             <p className="text-gray-700">
               <span className="font-semibold">
@@ -177,7 +177,7 @@ const InspeccionesData: React.FC<InspeccionesDataProps> = ({
               <span className="font-semibold">Empresa Desinfeccion:</span> -
             </p>
             <p className="text-gray-700">
-              <span className="font-semibold">Expedido:</span> -
+              <span className="font-semibold">Expedito:</span> -
             </p>
           </div>
         </div>
@@ -274,7 +274,7 @@ const InspeccionesData: React.FC<InspeccionesDataProps> = ({
             <h3 className="font-bold text-gray-800">
               Notificación N° {actaData.numeroNotificacion}
             </h3>
-            <button className="text-gray-600 hover:text-gray-800">+</button>
+           <button className="text-gray-400 hover:text-blue-500">Agregar +</button>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useState } from "react";
-import { Search, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Eye, Plus } from "lucide-react";
 import InspeccionesData from "../components/InspeccionesData";
 
 const ActasInspeccion: React.FC = () => {
@@ -132,6 +132,10 @@ const ActasInspeccion: React.FC = () => {
             <option value="Finde">Finde</option>
           </select>
         </div>
+         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2">
+            <Plus className="w-4 h-4" />
+            <span>Crear Acta de Inspeccion</span>
+          </button>
       </div>
 
       {/* 🔹 Tabla */}

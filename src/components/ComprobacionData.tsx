@@ -145,14 +145,14 @@ const ComprobacionData: React.FC<ComprobacionDataProps> = ({
 
           {/* DATOS DEL COMERCIO */}
           <div className="mt-6">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center mb-4 justify-between">
               <h3 className="text-lg font-bold text-white">
                 DATOS DEL COMERCIO:
               </h3>
-              <button className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors">
+              <button className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-400 transition-colors">
                 Ver históricos
               </button>{" "}
-              {/* sabra Dios como metemos el historial de notificaciones aca */}
+              {/* sabra Dios como metemos el historial de notificaciones aca :( */}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

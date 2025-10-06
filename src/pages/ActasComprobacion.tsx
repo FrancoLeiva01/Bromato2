@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useState } from "react";
-import { ClipboardCheck, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ClipboardCheck, ChevronLeft, ChevronRight, Eye, Plus } from "lucide-react";
 import ComprobacionData from "@/components/ComprobacionData";
 
 const ActasComprobacion: React.FC = () => {
@@ -133,6 +133,10 @@ const ActasComprobacion: React.FC = () => {
             className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
           />
         </div>
+         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2">
+            <Plus className="w-4 h-4" />
+            <span>Crear Acta de Comprobacion</span>
+          </button>
       </div>
 
       {/* Tabla */}

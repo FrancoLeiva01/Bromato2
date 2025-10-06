@@ -245,7 +245,7 @@ const Comercios: React.FC = () => {
 
       {/* Detalles ojito */}
       {selectedComercio && (
-        <div className="fixed inset-0 bg-orange-100 bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-blue-200 bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-slate-600 rounded-xl p-6 w-[700px] shadow-lg relative">
             <button
               onClick={() => setSelectedComercio(null)}

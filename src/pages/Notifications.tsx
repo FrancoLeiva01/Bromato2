@@ -10,6 +10,7 @@ import {
   Eye,
   FolderClock,
   ClipboardList,
+  Plus
 } from "lucide-react"
 import { useState } from "react"
 
@@ -298,6 +299,18 @@ const Notifications: React.FC = () => {
     }
   }
 
+const [showForm, setShowForm] = useState(false)
+
+const handleNuevaNotificacion = () => {
+  setShowForm(true)
+}
+
+const handleCloseForm = () => {
+  setShowForm(false)
+}
+
+
+
   return (
     <div className=" bg-slate-700 max-w-full mx-auto p-6">
       <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
@@ -484,6 +497,16 @@ const Notifications: React.FC = () => {
                 
               )}
             </div>
+
+            <button
+  onClick={handleNuevaNotificacion}
+  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2"
+>
+  <Plus className="w-4 h-4" />
+  <span>Nueva Notificación</span>
+</button>
+
+
             
           </div>
         </div>
@@ -534,6 +557,81 @@ const Notifications: React.FC = () => {
             </tbody>
           </table>
         </div>
+        {showForm && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div className="bg-gray-200 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
+
+      {/* Botón cerrar */}
+      <button
+        onClick={handleCloseForm}
+        className="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold"
+      >
+        ×
+      </button>
+
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Nueva Notificación</h2>
+
+      <form className="space-y-4">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" placeholder="N° Notificación" className="border p-2 rounded w-full" />
+          <input type="text" placeholder="Señor/a" className="border p-2 rounded w-full" />
+          <input type="text" placeholder="DNI" className="border p-2 rounded w-full" />
+          <input type="text" placeholder="Domicilio/Dirección de Infracción" className="border p-2 rounded w-full" />
+          <input type="text" placeholder="Google Maps (opcional)" className="border p-2 rounded w-full" />
+          <input type="text" placeholder="Motivo" className="border p-2 rounded w-full" />
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-gray-800 mt-4 mb-2">Tipo de Infracción:</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {[
+              "Matafuego",
+              "OEP Áridos materiales de construcción",
+              "Vehículos en estado de abandono",
+              "Chatarras/chasis/esqueletos vehículos",
+              "Lavado de vereda",
+              "Pérdida de agua/líquidos cloacales",
+              "Reparación vereda",
+              "Habilitación comercial definitiva",
+            ].map((tipo) => (
+              <label key={tipo} className="flex items-center space-x-2">
+                <input type="checkbox" className="accent-blue-600" />
+                <span className="text-gray-700 text-sm">{tipo}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <textarea placeholder="Observaciones..." className="border p-2 rounded w-full h-24 resize-none" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="date" className="border p-2 rounded w-full" />
+          <input type="time" className="border p-2 rounded w-full" />
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-gray-800 mt-4 mb-2">Datos del Inspector:</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" placeholder="Nombre y Apellido Inspector" className="border p-2 rounded w-full" />
+            <input type="text" placeholder="Legajo / DNI Inspector" className="border p-2 rounded w-full" />
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mt-6">
+          <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+            onClick={handleCloseForm}>
+            Cancelar
+          </button>
+          <button type="submit" className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-500 transition-colors">
+            Guardar Notificación
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
         <div className="px-6 py-4 border-t border-gray-200">
           <div className="flex items-center justify-center space-x-4">
             <button className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
@@ -547,6 +645,7 @@ const Notifications: React.FC = () => {
       </div>
     </div>
   )
+  
 }
 
 export default Notifications
