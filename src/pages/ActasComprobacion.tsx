@@ -2,7 +2,14 @@
 
 import type React from "react";
 import { useState } from "react";
-import { ClipboardCheck, ChevronLeft, ChevronRight, Eye, Plus } from "lucide-react";
+import {
+  ClipboardCheck,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  Plus,
+  X,
+} from "lucide-react";
 import ComprobacionData from "@/components/ComprobacionData";
 
 const ActasComprobacion: React.FC = () => {
@@ -13,6 +20,7 @@ const ActasComprobacion: React.FC = () => {
   const [selectedActa, setSelectedActa] = useState<(typeof actas)[0] | null>(
     null
   );
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const itemsPerPage = 10;
 
   const actas = [
@@ -133,10 +141,13 @@ const ActasComprobacion: React.FC = () => {
             className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
           />
         </div>
-         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2">
-            <Plus className="w-4 h-4" />
-            <span>Crear Acta de Comprobacion</span>
-          </button>
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Crear Acta de Comprobacion</span>
+        </button>
       </div>
 
       {/* Tabla */}
@@ -237,6 +248,273 @@ const ActasComprobacion: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         acta={selectedActa}
       />
+
+      {isFormOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="sticky top-0 bg-blue-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Nueva Acta de Comprobación</h2>
+              <button
+                onClick={() => setIsFormOpen(false)}
+                className="text-white hover:text-red-300 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Form Content */}
+            <div className="p-6 space-y-6">
+              {/* Logo Section */}
+              <div className="flex justify-center mb-4">
+                <div className="text-center">
+                  <div className="text-blue-600 font-bold text-xl">
+                    Catamarca
+                  </div>
+                  <div className="text-blue-600 font-bold text-xl">Capital</div>
+                </div>
+              </div>
+
+              {/* Acta de Inspeccion y Fecha */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Acta de Inspección
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Número de acta"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Fecha Acta
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
+
+              {/* Nombre/Razón Social y CUIT/CUIL */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nombre/Razón Social
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nombre o razón social"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    CUIT/CUIL
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="XX-XXXXXXXX-X"
+                  />
+                </div>
+              </div>
+
+              {/* Permito Inspección */}
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="permitoInspeccion"
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label
+                  htmlFor="permitoInspeccion"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Permito Inspección
+                </label>
+              </div>
+
+              {/* Nombre y Apellido de persona que recibe la inspección */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nombre y Apellido de persona que recibe la inspección
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Nombre completo"
+                />
+              </div>
+
+              {/* DNI y Cargo/Función */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    D.N.I.
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Número de DNI"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Cargo/Función
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Cargo o función"
+                  />
+                </div>
+              </div>
+
+              {/* Coincide domicilio */}
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="coincideDomicilio"
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label
+                  htmlFor="coincideDomicilio"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Coincide el domicilio declarado con el inspeccionado
+                </label>
+              </div>
+
+              {/* Domicilio Inspeccionado */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Domicilio Inspeccionado
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Dirección completa"
+                />
+              </div>
+
+              {/* Inspectores */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Inspector 1
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nombre del inspector"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Legajo 1
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Número de legajo"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Inspector 2
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nombre del inspector"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Legajo/DNI 2
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Número de legajo o DNI"
+                  />
+                </div>
+              </div>
+
+              {/* PDF de Acta */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  PDF de Acta
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    className="hidden"
+                    id="pdfUpload"
+                  />
+                  <label
+                    htmlFor="pdfUpload"
+                    className="cursor-pointer text-gray-600 hover:text-blue-600"
+                  >
+                    <div className="text-4xl mb-2">📄</div>
+                    <div className="text-sm">Haz clic para subir un PDF</div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Google Maps */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Google Maps
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="URL de Google Maps o coordenadas"
+                />
+              </div>
+
+              {/* Observaciones */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Observaciones
+                </label>
+                <textarea
+                  rows={6}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  placeholder="Escriba sus observaciones aquí..."
+                />
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-end space-x-3 pt-4 border-t">
+                <button
+                  onClick={() => setIsFormOpen(false)}
+                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => {
+                    // Aquí iría la lógica para guardar el acta
+                    setIsFormOpen(false);
+                  }}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Crear Acta
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

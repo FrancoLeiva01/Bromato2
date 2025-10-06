@@ -4,278 +4,141 @@ import type React from "react";
 import { X } from "lucide-react";
 
 interface ActaData {
+  id: number;
   numero: string;
+  denuncia: string;
   fecha: string;
   turno: string;
-  razonSocial: string;
-  fantasia: string;
   cargado: string;
   numeroNotificacion: string;
-  denuncia: string;
+  razonSocial: string;
+  fantasia: string;
 }
 
 interface InspeccionesDataProps {
-  onClose: () => void;
   actaData: ActaData;
+  onClose: () => void;
 }
 
 const InspeccionesData: React.FC<InspeccionesDataProps> = ({
-  onClose,
   actaData,
+  onClose,
 }) => {
   return (
-    <div className="fixed inset-0 bg-red-200 bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-slate-200 rounded-xl p-6 w-full max-w-[700px] shadow-lg relative overflow-y-auto max-h-[90vh]">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-700 hover:text-red-500 transition"
-        >
-          <X size={24} />
-        </button>
-
-        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          Acta de Inspección N° {actaData.numero}
-        </h2>
-
-        <div className="bg-white rounded-lg p-4 mb-4 shadow-sm grid grid-cols-2 gap-4">
-          <div>
-            <p className="font-semibold text-gray-800">Fecha:</p>
-            <p className="text-gray-600">{actaData.fecha}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">Vía Pública:</p>
-            <p className="text-gray-600">-</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">Hora:</p>
-            <p className="text-gray-600">-</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">Turno:</p>
-            <p className="text-gray-600">{actaData.turno}</p>
-          </div>
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
+          <h2 className="text-2xl font-bold">
+            Detalles del Acta de Inspección
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Cerrar"
+          >
+            <X className="h-6 w-6" />
+          </button>
         </div>
 
-        <div className="bg-blue-50 rounded-lg p-4 mb-4 shadow-sm">
-          <h3 className="font-bold text-gray-800 mb-3">
-            Manipulador Alimentos
-          </h3>
-          <div className="space-y-2 text-sm">
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Cantidad Indumentaria Completa:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Cantidad Indumentaria Incompleta:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Higiene:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Carnet Vigentes:</span> -
-            </p>
-            <p className="font-semibold text-gray-800 mt-3">Carnts:</p>
-            <div className="grid grid-cols-2 gap-4 mt-2 bg-white p-3 rounded">
-              <div className="text-center">
-                <p className="text-xs text-gray-500 mb-1">
-                  Carnet de Manipulador N°
+        {/* Content */}
+        <div className="p-6 space-y-6">
+          {/* Información General */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-gray-500">
+                Número de Acta
+              </p>
+              <p className="text-base font-medium">{actaData.numero}</p>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-gray-500">Denuncia</p>
+              <p className="text-base font-medium">{actaData.denuncia}</p>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-gray-500">Fecha</p>
+              <p className="text-base font-medium">{actaData.fecha}</p>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-gray-500">Turno</p>
+              <p className="text-base font-medium">{actaData.turno}</p>
+            </div>
+          </div>
+
+          {/* Información del Comercio */}
+          <div className="border-t pt-4">
+            <h3 className="text-lg font-semibold mb-3">
+              Información del Comercio
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-gray-500">
+                  Razón Social
                 </p>
-                <p className="text-gray-700">-</p>
+                <p className="text-base font-medium">{actaData.razonSocial}</p>
               </div>
-              <div className="text-center">
-                <p className="text-xs text-gray-500 mb-1">
-                  Carnet de Manipulador Vencimiento
+
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-gray-500">
+                  Nombre de Fantasía
                 </p>
-                <p className="text-gray-700">-</p>
+                <p className="text-base font-medium">{actaData.fantasia}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Estado */}
+          <div className="border-t pt-4">
+            <h3 className="text-lg font-semibold mb-3">Estado</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-gray-500">
+                  Estado de Carga
+                </p>
+                <span
+                  className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
+                    actaData.cargado === "Completada"
+                      ? "bg-green-100 text-green-800"
+                      : actaData.cargado === "En proceso"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {actaData.cargado}
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-gray-500">
+                  Estado de Notificación
+                </p>
+                <span
+                  className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
+                    actaData.numeroNotificacion === "Aprobada"
+                      ? "bg-green-100 text-green-800"
+                      : actaData.numeroNotificacion === "Observaciones"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-red-100 text-red-800"
+                  }`}
+                >
+                  {actaData.numeroNotificacion}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-blue-50 rounded-lg p-4 mb-4 shadow-sm">
-          <h3 className="font-bold text-gray-800 mb-3">
-            Resultados Inspeccion
-          </h3>
-          <div className="space-y-2 text-sm">
-            <p className="text-gray-700">
-              <span className="font-semibold">Notificacion Nro:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Notificacion Plazo:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Notificacion Motivo:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Notificacion Motivo Detalle:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Acta Comprobacion Nro:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Acta Comprobcaion Motivo:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Acta Comprobacion Motivo Detalle:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Destrucciones Detalle:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Observaciones:</span> -
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-blue-50 rounded-lg p-4 mb-4 shadow-sm">
-          <h3 className="font-bold text-gray-800 mb-2">Destrucciones</h3>
-          <p className="text-gray-600 text-sm">-</p>
-        </div>
-
-        <div className="bg-blue-50 rounded-lg p-4 mb-4 shadow-sm">
-          <h3 className="font-bold text-gray-800 mb-3">Comercio Dato</h3>
-          <div className="space-y-2 text-sm">
-            <p className="text-gray-700">
-              <span className="font-semibold">Persona Recibe Nombre:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Persona Recibe Dni:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Persona Recibe Caracter:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Persona Recibe Email:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Persona Recibe Telefono:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Constancia:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Nro Tramite:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Certificado Desinfeccion Nro:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Empresa Desinfeccion:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Expedito:</span> -
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-blue-50 rounded-lg p-4 mb-4 shadow-sm">
-          <h3 className="font-bold text-gray-800 mb-3">Comercio Entidad</h3>
-          <div className="space-y-2 text-sm">
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Habilitacion Comercial Municipal:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Habilitacion Comercial Municipal Nro:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Habilitacion Bromatologica:</span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Habilitacion Bromatologica Nro:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Expte Nro:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Nombre Razon Social:</span>{" "}
-              {actaData.razonSocial}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Nombre Fantasia:</span>{" "}
-              {actaData.fantasia}
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Cuit:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Via Publica:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Puesto Movil:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">
-                Permiso Ocupacion Via Publica Vigente:
-              </span>{" "}
-              -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Barrio:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Calle:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Zona:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Referencia Ubicacion:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">IsActive:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Matricula:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">NroSuministro:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">IsMovil:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Pto Geografico:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Latitud:</span> -
-            </p>
-            <p className="text-gray-700">
-              <span className="font-semibold">Longitud:</span> -
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-blue-50 rounded-lg p-4 shadow-sm">
-          <div className="flex justify-between items-center">
-            <h3 className="font-bold text-gray-800">
-              Notificación N° {actaData.numeroNotificacion}
-            </h3>
-           <button className="text-gray-400 hover:text-blue-500">Agregar +</button>
-          </div>
+        {/* Footer */}
+        <div className="sticky bottom-0 bg-white border-t px-6 py-4 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Cerrar
+          </button>
         </div>
       </div>
     </div>
