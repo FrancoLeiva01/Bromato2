@@ -1,26 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { UserCheck, Eye, Plus, X } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import { UserCheck, Eye, Plus, X } from "lucide-react";
 
 interface Inspector {
-  id: number
-  nombre: string
-  apellido: string
-  email: string
-  activo: boolean
-  funcion: string
-  identificador: string
+  id: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  activo: boolean;
+  funcion: string;
+  identificador: string;
 }
 
 const Inspectores: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 10
-  const [filterType, setFilterType] = useState("")
-  const [searchTerm, setSearchTerm] = useState("")
-   const [selectedInspector, setSelectedInspector] = useState<Inspector | null>(null)
-    const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [filterType, setFilterType] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedInspector, setSelectedInspector] = useState<Inspector | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Datos de ejemplo
   const inspectores: Inspector[] = [
@@ -48,36 +50,48 @@ const Inspectores: React.FC = () => {
       apellido: `Apellido ${i + 3}`,
       email: `inspector${i + 3}@catamarca.gov.ar`,
       activo: Math.random() > 0.5,
-      funcion: ["Sur", "Norte", "Este", "Oeste", "Centro"][Math.floor(Math.random() * 5)],
+      funcion: ["Sur", "Norte", "Este", "Oeste", "Centro"][
+        Math.floor(Math.random() * 5)
+      ],
       identificador: `${Math.floor(Math.random() * 90000000) + 10000000}`,
     })),
-  ]
+  ];
 
   const filteredInspectores = inspectores.filter((inspector) => {
-    if (!filterType || !searchTerm) return true
-    if (filterType === "apellido") return inspector.apellido.toLowerCase().includes(searchTerm.toLowerCase())
-    if (filterType === "identificador") return inspector.identificador.includes(searchTerm)
-    return true
-  })
+    if (!filterType || !searchTerm) return true;
+    if (filterType === "apellido")
+      return inspector.apellido
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+    if (filterType === "identificador")
+      return inspector.identificador.includes(searchTerm);
+    return true;
+  });
 
-  const totalPages = Math.ceil(filteredInspectores.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentInspectores = filteredInspectores.slice(startIndex, startIndex + itemsPerPage)
+  const totalPages = Math.ceil(filteredInspectores.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentInspectores = filteredInspectores.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
-  const handlePrevious = () => { if (currentPage > 1) setCurrentPage(currentPage - 1) }
-  const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1) }
-  const handleSearch = () => setCurrentPage(1)
+  const handlePrevious = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const handleSearch = () => setCurrentPage(1);
 
-  
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedInspector(null)
-  }
+    setIsModalOpen(false);
+    setSelectedInspector(null);
+  };
 
   const handleViewDetails = (inspector: Inspector) => {
-    setSelectedInspector(inspector)
-    setIsModalOpen(true)
-  }
+    setSelectedInspector(inspector);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -86,7 +100,9 @@ const Inspectores: React.FC = () => {
         <div className="mb-6">
           <div className="bg-slate-800 rounded-lg p-4 flex justify-center items-center">
             <UserCheck className="w-8 h-8 text-blue-500 mr-2" />
-            <h1 className="text-3xl font-bold text-white text-center">Inspectores</h1>
+            <h1 className="text-3xl font-bold text-white text-center">
+              Inspectores
+            </h1>
           </div>
         </div>
         {/* Filtros + boton nuevo inspector */}
@@ -95,7 +111,11 @@ const Inspectores: React.FC = () => {
             <select
               className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
               value={filterType}
-              onChange={(e) => { setFilterType(e.target.value); setSearchTerm(""); setCurrentPage(1) }}
+              onChange={(e) => {
+                setFilterType(e.target.value);
+                setSearchTerm("");
+                setCurrentPage(1);
+              }}
             >
               <option value="">Filtros</option>
               <option value="apellido">Apellido</option>
@@ -117,9 +137,7 @@ const Inspectores: React.FC = () => {
               Buscar
             </button>
           </div>
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2"
-          >
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2">
             <Plus className="w-4 h-4" />
             <span>Nuevo Inspector</span>
           </button>
@@ -130,45 +148,83 @@ const Inspectores: React.FC = () => {
             <table className="w-full">
               <thead className="bg-gray-300">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellido</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activo</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Funcion</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Identificador</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nombre
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Apellido
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Activo
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Funcion
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Identificador
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Detalles
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {currentInspectores.length > 0 ? (
                   currentInspectores.map((inspector) => (
                     <tr key={inspector.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{inspector.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.nombre}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.apellido}</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">{inspector.email}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {inspector.id}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {inspector.nombre}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {inspector.apellido}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900">
+                        {inspector.email}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${inspector.activo ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            inspector.activo
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
                           {inspector.activo ? "Activo" : "Inactivo"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.funcion}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{inspector.identificador}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {inspector.funcion}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {inspector.identificador}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                       <button
-                                               className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
-                                               onClick={() => handleViewDetails(inspector)}
-                                             >
-                                               <Eye className="w-4 h-4" />
-                                      </button>
+                        <button
+                          className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
+                          onClick={() => handleViewDetails(inspector)}
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">
-                      No se encontraron inspectores que coincidan con los criterios de búsqueda.
+                    <td
+                      colSpan={8}
+                      className="px-6 py-4 text-center text-sm text-gray-500"
+                    >
+                      No se encontraron inspectores que coincidan con los
+                      criterios de búsqueda.
                     </td>
                   </tr>
                 )}
@@ -182,15 +238,25 @@ const Inspectores: React.FC = () => {
                 <button
                   onClick={handlePrevious}
                   disabled={currentPage === 1}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${currentPage === 1 ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+                  className={`px-4 py-2 text-sm font-medium rounded-md ${
+                    currentPage === 1
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
                 >
                   Anterior
                 </button>
-                <span className="px-4 py-2 text-sm font-medium text-gray-700">Página {currentPage} de {totalPages}</span>
+                <span className="px-4 py-2 text-sm font-medium text-gray-700">
+                  Página {currentPage} de {totalPages}
+                </span>
                 <button
                   onClick={handleNext}
                   disabled={currentPage === totalPages}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${currentPage === totalPages ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-blue-700 text-white hover:bg-blue-400"}`}
+                  className={`px-4 py-2 text-sm font-medium rounded-md ${
+                    currentPage === totalPages
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-blue-700 text-white hover:bg-blue-400"
+                  }`}
                 >
                   Siguiente
                 </button>
@@ -213,12 +279,20 @@ const Inspectores: React.FC = () => {
             {/* Modal */}
             <div className="space-y-6">
               <div className="text-center">
-                <h3 className="text-sm font-medium text-white mb-2">Inspector</h3>
-                <h2 className="text-2xl font-bold text-gray-200">{selectedInspector?.nombre}</h2>
+                <h3 className="text-sm font-medium text-white mb-2">
+                  Inspector
+                </h3>
+                <h2 className="text-2xl font-bold text-gray-200">
+                  {selectedInspector?.nombre}
+                </h2>
               </div>
               <div className="text-center">
-                <h3 className="text-sm font-medium text-white mb-2">Apellido</h3>
-                <p className="text-4xl font-bold text-orange-500">{selectedInspector?.apellido}</p>
+                <h3 className="text-sm font-medium text-white mb-2">
+                  Apellido
+                </h3>
+                <p className="text-4xl font-bold text-orange-500">
+                  {selectedInspector?.apellido}
+                </p>
               </div>
               <div className="text-center">
                 <h3 className="text-sm font-medium text-white mb-2">Email</h3>
@@ -229,6 +303,6 @@ const Inspectores: React.FC = () => {
         </div>
       )}
     </>
-  )
-}
-export default Inspectores
+  );
+};
+export default Inspectores;
