@@ -1,8 +1,8 @@
-import React from "react"
+import React from "react";
 
 interface HeaderProps {
-  username?: string
-  backgroundImage?: string
+  username?: string;
+  backgroundImage?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -16,14 +16,17 @@ const Header: React.FC<HeaderProps> = ({
     >
       <div className="flex flex-col items-center justify-center text-center h-96 bg-black/50 rounded-lg ">
         <h1 className="text-4xl md:text-6xl font-extrabold uppercase text-green-400 drop-shadow-lg">
+          {" "}
+          {/* Para forzar la mayuscula */}
           Bienvenido {username}!
         </h1>
         <p className="mt-4 text-lg md:text-2xl text-gray-200 max-w-2xl px-4">
-          Al Sistema de Control y Seguridad alimentaria para proteger la salud de nuestra ciudad
+          Al Sistema de Control y Seguridad alimentaria para proteger la salud
+          de nuestra ciudad
         </p>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
