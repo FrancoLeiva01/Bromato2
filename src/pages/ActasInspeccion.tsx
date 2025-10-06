@@ -265,21 +265,21 @@ const ActasInspeccion: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             {/* Header */}
-            <div className="bg-blue-600 text-white p-6 flex items-center justify-between">
+            <div className="bg-slate-700 text-white p-6 flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <FileText className="w-8 h-8" />
+                <FileText className="w-8 h-8 text-blue-500" />
                 <h2 className="text-2xl font-bold">Nueva Acta de Inspección</h2>
               </div>
               <button
                 onClick={handleCloseForm}
-                className="text-white hover:text-red-300 transition-colors"
+                className="text-white hover:text-red-500 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            {/* Form Content - Scrollable */}
-            <div className="overflow-y-auto flex-1 p-6">
+            {/* Form Scrollable */}
+            <div className="overflow-y-auto flex-1 p-6 bg-slate-500">
               <form className="space-y-6">
                 {/* Sección 1: DATOS DE LA PERSONA HUMANA O JURÍDICA A INSPECCIONAR */}
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -484,7 +484,7 @@ const ActasInspeccion: React.FC = () => {
                             label:
                               "¿Posee botiquín de primeros auxilios con los elementos mínimos?",
                           },
-                          { id: "seguridad-2", label: "Matafuego (varias)" },
+                          { id: "seguridad-2", label: "Matafuego (varios)" },
                           {
                             id: "seguridad-3",
                             label: "¿Están en vigencia los matafuegos?",
@@ -492,7 +492,7 @@ const ActasInspeccion: React.FC = () => {
                           { id: "seguridad-4", label: "Tipos de matafuegos" },
                           {
                             id: "seguridad-5",
-                            label: "¿Los matafuegos tienen señalización?",
+                            label: "¿Los matafuegos tienen señalizacion?",
                           },
                           {
                             id: "seguridad-6",
@@ -640,7 +640,7 @@ const ActasInspeccion: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleCloseForm}
-                    className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+                    className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors"
                   >
                     Cancelar
                   </button>
