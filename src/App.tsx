@@ -1,21 +1,21 @@
-import { Routes, Route, Navigate } from "react-router-dom"
-import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import Calendar from "./components/Calendar"
-import Notifications from "./pages/Notifications"
-import ActasInspeccion from "./pages/ActasInspeccion"
-import ActasComprobacion from "./pages/ActasComprobacion"
-import Rubros from "./pages/Rubros"
-import Comercios from "./pages/Comercios"
-import Inspectores from "./pages/Inspectores"
-import Register from "./pages/Register"
-import MapComponent from "./pages/MapComponent"
-import Usuarios from "./pages/Usuarios"
-import Header from "./components/Header"
+import Calendar from "./components/Calendar";
+import Notifications from "./pages/Notifications";
+import ActasInspeccion from "./pages/ActasInspeccion";
+import ActasComprobacion from "./pages/ActasComprobacion";
+import Rubros from "./pages/Rubros";
+import Comercios from "./pages/Comercios";
+import Inspectores from "./pages/Inspectores";
+import Register from "./pages/Register";
+import MapComponent from "./pages/MapComponent";
+import Usuarios from "./pages/Usuarios";
+import Header from "./components/Header";
 
-import Login from "./modules/Auth/views/Login"
-import Layout from "./layouts/Layout"
+import Login from "./modules/Auth/views/Login";
+import Layout from "./layouts/Layout";
 // import ProtectedRoute from "./components/ProtectedRoute"
 
 function App() {
@@ -41,8 +41,8 @@ function App() {
             //<ProtectedRoute>
             <Layout>
               <Header username="Franco" />
-                <Calendar />
-              </Layout>
+              <Calendar />
+            </Layout>
             //</ProtectedRoute>
           }
         />
@@ -51,9 +51,9 @@ function App() {
           path="/notifications"
           element={
             //<ProtectedRoute>
-              <Layout>
-                <Notifications />
-              </Layout>
+            <Layout>
+              <Notifications />
+            </Layout>
             //</ProtectedRoute>
           }
         />
@@ -61,9 +61,9 @@ function App() {
           path="/actas-inspeccion"
           element={
             //<ProtectedRoute>
-              <Layout>
-                <ActasInspeccion />
-              </Layout>
+            <Layout>
+              <ActasInspeccion />
+            </Layout>
             //</ProtectedRoute>
           }
         />
@@ -71,9 +71,9 @@ function App() {
           path="/actas-comprobacion"
           element={
             //<ProtectedRoute>
-              <Layout>
-                <ActasComprobacion />
-              </Layout>
+            <Layout>
+              <ActasComprobacion />
+            </Layout>
             //</ProtectedRoute>
           }
         />
@@ -81,9 +81,9 @@ function App() {
           path="/rubros"
           element={
             //<ProtectedRoute>
-              <Layout>
-                <Rubros />
-              </Layout>
+            <Layout>
+              <Rubros />
+            </Layout>
             //</ProtectedRoute>
           }
         />
@@ -91,9 +91,9 @@ function App() {
           path="/comercios"
           element={
             //<ProtectedRoute>
-              <Layout>
-                <Comercios />
-              </Layout>
+            <Layout>
+              <Comercios />
+            </Layout>
             //</ProtectedRoute>
           }
         />
@@ -101,36 +101,36 @@ function App() {
           path="/inspectores"
           element={
             //<ProtectedRoute>
-              <Layout>
-                <Inspectores />
-              </Layout>
+            <Layout>
+              <Inspectores />
+            </Layout>
             //</ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/mapa"
           element={
             //<ProtectedRoute>
-              <Layout>
-                <MapComponent />
-              </Layout>
+            <Layout>
+              <MapComponent />
+            </Layout>
             //</ProtectedRoute>
           }
         />
-         <Route 
-        path="/usuarios" 
-        element={
-          // <ProtectedRoute requiredRole="administrador">
+        <Route
+          path="/usuarios"
+          element={
+            // <ProtectedRoute requiredRole="administrador">
             <Layout>
-            <Usuarios />
+              <Usuarios />
             </Layout>
-        //  </ProtectedRoute>
-        } 
-      />
+            //  </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<Navigate to="/home" replace />} />
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

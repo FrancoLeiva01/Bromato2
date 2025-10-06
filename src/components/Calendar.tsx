@@ -1,19 +1,16 @@
-
-import type React from "react"
-import { useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-
+import type React from "react";
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CalendarEvent {
-  id: string
-  title: string
-  date: number
-  type: "notification" | "inspection" | "meeting"
+  id: string;
+  title: string;
+  date: number;
+  type: "notification" | "inspection" | "meeting";
 }
 
 const Calendar: React.FC = () => {
- const [currentDate, setCurrentDate] = useState(new Date())
-
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   const events: CalendarEvent[] = [
     { id: "2025-3221", title: "2025-3221", date: 1, type: "notification" },
@@ -22,7 +19,7 @@ const Calendar: React.FC = () => {
     { id: "2025-3183", title: "2025-3183", date: 2, type: "notification" },
     { id: "2025-3047", title: "2025-3047", date: 9, type: "notification" },
     { id: "2025-3161", title: "2025-3161", date: 10, type: "notification" },
-  ]
+  ];
 
   const monthNames = [
     "Enero",
@@ -37,58 +34,70 @@ const Calendar: React.FC = () => {
     "Octubre",
     "Noviembre",
     "Diciembre",
-  ]
+  ];
 
-  const dayNames = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
+  const dayNames = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
   const getDaysInMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-  }
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  };
 
   const getFirstDayOfMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-  }
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  };
 
   const navigateMonth = (direction: "prev" | "next") => {
     setCurrentDate((prev) => {
-      const newDate = new Date(prev)
+      const newDate = new Date(prev);
       if (direction === "prev") {
-        newDate.setMonth(prev.getMonth() - 1)
+        newDate.setMonth(prev.getMonth() - 1);
       } else {
-        newDate.setMonth(prev.getMonth() + 1)
+        newDate.setMonth(prev.getMonth() + 1);
       }
-      return newDate
-    })
-  }
+      return newDate;
+    });
+  };
 
   const goToToday = () => {
-    setCurrentDate(new Date())
-  }
+    setCurrentDate(new Date());
+  };
 
   const renderCalendarDays = () => {
-    const daysInMonth = getDaysInMonth(currentDate)
-    const firstDay = getFirstDayOfMonth(currentDate)
-    const days = []
+    const daysInMonth = getDaysInMonth(currentDate);
+    const firstDay = getFirstDayOfMonth(currentDate);
+    const days = [];
 
     // Empty cells for days before the first day of the month
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-24 border-gray-200"></div>)
+      days.push(
+        <div key={`empty-${i}`} className="h-24 border-gray-200"></div>
+      );
     }
 
     // Days of the month
     for (let day = 1; day <= daysInMonth; day++) {
-      const dayEvents = events.filter((event) => event.date === day)
+      const dayEvents = events.filter((event) => event.date === day);
       const isToday =
         new Date().getDate() === day &&
         new Date().getMonth() === currentDate.getMonth() &&
-        new Date().getFullYear() === currentDate.getFullYear()
+        new Date().getFullYear() === currentDate.getFullYear();
 
       days.push(
         <div
           key={day}
-          className={`h-28 border border-gray-300 p-1 ${isToday ? "bg-gradient-to-b from-orange-400 to-gray-100 h-40 w-full" : "bg-gradient-to-b from-gray-100 to-white h-40 w-full"}`}
+          className={`h-28 border border-gray-300 p-1 ${
+            isToday
+              ? "bg-gradient-to-b from-orange-400 to-gray-100 h-40 w-full"
+              : "bg-gradient-to-b from-gray-100 to-white h-40 w-full"
+          }`}
         >
-          <div className={`text-sm font-medium mb-1 ${isToday ? "text-black-500" : "text-gray-900"}`}>{day}</div>
+          <div
+            className={`text-sm font-medium mb-1 ${
+              isToday ? "text-black-500" : "text-gray-900"
+            }`}
+          >
+            {day}
+          </div>
           <div className="space-y-1">
             {dayEvents.map((event) => (
               <div
@@ -100,18 +109,20 @@ const Calendar: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>,
-      )
+        </div>
+      );
     }
 
-    return days
-  }
+    return days;
+  };
 
   return (
     <div className="bg-slate-400 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 border border-gray-500 ">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-3xl font-bold text-white">Calendario de Notificaciones</h2>
+          <h2 className="text-3xl font-bold text-white">
+            Calendario de Notificaciones
+          </h2>
 
           <div className="flex items-center space-x-2 rounded">
             <button
@@ -145,16 +156,21 @@ const Calendar: React.FC = () => {
       <div className="p-6">
         <div className="grid grid-cols-7 gap-0 mb-4">
           {dayNames.map((day) => (
-            <div key={day} className="p-3 text-center font-medium text-gray-700 bg-gray-50 border border-gray-200">
+            <div
+              key={day}
+              className="p-3 text-center font-medium text-gray-700 bg-gray-50 border border-gray-200"
+            >
               {day}
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-0 border-l border-t border-gray-200">{renderCalendarDays()}</div>
+        <div className="grid grid-cols-7 gap-0 border-l border-t border-gray-200">
+          {renderCalendarDays()}
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Calendar
+export default Calendar;
