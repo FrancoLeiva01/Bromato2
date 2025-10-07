@@ -579,8 +579,8 @@ const ActasInspeccion: React.FC = () => {
                   <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
                     4. Deberes Formales
                   </h3>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium text-gray-700">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-normal text-gray-700">
                       Certificación de desinfección (ordenanza N° 2819):
                     </span>
                     <label className="flex items-center space-x-2">
@@ -630,6 +630,7 @@ const ActasInspeccion: React.FC = () => {
                     5. Observaciones y Descripción General
                   </h3>
                   <textarea
+                   maxLength={800}
                     placeholder="Escriba sus observaciones generales aquí..."
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-32 resize-none"
                   />
@@ -646,7 +647,7 @@ const ActasInspeccion: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors ml-5"
                   >
                     Guardar Acta de Inspección
                   </button>

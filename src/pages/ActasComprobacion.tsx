@@ -389,6 +389,7 @@ const ActasComprobacion: React.FC = () => {
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">7. Observaciones</h3>
                   <textarea
+                   maxLength={700}
                     rows={6}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
                     placeholder="Escriba sus observaciones aquí..."
@@ -406,7 +407,7 @@ const ActasComprobacion: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                    className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors ml-5"
                   >
                     Guardar Acta de Comprobación
                   </button>

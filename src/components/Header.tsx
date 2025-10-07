@@ -6,7 +6,6 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
-  username = "Usuario",
   backgroundImage = "/src/assets/bromato.png",
 }) => {
   return (
@@ -18,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({
         <h1 className="text-4xl md:text-6xl font-extrabold uppercase text-green-400 drop-shadow-lg">
           {" "}
           {/* Para forzar la mayuscula */}
-          Bienvenido {username}!
+          Bienvenido!
         </h1>
         <p className="mt-4 text-lg md:text-2xl text-gray-200 max-w-2xl px-4">
           Al Sistema de Control y Seguridad alimentaria para proteger la salud
