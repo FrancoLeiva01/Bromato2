@@ -129,7 +129,7 @@ const Calendar: React.FC = () => {
   };
 
   return (
-     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Inicio..." minHeight="400px">
 
     <div className="bg-slate-400 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 border border-gray-500 ">
       <div className="p-6 border-b border-gray-200">

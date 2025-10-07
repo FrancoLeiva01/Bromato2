@@ -338,7 +338,7 @@ const Notifications: React.FC = () => {
   };
 
   return (
-     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Notificaciones..." minHeight="400px">
 
     <div className=" bg-slate-700 max-w-full mx-auto p-6">
       <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">

@@ -110,7 +110,7 @@ const ActasInspeccion: React.FC = () => {
   };
 
   return (
-     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Actas..." minHeight="400px">
 
     <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600 ">
       {/* 🔹 Título centrado con ícono */}

@@ -155,7 +155,7 @@ const filtered = markers.filter((m) =>
 
 
   return (
-     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Marcadores..." minHeight="400px">
 
     <div className="h-screen flex flex-col bg-gray-50 rounded-lg">
       {/* Header */}

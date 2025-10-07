@@ -18,7 +18,7 @@ export function LoaderContent({
       <div
         className={`fixed inset-0 flex flex-col items-center justify-center ${minHeight} bg-white/30 backdrop-blur-md gap-4 z-50`}
       >
-         <div className="flex items-center space-x-3 font-semibold">
+         <div className="flex items-center space-x-5 font-semibold">
               <img src={logoMunicipalidad || "/placeholder.svg"} alt="logoMunicipalidad" className="max-h-20 ml-3" />
             </div>
         <div role="status">

@@ -80,7 +80,7 @@ const UsuariosTable: React.FC = () => {
   const handleNext = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   return (
-     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Usuarios..." minHeight="400px">
 
     <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
       

@@ -76,7 +76,7 @@ const Comercios: React.FC = () => {
   const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1) }
 
   return (
-     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Comercios..." minHeight="400px">
 
     <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 " >
 
