@@ -1,17 +1,13 @@
-"use client"
 
-import type React from "react"
 import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Sidebar from "../components/Sidebar"
 import Footer from "../components/Footer"
 import TutorialModal from "../components/TutorialModal"
+import { Outlet } from "react-router-dom"
 
-interface LayoutProps {
-  children: React.ReactNode
-}
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isTutorialOpen, setIsTutorialOpen] = useState(false)
 
@@ -39,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
         <main className="flex-1 lg:ml-0 p-6 transition-all duration-300 flex flex-col overflow-y-auto min-w-0">
-          <div className="flex-1">{children}</div>
+          <div className="flex-1"><Outlet /></div>
         </main>
       </div>
 

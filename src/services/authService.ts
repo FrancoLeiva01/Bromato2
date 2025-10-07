@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_BASE_URL = "http://localhost:3000"
+const API_BASE_URL = "http://localhost:3001/api/v1/"
 
 // Create axios instance with default configuration
 const apiClient = axios.create({
@@ -32,7 +32,7 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem("token")
       localStorage.removeItem("user")
-      window.location.href = "/login"
+      window.location.href = "/"
     }
     return Promise.reject(error)
   },

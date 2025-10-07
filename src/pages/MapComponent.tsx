@@ -302,7 +302,7 @@ const filtered = markers.filter((m) =>
 
         {/* Markers Counter */}
         {markers.length > 0 && (
-          <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 z-0">
+          <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-3 z-[1000]">
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <MapPin size={16} className="text-green-600" />
               <span>

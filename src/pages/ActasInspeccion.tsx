@@ -307,7 +307,7 @@ const ActasInspeccion: React.FC = () => {
                           type="radio"
                           name="habilitacion"
                           value="si"
-                          className="accent-blue-600"
+                          className="accent-blue-500"
                         />
                         <span className="text-sm">Sí</span>
                       </label>
@@ -316,7 +316,7 @@ const ActasInspeccion: React.FC = () => {
                           type="radio"
                           name="habilitacion"
                           value="no"
-                          className="accent-blue-600"
+                          className="accent-red-600"
                         />
                         <span className="text-sm">No</span>
                       </label>
@@ -325,7 +325,7 @@ const ActasInspeccion: React.FC = () => {
                           type="radio"
                           name="habilitacion"
                           value="tramite"
-                          className="accent-blue-600"
+                          className="accent-orange-500"
                         />
                         <span className="text-sm">En trámite</span>
                       </label>
@@ -348,7 +348,7 @@ const ActasInspeccion: React.FC = () => {
                     />
 
                     <label className="flex items-start space-x-2">
-                      <input type="checkbox" className="mt-1 accent-blue-600" />
+                      <input type="checkbox" className="mt-1 accent-blue-500" />
                       <span className="text-xs text-gray-600">
                         No se permite la realización de la inspección. En virtud
                         de ello se procede a fijar el acta notificada en la
@@ -412,7 +412,7 @@ const ActasInspeccion: React.FC = () => {
                           type="radio"
                           name="domicilio"
                           value="no"
-                          className="accent-blue-600"
+                          className="accent-red-600"
                         />
                         <span className="text-sm">No</span>
                       </label>
@@ -537,7 +537,7 @@ const ActasInspeccion: React.FC = () => {
                             type="radio"
                             name="agua-estado"
                             value="no-potable"
-                            className="accent-blue-600"
+                            className="accent-red-600"
                           />
                           <span className="text-sm">No potable</span>
                         </label>
@@ -597,7 +597,7 @@ const ActasInspeccion: React.FC = () => {
                         type="radio"
                         name="certificacion"
                         value="no"
-                        className="accent-blue-600"
+                        className="accent-red-600"
                       />
                       <span className="text-sm">No</span>
                     </label>

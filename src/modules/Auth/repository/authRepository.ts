@@ -3,7 +3,7 @@ import { apiClient, AuthResponse, LoginCredentials } from "@/services/authServic
 export const authRepository =  {
         login: async (credentials: LoginCredentials): Promise<AuthResponse> =>  {
         try {
-          const response = await apiClient.post<AuthResponse>("/api/v1/auth/login", credentials)
+          const response = await apiClient.post<AuthResponse>("auth/login", credentials)
   
           if (response.data.user) {
             localStorage.setItem("user", JSON.stringify(response.data.user))
@@ -13,5 +13,11 @@ export const authRepository =  {
         } catch (error: any) {
           throw new Error(error.response?.data?.message || "Error al iniciar sesión")
         }
-      }
-}
+      },
+
+       AuthgetMe: async () => {
+    const { data } = await apiClient.get("auth/me");
+    return data;
+  },
+  
+};
