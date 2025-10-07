@@ -1,7 +1,7 @@
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import { LoaderContent } from "@/components/LoaderComponent"
 interface CalendarEvent {
   id: string;
   title: string;
@@ -10,7 +10,19 @@ interface CalendarEvent {
 }
 
 const Calendar: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+
 
   const events: CalendarEvent[] = [
     { id: "2025-3221", title: "2025-3221", date: 1, type: "notification" },
@@ -117,6 +129,8 @@ const Calendar: React.FC = () => {
   };
 
   return (
+     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+
     <div className="bg-slate-400 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 border border-gray-500 ">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
@@ -170,6 +184,8 @@ const Calendar: React.FC = () => {
         </div>
       </div>
     </div>
+
+     </LoaderContent>
   );
 };
 
