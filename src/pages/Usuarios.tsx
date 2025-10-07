@@ -1,15 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Users, Edit, Trash2 } from "lucide-react";
+import { LoaderContent } from "@/components/LoaderComponent"
 
 const UsuariosTable: React.FC = () => {
+   const [isLoading, setIsLoading] = useState(true)
   const [filterType, setFilterType] = useState("Filtros");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+
 
   const usuarios = [
     { id: 1, nombre: "Juan Pérez", email: "juan.perez@email.com", rol: "Administrador", estado: "Activo", fechaRegistro: "2024-01-15" },
@@ -66,6 +80,8 @@ const UsuariosTable: React.FC = () => {
   const handleNext = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   return (
+     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+
     <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
       
      {/* Titulo */}
@@ -234,6 +250,8 @@ const UsuariosTable: React.FC = () => {
         </div>
       </div>
     </div>
+
+     </LoaderContent>
   );
 };
 

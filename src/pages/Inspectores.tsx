@@ -1,8 +1,9 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserCheck, Eye, Plus, X } from "lucide-react";
+import { LoaderContent } from "@/components/LoaderComponent";
 
 interface Inspector {
   id: number;
@@ -15,6 +16,7 @@ interface Inspector {
 }
 
 const Inspectores: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [filterType, setFilterType] = useState("");
@@ -23,6 +25,16 @@ const Inspectores: React.FC = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+ useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+   return () => clearTimeout(timer)
+  }, [])
 
   // Datos de ejemplo
   const inspectores: Inspector[] = [
@@ -94,6 +106,8 @@ const Inspectores: React.FC = () => {
   };
 
   return (
+    <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+
     <>
       <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
         {/* Titulo */}
@@ -116,18 +130,18 @@ const Inspectores: React.FC = () => {
                 setSearchTerm("");
                 setCurrentPage(1);
               }}
-            >
+              >
               <option value="">Filtros</option>
               <option value="apellido">Apellido</option>
               <option value="identificador">Identificador</option>
             </select>
             {filterType && (
               <input
-                type="text"
-                placeholder={`Buscar por ${filterType}...`}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="border border-gray-100 rounded-lg px-3 py-1 text-sm"
+              type="text"
+              placeholder={`Buscar por ${filterType}...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-100 rounded-lg px-3 py-1 text-sm"
               />
             )}
             <button
@@ -197,7 +211,7 @@ const Inspectores: React.FC = () => {
                               ? "bg-green-100 text-green-800"
                               : "bg-red-100 text-red-800"
                           }`}
-                        >
+                          >
                           {inspector.activo ? "Activo" : "Inactivo"}
                         </span>
                       </td>
@@ -211,7 +225,7 @@ const Inspectores: React.FC = () => {
                         <button
                           className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
                           onClick={() => handleViewDetails(inspector)}
-                        >
+                          >
                           <Eye className="w-4 h-4" />
                         </button>
                       </td>
@@ -222,7 +236,7 @@ const Inspectores: React.FC = () => {
                     <td
                       colSpan={8}
                       className="px-6 py-4 text-center text-sm text-gray-500"
-                    >
+                      >
                       No se encontraron inspectores que coincidan con los
                       criterios de búsqueda.
                     </td>
@@ -240,10 +254,10 @@ const Inspectores: React.FC = () => {
                   disabled={currentPage === 1}
                   className={`px-4 py-2 text-sm font-medium rounded-md ${
                     currentPage === 1
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
-                >
+                  >
                   Anterior
                 </button>
                 <span className="px-4 py-2 text-sm font-medium text-gray-700">
@@ -254,8 +268,8 @@ const Inspectores: React.FC = () => {
                   disabled={currentPage === totalPages}
                   className={`px-4 py-2 text-sm font-medium rounded-md ${
                     currentPage === totalPages
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-blue-700 text-white hover:bg-blue-400"
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-blue-700 text-white hover:bg-blue-400"
                   }`}
                 >
                   Siguiente
@@ -273,7 +287,7 @@ const Inspectores: React.FC = () => {
             <button
               onClick={handleCloseModal}
               className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors"
-            >
+              >
               <X className="w-6 h-6" />
             </button>
             {/* Modal */}
@@ -303,6 +317,7 @@ const Inspectores: React.FC = () => {
         </div>
       )}
     </>
+      </LoaderContent>
   );
 };
 export default Inspectores;

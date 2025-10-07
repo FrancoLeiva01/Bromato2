@@ -1,11 +1,13 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ClipboardCheck, ChevronLeft, ChevronRight, Eye, Plus, X } from "lucide-react"
 import ComprobacionData from "@/components/ComprobacionData"
+import { LoaderContent } from "@/components/LoaderComponent"
 
 const ActasComprobacion: React.FC = () => {
+   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [filterType, setFilterType] = useState("Todos")
   const [filterValue, setFilterValue] = useState("")
@@ -13,6 +15,17 @@ const ActasComprobacion: React.FC = () => {
   const [selectedActa, setSelectedActa] = useState<(typeof actas)[0] | null>(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const itemsPerPage = 10
+
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
 
   const actas = [
     {
@@ -90,6 +103,8 @@ const ActasComprobacion: React.FC = () => {
   }
 
   return (
+     <LoaderContent isLoading={isLoading} loadingText="Cargando..." minHeight="400px">
+
     <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600 ">
       {/* Título centrado */}
       <div className="mb-6">
@@ -418,6 +433,9 @@ const ActasComprobacion: React.FC = () => {
         </div>
       )}
     </div>
+
+
+     </LoaderContent>
   )
 }
 
