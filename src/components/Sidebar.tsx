@@ -114,7 +114,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                       }`}
                     >
                       <div className="flex items-center space-x-3 ">
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-6 h-6" />
                         <span className="font-medium">{item.label}</span>
                       </div>
                       {isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
@@ -136,7 +136,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                                   : "text-white hover:bg-slate-700 hover:text-white"
                               }`}
                             >
-                              <SubIcon className="w-4 h-4" />
+                              <SubIcon className="w-5 h-5" />
                               <span className="text-sm font-medium">{subItem.label}</span>
                             </Link>
                           )
