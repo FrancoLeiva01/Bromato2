@@ -1,84 +1,87 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Tag, Edit, Trash2, Eye, X } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import { Tag, Edit, Trash2, Eye, X } from "lucide-react";
 
 interface Rubro {
-  id: number
-  nombre: string
-  riesgo: string
-  prohibiciones: string
+  id: number;
+  nombre: string;
+  riesgo: string;
+  prohibiciones: string;
 }
 
 const Rubros: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [filterType, setFilterType] = useState("Filtros")
-  const [riskFilter, setRiskFilter] = useState("")
-  const [selectedRubro, setSelectedRubro] = useState<Rubro | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const itemsPerPage = 10
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("Filtros");
+  const [riskFilter, setRiskFilter] = useState("");
+  const [selectedRubro, setSelectedRubro] = useState<Rubro | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const itemsPerPage = 10;
 
   const rubros: Rubro[] = Array.from({ length: 45 }, (_, i) => ({
     id: i + 1,
     nombre: `Rubro ${i + 1}`,
     riesgo: ["Alto", "Medio", "Bajo"][Math.floor(Math.random() * 3)],
     prohibiciones: `Prohibición ${i + 1}`,
-  }))
+  }));
 
   const filteredRubros = rubros.filter((rubro) => {
     if (filterType === "Filtros" || filterType === "Todos") {
-      return true
+      return true;
     }
 
     if (filterType === "Nombre") {
-      return rubro.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+      return rubro.nombre.toLowerCase().includes(searchTerm.toLowerCase());
     }
 
     if (filterType === "Riesgo") {
-      return riskFilter === "" || rubro.riesgo === riskFilter
+      return riskFilter === "" || rubro.riesgo === riskFilter;
     }
 
-    return true
-  })
+    return true;
+  });
 
-  const totalPages = Math.ceil(filteredRubros.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentRubros = filteredRubros.slice(startIndex, startIndex + itemsPerPage)
+  const totalPages = Math.ceil(filteredRubros.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentRubros = filteredRubros.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   const handleSearch = () => {
-    setCurrentPage(1)
-  }
+    setCurrentPage(1);
+  };
 
   const handleFilterChange = (value: string) => {
-    setFilterType(value)
-    setSearchTerm("")
-    setRiskFilter("")
-    setCurrentPage(1)
-  }
+    setFilterType(value);
+    setSearchTerm("");
+    setRiskFilter("");
+    setCurrentPage(1);
+  };
 
   const handlePrevious = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
+      setCurrentPage(currentPage - 1);
     }
-  }
+  };
 
   const handleNext = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage + 1);
     }
-  }
+  };
 
   const handleViewDetails = (rubro: Rubro) => {
-    setSelectedRubro(rubro)
-    setIsModalOpen(true)
-  }
+    setSelectedRubro(rubro);
+    setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedRubro(null)
-  }
+    setIsModalOpen(false);
+    setSelectedRubro(null);
+  };
 
   return (
     <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 font">
@@ -140,7 +143,9 @@ const Rubros: React.FC = () => {
           <table className="w-full">
             <thead className="bg-gray-300">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID
+                </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nombre
                 </th>
@@ -158,22 +163,28 @@ const Rubros: React.FC = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {currentRubros.map((rubro) => (
                 <tr key={rubro.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{rubro.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{rubro.nombre}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {rubro.id}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {rubro.nombre}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                         rubro.riesgo === "Alto"
                           ? "bg-red-100 text-red-800"
                           : rubro.riesgo === "Medio"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-green-100 text-green-800"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-green-100 text-green-800"
                       }`}
                     >
                       {rubro.riesgo}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">{rubro.prohibiciones}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {rubro.prohibiciones}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button
@@ -243,19 +254,24 @@ const Rubros: React.FC = () => {
 
             {/* Contenido del modal */}
             <div className="space-y-6">
-
               <div className="text-center">
                 <h3 className="text-sm font-medium text-white mb-2">Nombre</h3>
-                <h2 className="text-2xl font-bold text-gray-200">{selectedRubro.nombre}</h2>
+                <h2 className="text-2xl font-bold text-gray-200">
+                  {selectedRubro.nombre}
+                </h2>
               </div>
 
               <div className="text-center">
                 <h3 className="text-sm font-medium text-white mb-2">Riesgo</h3>
-                <p className="text-4xl font-bold text-orange-500">{selectedRubro.riesgo.charAt(0)}</p>
+                <p className="text-4xl font-bold text-orange-500">
+                  {selectedRubro.riesgo.charAt(0)}
+                </p>
               </div>
 
               <div className="text-center">
-                <h3 className="text-sm font-medium text-white mb-2">Prohibiciones</h3>
+                <h3 className="text-sm font-medium text-white mb-2">
+                  Prohibiciones
+                </h3>
                 <p className="text-gray-200">{selectedRubro.prohibiciones}</p>
               </div>
             </div>
@@ -263,7 +279,7 @@ const Rubros: React.FC = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Rubros
+export default Rubros;
