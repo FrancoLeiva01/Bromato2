@@ -1,8 +1,9 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Store, Plus, Eye, X } from "lucide-react"
+import { LoaderContent } from "@/components/LoaderComponent"
 
 interface Comercio {
   id: number
@@ -15,6 +16,7 @@ interface Comercio {
 }
 
 const Comercios: React.FC = () => {
+   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
   const [filterType, setFilterType] = useState("Filtros")
@@ -23,6 +25,16 @@ const Comercios: React.FC = () => {
   const [activoFilter, setActivoFilter] = useState("")
   const [selectedComercio, setSelectedComercio] = useState<Comercio | null>(null) // 👈 agregado
   const itemsPerPage = 10
+
+
+    useEffect(() => {
+      setIsLoading(true)
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+      }, 1000)
+  
+      return () => clearTimeout(timer)
+    }, [])
 
   const comercios: Comercio[] = Array.from({ length: 67 }, (_, i) => ({
     id: i + 1,
@@ -64,6 +76,8 @@ const Comercios: React.FC = () => {
   const handleNext = () => { if (currentPage < totalPages) setCurrentPage(currentPage + 1) }
 
   return (
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Comercios..." minHeight="400px">
+
     <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 " >
 
       {/* Titulo */}
@@ -81,7 +95,7 @@ const Comercios: React.FC = () => {
             className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
             value={filterType}
             onChange={(e) => handleFilterChange(e.target.value)}
-          >
+            >
             <option value="Filtros">Filtros</option>
             <option value="Todos">Todos</option>
             <option value="Nombre de Fantasia">Nombre de Fantasia</option>
@@ -95,7 +109,7 @@ const Comercios: React.FC = () => {
           {(filterType === "Nombre de Fantasia" ||
             filterType === "Nombre/Razon Social comercio" ||
             filterType === "Calle") && (
-            <input
+              <input
               type="text"
               placeholder={`Buscar por ${filterType.toLowerCase()}...`}
               value={searchTerm}
@@ -106,9 +120,9 @@ const Comercios: React.FC = () => {
 
           {filterType === "Barrio" && (
             <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-              value={barrioFilter}
-              onChange={(e) => setBarrioFilter(e.target.value)}
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
+            value={barrioFilter}
+            onChange={(e) => setBarrioFilter(e.target.value)}
             >
               <option value="">Seleccionar barrio</option>
               <option value="Centro">Centro</option>
@@ -121,9 +135,9 @@ const Comercios: React.FC = () => {
 
           {filterType === "Zona" && (
             <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-              value={zonaFilter}
-              onChange={(e) => setZonaFilter(e.target.value)}
+            className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
+            value={zonaFilter}
+            onChange={(e) => setZonaFilter(e.target.value)}
             >
               <option value="">Seleccionar zona</option>
               <option value="Zona A">Zona A</option>
@@ -147,14 +161,14 @@ const Comercios: React.FC = () => {
           <button
             className="flex items-center px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-400 transition-colors"
             onClick={handleSearch}
-          >
+            >
             Buscar
           </button>
         </div>
 
         <button
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2"
-        >
+          >
           <Plus className="w-4 h-4" />
           <span>Nuevo Comercio</span>
         </button>
@@ -196,7 +210,7 @@ const Comercios: React.FC = () => {
                         className="text-blue-500 hover:text-blue-500 transition-colors"
                         title="Ver detalles"
                         onClick={() => setSelectedComercio(comercio)} // 👈 abre modal
-                      >
+                        >
                         <Eye className="w-4 h-4" />
                       </button>
                     </td>
@@ -225,7 +239,7 @@ const Comercios: React.FC = () => {
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
                 className={`px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${currentPage === 1 ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-white text-blue-700 hover:bg-blue-400 shadow-sm hover:shadow-md border"}`}
-              >
+                >
                 Anterior
               </button>
               <div className="px-4 py-2 bg-gray-400">
@@ -235,7 +249,7 @@ const Comercios: React.FC = () => {
                 onClick={handleNext}
                 disabled={currentPage === totalPages}
                 className={`px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${currentPage === totalPages ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-blue-700 text-white hover:to-blue-400"}`}
-              >
+                >
                 Siguiente
               </button>
             </div>
@@ -250,7 +264,7 @@ const Comercios: React.FC = () => {
             <button
               onClick={() => setSelectedComercio(null)}
               className="absolute top-4 right-4 text-white hover:text-red-500"
-            >
+              >
               <X className="w-6 h-6" />
             </button>
 
@@ -276,6 +290,7 @@ const Comercios: React.FC = () => {
         </div>
       )}
     </div>
+      </LoaderContent>
   )
 }
 

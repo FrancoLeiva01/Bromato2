@@ -139,7 +139,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                       }`}
                     >
                       <div className="flex items-center space-x-3 ">
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-6 h-6" />
                         <span className="font-medium">{item.label}</span>
                       </div>
                       {isOpen ? (
@@ -167,6 +167,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                               }`}
                             >
                               <SubIcon className="w-4 h-4" />
+                              <span className="text-sm font-medium">
+                                {subItem.label}
+                              </span>
+                              =======
+                              <SubIcon className="w-5 h-5" />
                               <span className="text-sm font-medium">
                                 {subItem.label}
                               </span>

@@ -22,7 +22,7 @@ import Header from "@/components/Header";
 
 export const PrivateRoute = [
 
-    {path: "/Login", element: <Login/>},
+    {path: "/", element: <Login/>},  // antes el path era /login pero para que cuado inice la pagina lleve al login lo saque y quedo /
 
     {path: "/Register", element: (
         // <ProtectedRoute>

@@ -8,6 +8,7 @@ import L from "leaflet"
 import markerIcon from "leaflet/dist/images/marker-icon.png"
 import markerShadow from "leaflet/dist/images/marker-shadow.png"
 import markerRetina from "leaflet/dist/images/marker-icon-2x.png"
+import { LoaderContent } from "@/components/LoaderComponent"
 
 
 
@@ -45,6 +46,7 @@ function MapClickHandler({ onMapClick }: { onMapClick: (latlng: LatLngExpression
 }
 
 const MapComponent: React.FC = () => {
+   const [isLoading, setIsLoading] = useState(true)
   // Catamarca COORDENADAS y Guardado de pines
   const defaultCenter: LatLngExpression = [-28.4696, -65.7852]
   const [markers, setMarkers] = useState<MarkerData[]>(() => {
@@ -55,6 +57,17 @@ const MapComponent: React.FC = () => {
     return []
   }
 })
+
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
 
   const [selectedPosition, setSelectedPosition] = useState<LatLngExpression | null>(null)
   const [showForm, setShowForm] = useState(false)
@@ -142,6 +155,8 @@ const filtered = markers.filter((m) =>
 
 
   return (
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Marcadores..." minHeight="400px">
+
     <div className="h-screen flex flex-col bg-gray-50 rounded-lg">
       {/* Header */}
       <div className="bg-slate-800 shadow-sm rounded-lg border-black p-4 ">
@@ -313,6 +328,8 @@ const filtered = markers.filter((m) =>
         )}
       </div>
     </div>
+
+     </LoaderContent>
   )
 }
 

@@ -13,7 +13,8 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { LoaderContent } from "@/components/LoaderComponent"
 
 interface Notification {
   id: number;
@@ -29,11 +30,23 @@ interface Notification {
 }
 
 const Notifications: React.FC = () => {
+   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode] = useState<"cards" | "table">("cards");
   const [filterType, setFilterType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = viewMode === "cards" ? 3 : 8;
+
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+
+    return () => clearTimeout(timer)
+  }, [])
   const maxPages = 5;
 
   const notifications: Notification[] = [
@@ -325,6 +338,8 @@ const Notifications: React.FC = () => {
   };
 
   return (
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Notificaciones..." minHeight="400px">
+
     <div className=" bg-slate-700 max-w-full mx-auto p-6">
       <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
         <div className="px-6 py-4 border-b border-gray-200">
@@ -744,6 +759,8 @@ const Notifications: React.FC = () => {
         </div>
       </div>
     </div>
+
+     </LoaderContent>
   );
 };
 

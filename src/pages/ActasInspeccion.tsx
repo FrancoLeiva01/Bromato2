@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Search,
   ChevronLeft,
@@ -12,8 +12,10 @@ import {
   FileText,
 } from "lucide-react";
 import InspeccionesData from "../components/InspeccionesData";
+import { LoaderContent } from "@/components/LoaderComponent"
 
 const ActasInspeccion: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [selectedActa, setSelectedActa] = useState<any | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +23,17 @@ const ActasInspeccion: React.FC = () => {
   const [filterField, setFilterField] = useState("Todos");
   const [filterTurno, setFilterTurno] = useState("Todos");
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+
 
   const actas = [
     {
@@ -97,6 +110,8 @@ const ActasInspeccion: React.FC = () => {
   };
 
   return (
+     <LoaderContent isLoading={isLoading} loadingText="Cargando Actas..." minHeight="400px">
+
     <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600 ">
       {/* 🔹 Título centrado con ícono */}
       <div className="mb-6">
@@ -132,7 +147,7 @@ const ActasInspeccion: React.FC = () => {
               setCurrentPage(1);
             }}
             className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-          />
+            />
 
           <select
             className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
@@ -141,7 +156,7 @@ const ActasInspeccion: React.FC = () => {
               setFilterTurno(e.target.value);
               setCurrentPage(1);
             }}
-          >
+            >
             <option value="Todos">Todos los turnos</option>
             <option value="Mañana">Mañana</option>
             <option value="Tarde">Tarde</option>
@@ -153,7 +168,7 @@ const ActasInspeccion: React.FC = () => {
         <button
           onClick={handleOpenForm}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2"
-        >
+          >
           <Plus className="w-4 h-4" />
           <span>Crear Acta de Inspeccion</span>
         </button>
@@ -218,12 +233,12 @@ const ActasInspeccion: React.FC = () => {
                   <span
                     className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                       acta.cargado === "Completada"
-                        ? "bg-green-100 text-green-800"
-                        : acta.cargado === "En proceso"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-gray-100 text-gray-800"
+                      ? "bg-green-100 text-green-800"
+                      : acta.cargado === "En proceso"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-gray-100 text-gray-800"
                     }`}
-                  >
+                    >
                     {acta.cargado}
                   </span>
                 </td>
@@ -231,12 +246,12 @@ const ActasInspeccion: React.FC = () => {
                   <span
                     className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                       acta.numeroNotificacion === "Aprobada"
-                        ? "bg-green-100 text-green-800"
-                        : acta.numeroNotificacion === "Observaciones"
-                        ? "bg-orange-100 text-orange-800"
-                        : "bg-red-100 text-red-800"
+                      ? "bg-green-100 text-green-800"
+                      : acta.numeroNotificacion === "Observaciones"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-red-100 text-red-800"
                     }`}
-                  >
+                    >
                     {acta.numeroNotificacion}
                   </span>
                 </td>
@@ -244,7 +259,7 @@ const ActasInspeccion: React.FC = () => {
                   <button
                     onClick={() => setSelectedActa(acta)}
                     className="text-gray-700 hover:text-orange-600"
-                  >
+                    >
                     <Eye size={20} />
                   </button>
                 </td>
@@ -258,7 +273,7 @@ const ActasInspeccion: React.FC = () => {
         <InspeccionesData
           actaData={selectedActa}
           onClose={() => setSelectedActa(null)}
-        />
+          />
       )}
 
       {isFormOpen && (
@@ -296,7 +311,7 @@ const ActasInspeccion: React.FC = () => {
                       type="text"
                       placeholder="CUIT/CUIL"
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
+                      />
 
                     <div className="flex items-center space-x-4">
                       <span className="text-sm font-medium text-gray-700">
@@ -308,7 +323,7 @@ const ActasInspeccion: React.FC = () => {
                           name="habilitacion"
                           value="si"
                           className="accent-blue-500"
-                        />
+                          />
                         <span className="text-sm">Sí</span>
                       </label>
                       <label className="flex items-center space-x-2">
@@ -326,7 +341,7 @@ const ActasInspeccion: React.FC = () => {
                           name="habilitacion"
                           value="tramite"
                           className="accent-orange-500"
-                        />
+                          />
                         <span className="text-sm">En trámite</span>
                       </label>
                     </div>
@@ -345,7 +360,7 @@ const ActasInspeccion: React.FC = () => {
                       type="text"
                       placeholder="Actividad habilitada"
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
+                      />
 
                     <label className="flex items-start space-x-2">
                       <input type="checkbox" className="mt-1 accent-blue-500" />
@@ -371,7 +386,7 @@ const ActasInspeccion: React.FC = () => {
                       type="text"
                       placeholder="Nombre y apellido"
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
+                      />
                     <input
                       type="text"
                       placeholder="D.N.I."
@@ -381,7 +396,7 @@ const ActasInspeccion: React.FC = () => {
                       type="text"
                       placeholder="Cargo/función"
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
+                      />
                   </div>
                 </div>
 
@@ -404,7 +419,7 @@ const ActasInspeccion: React.FC = () => {
                           name="domicilio"
                           value="si"
                           className="accent-blue-600"
-                        />
+                          />
                         <span className="text-sm">Sí</span>
                       </label>
                       <label className="flex items-center space-x-2">
@@ -421,7 +436,7 @@ const ActasInspeccion: React.FC = () => {
                       type="text"
                       placeholder="En caso negativo, domicilio efectivo e inspeccionado"
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
+                      />
                   </div>
 
                   {/* b. Actividad efectivamente desarrollada */}
@@ -432,7 +447,7 @@ const ActasInspeccion: React.FC = () => {
                     <textarea
                       placeholder="Describa la actividad..."
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-20 resize-none"
-                    />
+                      />
                   </div>
 
                   {/* c. Condiciones de higiene en general */}
@@ -460,13 +475,13 @@ const ActasInspeccion: React.FC = () => {
                           },
                         ].map((item) => (
                           <label
-                            key={item.id}
-                            className="flex items-center space-x-2"
+                          key={item.id}
+                          className="flex items-center space-x-2"
                           >
                             <input
                               type="checkbox"
                               className="accent-blue-600"
-                            />
+                              />
                             <span className="text-sm">{item.label}</span>
                           </label>
                         ))}
@@ -482,7 +497,7 @@ const ActasInspeccion: React.FC = () => {
                           {
                             id: "seguridad-1",
                             label:
-                              "¿Posee botiquín de primeros auxilios con los elementos mínimos?",
+                            "¿Posee botiquín de primeros auxilios con los elementos mínimos?",
                           },
                           { id: "seguridad-2", label: "Matafuego (varios)" },
                           {
@@ -497,17 +512,17 @@ const ActasInspeccion: React.FC = () => {
                           {
                             id: "seguridad-6",
                             label:
-                              "¿Posee salida de emergencia bien señalizada?",
+                            "¿Posee salida de emergencia bien señalizada?",
                           },
                         ].map((item) => (
                           <label
                             key={item.id}
                             className="flex items-center space-x-2"
-                          >
+                            >
                             <input
                               type="checkbox"
                               className="accent-blue-600"
-                            />
+                              />
                             <span className="text-sm">{item.label}</span>
                           </label>
                         ))}
@@ -529,7 +544,7 @@ const ActasInspeccion: React.FC = () => {
                             name="agua-estado"
                             value="potable"
                             className="accent-blue-600"
-                          />
+                            />
                           <span className="text-sm">Potable</span>
                         </label>
                         <label className="flex items-center space-x-2">
@@ -538,7 +553,7 @@ const ActasInspeccion: React.FC = () => {
                             name="agua-estado"
                             value="no-potable"
                             className="accent-red-600"
-                          />
+                            />
                           <span className="text-sm">No potable</span>
                         </label>
                       </div>
@@ -560,7 +575,7 @@ const ActasInspeccion: React.FC = () => {
                       type="text"
                       placeholder="Muebles de materiales"
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
+                      />
                     <input
                       type="text"
                       placeholder="Manejo"
@@ -589,7 +604,7 @@ const ActasInspeccion: React.FC = () => {
                         name="certificacion"
                         value="si"
                         className="accent-blue-600"
-                      />
+                        />
                       <span className="text-sm">Sí</span>
                     </label>
                     <label className="flex items-center space-x-2">
@@ -598,7 +613,7 @@ const ActasInspeccion: React.FC = () => {
                         name="certificacion"
                         value="no"
                         className="accent-red-600"
-                      />
+                        />
                       <span className="text-sm">No</span>
                     </label>
                     <label className="flex items-center space-x-2">
@@ -607,7 +622,7 @@ const ActasInspeccion: React.FC = () => {
                         name="certificacion-exhibe"
                         value="si"
                         className="accent-blue-600"
-                      />
+                        />
                       <span className="text-sm">
                         En caso afirmativo, exhibe: Sí
                       </span>
@@ -618,7 +633,7 @@ const ActasInspeccion: React.FC = () => {
                         name="certificacion-exhibe"
                         value="no"
                         className="accent-blue-600"
-                      />
+                        />
                       <span className="text-sm">No</span>
                     </label>
                   </div>
@@ -631,9 +646,9 @@ const ActasInspeccion: React.FC = () => {
                   </h3>
                   <textarea
                    maxLength={800}
-                    placeholder="Escriba sus observaciones generales aquí..."
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-32 resize-none"
-                  />
+                   placeholder="Escriba sus observaciones generales aquí..."
+                   className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm h-32 resize-none"
+                   />
                 </div>
 
                 {/* Botones de acción */}
@@ -648,7 +663,7 @@ const ActasInspeccion: React.FC = () => {
                   <button
                     type="submit"
                     className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors ml-5"
-                  >
+                    >
                     Guardar Acta de Inspección
                   </button>
                 </div>
@@ -665,10 +680,10 @@ const ActasInspeccion: React.FC = () => {
           disabled={currentPage === 1}
           className={`px-4 py-2 rounded-lg text-sm font-medium ${
             currentPage === 1
-              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
-        >
+          >
           <ChevronLeft className="w-4 h-4" />
         </button>
         <span className="px-4 py-2 text-sm font-medium text-white">
@@ -679,14 +694,15 @@ const ActasInspeccion: React.FC = () => {
           disabled={currentPage === totalPages}
           className={`px-4 py-2 rounded-lg text-sm font-medium ${
             currentPage === totalPages
-              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-              : "bg-blue-700 text-white hover:bg-blue-400"
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-blue-700 text-white hover:bg-blue-400"
           }`}
         >
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
     </div>
+          </LoaderContent>
   );
 };
 
