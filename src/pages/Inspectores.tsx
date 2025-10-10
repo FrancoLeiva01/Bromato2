@@ -13,6 +13,8 @@ interface Inspector {
   activo: boolean;
   funcion: string;
   identificador: string;
+  cuil: string;
+  legajo: string;
 }
 
 const Inspectores: React.FC = () => {
@@ -25,49 +27,80 @@ const Inspectores: React.FC = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [inspectores, setInspectores] = useState<Inspector[]>([]);
 
+  const [formData, setFormData] = useState({
+    nombre: "",
+    apellido: "",
+    email: "",
+    funcion: "",
+    identificador: "",
+    cuil: "",
+    legajo: "",
+    activo: true,
+  });
+
+  // Simulación de carga inicial
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
+      // Datos de ejemplo
+      setInspectores([
+        {
+          id: 1,
+          nombre: "Inspector 1",
+          apellido: "Apellido 1",
+          email: "inspector1@catamarca.gov.ar",
+          activo: true,
+          funcion: "Sur",
+          identificador: "37750108",
+          cuil: "20-37750108-3",
+          legajo: "1234",
+        },
+        {
+          id: 2,
+          nombre: "Inspector 2",
+          apellido: "Apellido 2",
+          email: "inspector2@catamarca.gov.ar",
+          activo: false,
+          funcion: "Oeste",
+          identificador: "46833456",
+          cuil: "20-46833456-9",
+          legajo: "5678",
+        },
+      ]);
       setIsLoading(false);
     }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Datos de ejemplo
-  const inspectores: Inspector[] = [
-    {
-      id: 1,
-      nombre: "Inspector 1",
-      apellido: "Apellido 1",
-      email: "inspector1@catamarca.gov.ar",
-      activo: true,
-      funcion: "Sur",
-      identificador: "37750108",
-    },
-    {
-      id: 2,
-      nombre: "Inspector 2",
-      apellido: "Apellido 2",
-      email: "inspector2@catamarca.gov.ar",
-      activo: false,
-      funcion: "Oeste",
-      identificador: "46833456",
-    },
-    ...Array.from({ length: 32 }, (_, i) => ({
-      id: i + 3,
-      nombre: `Inspector ${i + 3}`,
-      apellido: `Apellido ${i + 3}`,
-      email: `inspector${i + 3}@catamarca.gov.ar`,
-      activo: Math.random() > 0.5,
-      funcion: ["Sur", "Norte", "Este", "Oeste", "Centro"][
-        Math.floor(Math.random() * 5)
-      ],
-      identificador: `${Math.floor(Math.random() * 90000000) + 10000000}`,
-    })),
-  ];
+  // 🔗 Endpoints simulados (para que los conectes luego)
+  const getInspectores = async () => {
+    // const res = await fetch("TU_ENDPOINT_GET");
+    // const data = await res.json();
+    // setInspectores(data);
+  };
 
+  const createInspector = async (newInspector: Omit<Inspector, "id">) => {
+    // const res = await fetch("TU_ENDPOINT_POST", { method: "POST", body: JSON.stringify(newInspector) });
+    // const data = await res.json();
+    // setInspectores([...inspectores, data]);
+  };
+
+  const updateInspector = async (
+    id: number,
+    updatedData: Partial<Inspector>
+  ) => {
+    // await fetch(`TU_ENDPOINT_PUT/${id}`, { method: "PUT", body: JSON.stringify(updatedData) });
+  };
+
+  const deleteInspector = async (id: number) => {
+    // await fetch(`TU_ENDPOINT_DELETE/${id}`, { method: "DELETE" });
+  };
+
+  // Filtros
   const filteredInspectores = inspectores.filter((inspector) => {
     if (!filterType || !searchTerm) return true;
     if (filterType === "apellido")
@@ -104,6 +137,27 @@ const Inspectores: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newInspector: Inspector = {
+      id: inspectores.length + 1,
+      ...formData,
+    };
+    setInspectores([...inspectores, newInspector]);
+    // Llamar a createInspector(newInspector) cuando tengas el backend
+    setFormData({
+      nombre: "",
+      apellido: "",
+      email: "",
+      funcion: "",
+      identificador: "",
+      cuil: "",
+      legajo: "",
+      activo: true,
+    });
+    setIsFormOpen(false);
+  };
+
   return (
     <LoaderContent
       isLoading={isLoading}
@@ -121,6 +175,7 @@ const Inspectores: React.FC = () => {
               </h1>
             </div>
           </div>
+
           {/* Filtros + boton nuevo inspector */}
           <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
@@ -153,39 +208,43 @@ const Inspectores: React.FC = () => {
                 Buscar
               </button>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2">
+            <button
+              onClick={() => setIsFormOpen(true)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2"
+            >
               <Plus className="w-4 h-4" />
               <span>Nuevo Inspector</span>
             </button>
           </div>
+
           {/* Tabla */}
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-300">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       ID
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Nombre
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Apellido
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Activo
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Funcion
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                      Función
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Identificador
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Detalles
                     </th>
                   </tr>
@@ -194,19 +253,19 @@ const Inspectores: React.FC = () => {
                   {currentInspectores.length > 0 ? (
                     currentInspectores.map((inspector) => (
                       <tr key={inspector.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900">
                           {inspector.id}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                           {inspector.nombre}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                           {inspector.apellido}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-900">
                           {inspector.email}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4">
                           <span
                             className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                               inspector.activo
@@ -217,13 +276,13 @@ const Inspectores: React.FC = () => {
                             {inspector.activo ? "Activo" : "Inactivo"}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                           {inspector.funcion}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 text-sm text-gray-900">
                           {inspector.identificador}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td className="px-6 py-4 text-sm font-medium">
                           <div className="flex space-x-2">
                             <button
                               className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
@@ -255,8 +314,9 @@ const Inspectores: React.FC = () => {
                 </tbody>
               </table>
             </div>
+
             {/* Paginación */}
-            <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+            <div className="bg-white px-4 py-3 border-t border-gray-200">
               <div className="flex items-center justify-center">
                 <div className="flex items-center space-x-2">
                   <button
@@ -290,44 +350,140 @@ const Inspectores: React.FC = () => {
           </div>
         </div>
 
+        {/* MODAL DETALLES */}
         {isModalOpen && selectedInspector && (
           <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-slate-600 rounded-lg shadow-xl max-w-2xl w-full p-8 relative">
-              {/* equis */}
               <button
                 onClick={handleCloseModal}
                 className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
-              {/* Modal */}
-              <div className="space-y-6">
-                <div className="text-center">
-                  <h3 className="text-sm font-medium text-white mb-2">
-                    Inspector
-                  </h3>
-                  <h2 className="text-2xl font-bold text-gray-200">
-                    {selectedInspector?.nombre}
-                  </h2>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-sm font-medium text-white mb-2">
-                    Apellido
-                  </h3>
-                  <p className="text-4xl font-bold text-orange-500">
-                    {selectedInspector?.apellido}
-                  </p>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-sm font-medium text-white mb-2">Email</h3>
-                  <p className="text-gray-200">{selectedInspector?.email}</p>
-                </div>
+              <div className="space-y-6 text-center text-white">
+                <h2 className="text-2xl font-bold">
+                  {selectedInspector.nombre} {selectedInspector.apellido}
+                </h2>
+                <p>Email: {selectedInspector.email}</p>
+                <p>CUIL: {selectedInspector.cuil}</p>
+                <p>Legajo: {selectedInspector.legajo}</p>
+                <p>Función: {selectedInspector.funcion}</p>
+                <p>Identificador: {selectedInspector.identificador}</p>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* FORMULARIO NUEVO INSPECTOR */}
+        {isFormOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+            <form
+              onSubmit={handleFormSubmit}
+              className="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg relative"
+            >
+              <button
+                onClick={() => setIsFormOpen(false)}
+                type="button"
+                className="absolute top-4 right-4 text-gray-500 hover:text-red-600"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <h2 className="text-xl font-bold mb-4 text-center">
+                Agregar Nuevo Inspector
+              </h2>
+
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  placeholder="Nombre"
+                  value={formData.nombre}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nombre: e.target.value })
+                  }
+                  required
+                  className="border rounded p-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Apellido"
+                  value={formData.apellido}
+                  onChange={(e) =>
+                    setFormData({ ...formData, apellido: e.target.value })
+                  }
+                  required
+                  className="border rounded p-2"
+                />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
+                  className="border rounded p-2 col-span-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Función"
+                  value={formData.funcion}
+                  onChange={(e) =>
+                    setFormData({ ...formData, funcion: e.target.value })
+                  }
+                  className="border rounded p-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Identificador"
+                  value={formData.identificador}
+                  onChange={(e) =>
+                    setFormData({ ...formData, identificador: e.target.value })
+                  }
+                  className="border rounded p-2"
+                />
+                <input
+                  type="text"
+                  placeholder="CUIL"
+                  value={formData.cuil}
+                  onChange={(e) =>
+                    setFormData({ ...formData, cuil: e.target.value })
+                  }
+                  className="border rounded p-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Número de Legajo"
+                  value={formData.legajo}
+                  onChange={(e) =>
+                    setFormData({ ...formData, legajo: e.target.value })
+                  }
+                  className="border rounded p-2"
+                />
+              </div>
+
+              <div className="flex items-center mt-3 space-x-2">
+                <input
+                  type="checkbox"
+                  checked={formData.activo}
+                  onChange={(e) =>
+                    setFormData({ ...formData, activo: e.target.checked })
+                  }
+                />
+                <label>Activo</label>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-700 text-white py-2 rounded mt-4 hover:bg-blue-500 transition-colors"
+              >
+                Guardar Inspector
+              </button>
+            </form>
           </div>
         )}
       </>
     </LoaderContent>
   );
 };
+
 export default Inspectores;
