@@ -14,23 +14,26 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     queryKey: ["user"],
     queryFn: authRepository.AuthgetMe,
     staleTime: Infinity,
-    // enabled: !!token,
-    retry:true, 
+    enabled: !!localStorage.getItem("isAuthenticated"),
+    retry: false,
   });
   const [isAuthenticated, setIsAuthenticated] = useState<Status>(
-    Status.AUTHENTICATED,
+    Status.NOT_AUTHENTICATED,
   );
 
   useEffect(() => {
+    console.log('useEffect')
      if (isLoading) {
+      console.log('loading')
       setIsAuthenticated(Status.CHECKING);
       return
     } 
     if (user) {
+      console.log(user)
       setIsAuthenticated(Status.AUTHENTICATED);
       return
     }
-  }, [user, isLoading]);
+  }, [user]);
 
   return (
     <AuthContext.Provider

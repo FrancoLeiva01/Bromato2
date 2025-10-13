@@ -6,14 +6,15 @@ import { PrivateRoute } from "../routes/PrivateRoute";
 
 export const Routes = () => {
   const { isAuthenticated } = useContext(AuthContext);
+  console.log(isAuthenticated);
 
   const routes = useRoutes(
     isAuthenticated === Status.AUTHENTICATED ? PrivateRoute : PublicRoute,
   );
+ return <>{isAuthenticated === Status.CHECKING ? "loading": routes}</>;
 
-  return <>{routes}</>;
+  // return <>{routes}</>;
 }
-
 
 //  return <>{isAuthenticated === Status.CHECKING ? "LOADING" : routes}</>;
 // }

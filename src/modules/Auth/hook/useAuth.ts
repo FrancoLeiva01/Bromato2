@@ -22,7 +22,7 @@ export const useAuth = () => {
             return new Promise<void>((resolve) => {
                 localStorage.removeItem('isAuthenticated')
                 toast.success('Sesión cerrada correctamente')
-                navigate('/login')
+                navigate('/')
                 resolve()
             })
         }

@@ -1,11 +1,11 @@
 import axios from "axios"
 
-const API_BASE_URL = "http://localhost:3001/api/v1/"
+const API_BASE_URL = "http://localhost:4000/api/v1/"
 
 // Create axios instance with default configuration
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // Important for httpOnly cookies
+  withCredentials: true, 
   headers: {
     "Content-Type": "application/json",
   },
@@ -26,6 +26,7 @@ apiClient.interceptors.request.use(
 )
 
 // Response interceptor to handle auth errors
+
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
