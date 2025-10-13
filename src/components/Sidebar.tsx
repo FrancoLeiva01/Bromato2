@@ -166,11 +166,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                                   : "text-white hover:bg-slate-700 hover:text-white"
                               }`}
                             >
-                              <SubIcon className="w-4 h-4" />
-                              <span className="text-sm font-medium">
-                                {subItem.label}
-                              </span>
-                              =======
                               <SubIcon className="w-5 h-5" />
                               <span className="text-sm font-medium">
                                 {subItem.label}

@@ -1,15 +1,9 @@
 "use client";
 
-<<<<<<< HEAD
-import type React from "react";
-import { useState } from "react";
-import { Tag, Edit, Trash2, Eye, X } from "lucide-react";
-=======
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Tag, Edit, Trash2, Eye, X } from "lucide-react"
 import { LoaderContent } from "@/components/LoaderComponent"
->>>>>>> f76afae46dcd7c398986918508965b7b49178351
 
 interface Rubro {
   id: number;
@@ -19,15 +13,6 @@ interface Rubro {
 }
 
 const Rubros: React.FC = () => {
-<<<<<<< HEAD
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("Filtros");
-  const [riskFilter, setRiskFilter] = useState("");
-  const [selectedRubro, setSelectedRubro] = useState<Rubro | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const itemsPerPage = 10;
-=======
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
@@ -36,7 +21,6 @@ const Rubros: React.FC = () => {
   const [selectedRubro, setSelectedRubro] = useState<Rubro | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const itemsPerPage = 10
->>>>>>> f76afae46dcd7c398986918508965b7b49178351
 
   useEffect(() => {
     setIsLoading(true)
@@ -144,125 +128,11 @@ const Rubros: React.FC = () => {
             />
           )}
 
-<<<<<<< HEAD
-      {/* Tabla */}
-      <div className="bg-slate-900 rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-300">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Nombre
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Riesgo
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Prohibiciones
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Detalles
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {currentRubros.map((rubro) => (
-                <tr key={rubro.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {rubro.id}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {rubro.nombre}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        rubro.riesgo === "Alto"
-                          ? "bg-red-100 text-red-800"
-                          : rubro.riesgo === "Medio"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
-                      }`}
-                    >
-                      {rubro.riesgo}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {rubro.prohibiciones}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
-                        onClick={() => handleViewDetails(rubro)}
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="text-blue-600 hover:text-blue-900 transition-colors">
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-900 transition-colors">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Paginacion */}
-        <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={handlePrevious}
-                disabled={currentPage === 1}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${
-                  currentPage === 1
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                Anterior
-              </button>
-              <span className="px-4 py-2 text-sm font-medium text-gray-700">
-                Página {currentPage} de {totalPages}
-              </span>
-              <button
-                onClick={handleNext}
-                disabled={currentPage === totalPages}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${
-                  currentPage === totalPages
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-blue-700 text-white hover:bg-blue-400"
-                }`}
-              >
-                Siguiente
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {isModalOpen && selectedRubro && (
-        <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-600 rounded-lg shadow-xl max-w-2xl w-full p-8 relative">
-            {/* Boton de cerrar */}
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors"
-=======
           {filterType === "Riesgo" && (
             <select
               className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
               value={riskFilter}
               onChange={(e) => setRiskFilter(e.target.value)}
->>>>>>> f76afae46dcd7c398986918508965b7b49178351
             >
               <option value="">Seleccionar riesgo</option>
               <option value="Alto">Alto</option>
@@ -271,29 +141,6 @@ const Rubros: React.FC = () => {
             </select>
           )}
 
-<<<<<<< HEAD
-            {/* Contenido del modal */}
-            <div className="space-y-6">
-              <div className="text-center">
-                <h3 className="text-sm font-medium text-white mb-2">Nombre</h3>
-                <h2 className="text-2xl font-bold text-gray-200">
-                  {selectedRubro.nombre}
-                </h2>
-              </div>
-
-              <div className="text-center">
-                <h3 className="text-sm font-medium text-white mb-2">Riesgo</h3>
-                <p className="text-4xl font-bold text-orange-500">
-                  {selectedRubro.riesgo.charAt(0)}
-                </p>
-              </div>
-
-              <div className="text-center">
-                <h3 className="text-sm font-medium text-white mb-2">
-                  Prohibiciones
-                </h3>
-                <p className="text-gray-200">{selectedRubro.prohibiciones}</p>
-=======
           <button
             className="flex items-center px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-400 transition-colors"
             onClick={handleSearch}
@@ -393,17 +240,10 @@ const Rubros: React.FC = () => {
                 >
                   Siguiente
                 </button>
->>>>>>> f76afae46dcd7c398986918508965b7b49178351
               </div>
             </div>
           </div>
         </div>
-<<<<<<< HEAD
-      )}
-    </div>
-  );
-};
-=======
 
         {isModalOpen && selectedRubro && (
           <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -440,6 +280,5 @@ const Rubros: React.FC = () => {
     </LoaderContent>
   )
 }
->>>>>>> f76afae46dcd7c398986918508965b7b49178351
 
 export default Rubros;
