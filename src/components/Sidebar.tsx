@@ -1,7 +1,6 @@
-
-import type React from "react"
-import { useState } from "react"
-import logoMunicipalidad from "../assets/logo_CATACAPI_color.png"
+import type React from "react";
+import { useState } from "react";
+import logoMunicipalidad from "../assets/logo_CATACAPI_color.png";
 import {
   ChevronDown,
   ChevronRight,
@@ -14,19 +13,19 @@ import {
   UserCheck,
   FolderOpen,
   X,
-  Users
-} from "lucide-react"
-import { Link, useLocation } from "react-router-dom"
+  Users,
+} from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 interface SidebarProps {
-  isOpen?: boolean
-  onClose?: () => void
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
-  const [isDocumentosOpen, setIsDocumentosOpen] = useState(false)
-  const [isPrecargadosOpen, setIsPrecargadosOpen] = useState(false)
-  const location = useLocation()
+  const [isDocumentosOpen, setIsDocumentosOpen] = useState(false);
+  const [isPrecargadosOpen, setIsPrecargadosOpen] = useState(false);
+  const location = useLocation();
 
   const menuItems = [
     { icon: Home, label: "Inicio", path: "/home" },
@@ -47,30 +46,43 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       path: "/documentos",
       hasDropdown: true,
       subItems: [
-        { icon: FileCheck, label: "Actas de inspección", path: "/actas-inspeccion" },
-        { icon: ClipboardCheck, label: "Actas de comprobación", path: "/actas-comprobacion" },
+        {
+          icon: FileCheck,
+          label: "Actas de inspección",
+          path: "/actas-inspeccion",
+        },
+        {
+          icon: ClipboardCheck,
+          label: "Actas de comprobación",
+          path: "/actas-comprobacion",
+        },
       ],
     },
     { icon: Users, label: "Usuarios", path: "/usuarios" },
-  ]
+  ];
 
   const handleDocumentosClick = () => {
-    setIsDocumentosOpen(!isDocumentosOpen)
-  }
+    setIsDocumentosOpen(!isDocumentosOpen);
+  };
 
   const handlePrecargadosClick = () => {
-    setIsPrecargadosOpen(!isPrecargadosOpen)
-  }
+    setIsPrecargadosOpen(!isPrecargadosOpen);
+  };
 
   const handleLinkClick = () => {
     if (onClose && window.innerWidth < 1024) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={onClose} />}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
 
       <aside
         className={`
@@ -83,7 +95,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         <div className="h-screen w-64 shadow-slate-500 p-8 ">
           <div className="flex items-center justify-between mb-8 ">
             <div className="flex items-center space-x-3 font-semibold">
-              <img src={logoMunicipalidad || "/placeholder.svg"} alt="logoMunicipalidad" className="max-h-20 ml-3" />
+              <img
+                src={logoMunicipalidad || "/placeholder.svg"}
+                alt="logoMunicipalidad"
+                className="max-h-20 ml-3"
+              />
             </div>
 
             <button
@@ -96,19 +112,28 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
 
           <nav className="space-y-2">
             {menuItems.map((item, index) => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.path
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
 
               if (item.hasDropdown) {
-                const isOpen = item.label === "Documentos" ? isDocumentosOpen : isPrecargadosOpen
-                const handleClick = item.label === "Documentos" ? handleDocumentosClick : handlePrecargadosClick
+                const isOpen =
+                  item.label === "Documentos"
+                    ? isDocumentosOpen
+                    : isPrecargadosOpen;
+                const handleClick =
+                  item.label === "Documentos"
+                    ? handleDocumentosClick
+                    : handlePrecargadosClick;
 
                 return (
                   <div key={index}>
                     <button
                       onClick={handleClick}
                       className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors ${
-                        isActive || item.subItems?.some((sub) => location.pathname === sub.path)
+                        isActive ||
+                        item.subItems?.some(
+                          (sub) => location.pathname === sub.path
+                        )
                           ? "bg-blue-400 text-white"
                           : "text-white hover:to-blue-700 hover:text-white"
                       }`}
@@ -117,14 +142,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                         <Icon className="w-6 h-6" />
                         <span className="font-medium">{item.label}</span>
                       </div>
-                      {isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                      {isOpen ? (
+                        <ChevronDown className="w-4 h-4" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4" />
+                      )}
                     </button>
 
                     {isOpen && item.subItems && (
                       <div className="ml-4 mt-1 space-y-1">
                         {item.subItems.map((subItem, subIndex) => {
-                          const SubIcon = subItem.icon
-                          const isSubActive = location.pathname === subItem.path
+                          const SubIcon = subItem.icon;
+                          const isSubActive =
+                            location.pathname === subItem.path;
                           return (
                             <Link
                               key={subIndex}
@@ -136,15 +166,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                                   : "text-white hover:bg-slate-700 hover:text-white"
                               }`}
                             >
+                              <SubIcon className="w-4 h-4" />
+                              <span className="text-sm font-medium">
+                                {subItem.label}
+                              </span>
+                              =======
                               <SubIcon className="w-5 h-5" />
-                              <span className="text-sm font-medium">{subItem.label}</span>
+                              <span className="text-sm font-medium">
+                                {subItem.label}
+                              </span>
                             </Link>
-                          )
+                          );
                         })}
                       </div>
                     )}
                   </div>
-                )
+                );
               }
 
               return (
@@ -153,19 +190,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                   to={item.path}
                   onClick={handleLinkClick}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                    isActive ? "bg-teal-600 text-white" : "text-white hover:bg-slate-400 hover:text-white"
+                    isActive
+                      ? "bg-teal-600 text-white"
+                      : "text-white hover:bg-slate-400 hover:text-white"
                   }`}
                 >
                   <Icon className="w-5 h-5" />
                   <span className="font-medium">{item.label}</span>
                 </Link>
-              )
+              );
             })}
           </nav>
         </div>
       </aside>
     </>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
