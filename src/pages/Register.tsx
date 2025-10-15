@@ -20,7 +20,7 @@ const Register = () => {
   // Navigate al Login
   const navigate = useNavigate();
   const handleLoginClick = () => {
-    navigate("/login")
+    navigate("/")
     console.log("Navigate ejecutado")
   }
 

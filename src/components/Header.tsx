@@ -12,8 +12,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   images = [
-    "/src/assets/restaurant-kitchen-hygiene.jpg",
     "/src/assets/bromato.png",
+    "/src/assets/restaurant-kitchen-hygiene.jpg",
     "/src/assets/food-safety-inspection.jpg",
   ],
 }) => {

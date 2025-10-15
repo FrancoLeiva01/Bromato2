@@ -4,8 +4,10 @@ import axios from "axios";
 import { UserCheck, Eye, Plus, X, Edit, ShieldBan } from "lucide-react";
 import { LoaderContent } from "@/components/LoaderComponent";
 
+// Campos
+
 interface Inspector {
-  id: number;
+  id: number;   // quitarlo?
   nombres: string;
   apellidos: string;
   activo: boolean;
@@ -16,8 +18,7 @@ interface Inspector {
 }
 
 const Inspectores: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [isLoading, setIsLoading] = useState(true); // Loader
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [filterType, setFilterType] = useState("");
@@ -31,6 +32,16 @@ const Inspectores: React.FC = () => {
   const [inspectores, setInspectores] = useState<Inspector[]>([]);
   const [inspectorToEdit, setInspectorToEdit] = useState<Inspector | null>(null);
 
+  // Loader
+useEffect(() => {
+    setIsLoading(true)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   const [formData, setFormData] = useState({
     nombres: "",
     apellidos: "",
@@ -38,15 +49,9 @@ const Inspectores: React.FC = () => {
     nro_legajo: "",
   });
 
-  const [editFormData, setEditFormData] = useState({
-    nombres: "",
-    apellidos: "",
-    cuil: "",
-    nro_legajo: "",
-  });
-
+  
   const API_URL = "http://localhost:4000/api/v1";
-
+  
   const normalizeActivoFromBackend = (value: any): boolean => {
     if (typeof value === "boolean") return value;
     if (typeof value === "number") return value === 1;
@@ -54,7 +59,7 @@ const Inspectores: React.FC = () => {
       return value.toLowerCase() === "true" || value === "1";
     return false;
   };
-
+  
   const normalizeInspectorFromBackend = (raw: any): Inspector => {
     return {
       id: raw.id,
@@ -68,32 +73,25 @@ const Inspectores: React.FC = () => {
     };
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
+  
   const [totalInspectores, setTotalInspectores] = useState(0);
-
-// GET
-
+  
+  
+  // GET
+  
   const getInspectores = async () => {
     try {
       setIsLoading(true);
       const res = await axios.get(`${API_URL}/inspector?page=${currentPage}`);
       console.log("Respuesta del backend:", res.data);
-
+      
       const payload = Array.isArray(res.data)
-        ? res.data
-         : res.data?.data ?? res.data?.inspectores ?? res.data;
-
+      ? res.data
+      : res.data?.data ?? res.data?.inspectores ?? res.data;
+      
       const total = res.data.total ?? payload.length;
       setTotalInspectores(total);
-
+      
       const normalized = payload.map(normalizeInspectorFromBackend);
       setInspectores(normalized);
     } catch (error) {
@@ -107,11 +105,12 @@ const Inspectores: React.FC = () => {
     getInspectores();
   }, [currentPage]);
   
-// CREATE
-
-const createInspector = async (newInspector: typeof formData) => {
-  try {
-    const payload = {
+  
+  // CREATE
+  
+  const createInspector = async (newInspector: typeof formData) => {
+    try {
+      const payload = {
       nombres: newInspector.nombres,
       apellidos: newInspector.apellidos,
       cuil: newInspector.cuil,
@@ -121,18 +120,18 @@ const createInspector = async (newInspector: typeof formData) => {
     const res = await axios.post(`${API_URL}/inspector`, payload);
     const createdRaw = res.data?.data ?? res.data;
     const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
-
+    
     const normalized = normalizeInspectorFromBackend(created);
-
+    
     // 👇 Fuerza visualmente el estado activo
     normalized.activo = true;
-
+    
     // 👇 Actualiza el estado de la tabla sin depender del backend
     setInspectores((prev) => [...prev, normalized]);
-
+    
     // Si querés actualizar desde el backend también:
     await getInspectores();
-
+    
     alert("✅ Inspector creado exitosamente");
   } catch (error: any) {
     console.error("❌ Error al crear inspector:", error);
@@ -140,17 +139,14 @@ const createInspector = async (newInspector: typeof formData) => {
   }
 };
 
-
-
-
 // UPDATE
 
-  const updateInspector = async (
-    id: number,
-    updatedData: Partial<Inspector>
-  ) => {
-    try {
-      const payload = {
+const updateInspector = async (
+  id: number,
+  updatedData: Partial<Inspector>
+) => {
+  try {
+    const payload = {
         nombres: updatedData.nombres,
         apellidos: updatedData.apellidos,
         cuil: updatedData.cuil,
@@ -171,7 +167,7 @@ const createInspector = async (newInspector: typeof formData) => {
       alert(`Error al actualizar inspector: ${error.response?.data?.message || error.message}`);
     }
   };
-
+  
   const toggleInspectorActivo = async (inspector: Inspector) => {
     try {
       const payload = { activo: String(!inspector.activo) };
@@ -184,9 +180,9 @@ const createInspector = async (newInspector: typeof formData) => {
       alert(`Error: ${error.response?.data?.message || error.message}`);
     }
   };
-
-// DELETE
-
+  
+  // DELETE
+  
   const deleteInspector = async (id: number) => {
     if (!confirm("¿Está seguro de que desea desactivar este inspector?")) {
       return;
@@ -199,6 +195,7 @@ const createInspector = async (newInspector: typeof formData) => {
       console.log("✅ Inspector desactivado");
       
       // Recargar la lista después de desactivar
+      
       await getInspectores();
       
       alert("✅ Inspector desactivado exitosamente");
@@ -208,34 +205,34 @@ const createInspector = async (newInspector: typeof formData) => {
       alert(`Error al desactivar inspector: ${error.response?.data?.message || error.message}`);
     }
   };
-
+  
   // Filtrado
   const filteredInspectores = Array.isArray(inspectores)
-    ? inspectores.filter((inspector) => {
-        if (!filterType || !searchTerm) return true;
-        if (filterType === "apellido")
-          return inspector.apellidos
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase());
-        if (filterType === "identificador")
-          return (inspector.identificador ?? "").includes(searchTerm);
-        return true;
-      })
-    : [];
-
+  ? inspectores.filter((inspector) => {
+    if (!filterType || !searchTerm) return true;
+    if (filterType === "apellido")
+      return inspector.apellidos
+    .toLowerCase()
+    .includes(searchTerm.toLowerCase());
+    if (filterType === "identificador")
+      return (inspector.identificador ?? "").includes(searchTerm);
+    return true;
+  })
+  : [];
+  
   const totalPages = Math.max(1, Math.ceil(totalInspectores / itemsPerPage));
-
+  
   // El backend ya envía datos paginados, no necesitamos hacer slice
   const currentInspectores = filteredInspectores;
-
+  
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
-
+  
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
-
+  
   const handleSearch = () => setCurrentPage(1);
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -245,7 +242,7 @@ const createInspector = async (newInspector: typeof formData) => {
     setSelectedInspector(inspector);
     setIsModalOpen(true);
   };
-
+  
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await createInspector(formData);
@@ -257,7 +254,7 @@ const createInspector = async (newInspector: typeof formData) => {
     });
     setIsFormOpen(false);
   };
-
+  
   const handleEditClick = (inspector: Inspector) => {
     setInspectorToEdit(inspector);
     setEditFormData({
@@ -268,7 +265,13 @@ const createInspector = async (newInspector: typeof formData) => {
     });
     setIsEditModalOpen(true);
   };
-
+  
+  const [editFormData, setEditFormData] = useState({
+    nombres: "",
+    apellidos: "",
+    cuil: "",
+    nro_legajo: "",
+  });
   const handleEditFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (inspectorToEdit) {
