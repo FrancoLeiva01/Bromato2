@@ -97,7 +97,7 @@ useEffect(() => {
     } catch (error) {
       console.error("Error al obtener inspectores:", error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(true);
     }
   };
   

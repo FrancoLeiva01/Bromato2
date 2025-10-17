@@ -98,7 +98,7 @@ const Notifications: React.FC = () => {
 
   const API_URL = "http://localhost:4000/api/v1";
 
-// GET INSPECTORES
+  // GET INSPECTORES
 
   const getAllInspectorForSelect = async () => {
     const { data } = await apiClient.get(`inspector/all-inspector`);
@@ -134,6 +134,8 @@ const Notifications: React.FC = () => {
     };
   };
 
+// Loader
+
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
@@ -143,7 +145,7 @@ const Notifications: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-// GET NOTIS
+  // GET NOTIS
 
   const getNotifications = async () => {
     try {
@@ -164,7 +166,7 @@ const Notifications: React.FC = () => {
     } catch (error) {
       console.error("Error al obtener notificaciones:", error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(true);
     }
   };
 
@@ -172,7 +174,7 @@ const Notifications: React.FC = () => {
     getNotifications();
   }, [currentPage]);
 
-// CREATE
+  // CREATE
 
   const createNotification = async () => {
     try {
@@ -216,7 +218,7 @@ const Notifications: React.FC = () => {
     }
   };
 
-// UPDATE
+  // UPDATE
 
   const updateNotification = async (
     id: number,
@@ -234,7 +236,7 @@ const Notifications: React.FC = () => {
 
       const res = await axios.patch(`${API_URL}/notificacion/${id}`, payload);
 
-// GET
+      // GET
 
       await getNotifications();
       alert("✅ Notificación actualizada exitosamente");
@@ -248,7 +250,7 @@ const Notifications: React.FC = () => {
     }
   };
 
-// DELETE
+  // DELETE
 
   const deleteNotification = async (id: number) => {
     if (!confirm("¿Está seguro de que desea desactivar este inspector?")) {
@@ -459,6 +461,7 @@ const Notifications: React.FC = () => {
                         <p className=" capitalize mt-1 text-sm text-gray-800">
                           {notification.detalle_notificacion}
                         </p>
+                        {/* Cuando se vea los tipos de infraccion, poner primero el h3 */}
                         <h3 className="text-sm font-medium text-gray-900">
                           {notification.tipo_infraccion.join(", ")}
                         </h3>
@@ -481,7 +484,7 @@ const Notifications: React.FC = () => {
           </div>
         </div>
 
- {/* Lista de notis */}
+        {/* Lista de notis */}
 
         <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
           <div className="bg-gray-100 p-6 rounded-lg">
@@ -632,7 +635,7 @@ const Notifications: React.FC = () => {
               </table>
             </div>
 
- {/* Paginacion */}
+            {/* Paginacion */}
 
             <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6 flex justify-center">
               <div className="flex items-center space-x-2">
@@ -901,7 +904,7 @@ const Notifications: React.FC = () => {
           </div>
         )}
 
- {/* Editar notis */}
+        {/* Editar notis */}
 
         {isEditModalOpen && notificationToEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">

@@ -31,11 +31,10 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
   }
   
   const handleLogout = () => {
-    console.log('asdds')
     localStorage.removeItem("isAuthenticated")
     localStorage.removeItem("currentUser")
     // toast.success("Sesión cerrada correctamente")
-    navigate("/login")
+    navigate("/")
   }
   
   const getRoleDisplayName = (role: string) => {
