@@ -66,12 +66,53 @@ const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [totalNotifications, setTotalNotifications] = useState(0);
   const [selectedNotification, setSelectedNotification] =
-    useState<Notification | null>(null);
+  useState<Notification | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [notificationToEdit, setNotificationToEdit] =
-    useState<Notification | null>(null);
+  useState<Notification | null>(null);
+  
+  // Loader
+  
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
+  // GET NOTIS
+  
+  const getNotifications = async () => {
+    try {
+      setIsLoading(true);
+      const url = `${API_URL}/notificacion?page=${currentPage}&size=${itemsPerPage}`;
+  
+      const res = await axios.get(url);
+  
+      const payload = Array.isArray(res.data)
+        ? res.data
+        : res.data?.data ?? res.data?.notifications ?? res.data;
+  
+      const total = res.data.total ?? payload.length;
+      setTotalNotifications(total);
+  
+      const normalized = payload.map(normalizeNotificationFromBackend);
+      setNotifications(normalized);
+    } catch (error) {
+      console.error("Error al obtener notificaciones:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    getNotifications();
+  }, [currentPage, itemsPerPage]);
+
 
   const [formData, setFormData] = useState({
     nro_notificacion: "",
@@ -134,45 +175,7 @@ const Notifications: React.FC = () => {
     };
   };
 
-// Loader
 
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // GET NOTIS
-
-  const getNotifications = async () => {
-    try {
-      setIsLoading(true);
-      const url = `${API_URL}/notificacion?page=${currentPage}&size=${itemsPerPage}`;
-
-      const res = await axios.get(url);
-
-      const payload = Array.isArray(res.data)
-        ? res.data
-        : res.data?.data ?? res.data?.notifications ?? res.data;
-
-      const total = res.data.total ?? payload.length;
-      setTotalNotifications(total);
-
-      const normalized = payload.map(normalizeNotificationFromBackend);
-      setNotifications(normalized);
-    } catch (error) {
-      console.error("Error al obtener notificaciones:", error);
-    } finally {
-      setIsLoading(true);
-    }
-  };
-
-  useEffect(() => {
-    getNotifications();
-  }, [currentPage]);
 
   // CREATE
 
@@ -433,7 +436,7 @@ const Notifications: React.FC = () => {
     >
       {/* Proximas a vncer */}
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6">
-        <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
+        <div className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -445,12 +448,12 @@ const Notifications: React.FC = () => {
             </div>
           </div>
 
-          <div className="divide-y divide-gray-500">
+          <div className="divide-y divide-gray-">
             {currentNotifications.slice(0, 3).length > 0 ? (
               currentNotifications.slice(0, 3).map((notification) => (
                 <div
                   key={`preview-${notification.id}`}
-                  className="p-6 hover:bg-red-300 transition-colors border-l-4 border-l-red-600 bg-gray-100"
+                  className=" mb-1 p-6 hover:bg-red-300 transition-colors border-l-4 border-l-red-600 bg-gray-100 rounded-lg"
                 >
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 mt-1">
@@ -487,7 +490,7 @@ const Notifications: React.FC = () => {
         {/* Lista de notis */}
 
         <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
-          <div className="bg-gray-100 p-6 rounded-lg">
+          <div className="bg-gray-200 p-6 rounded-lg">
             <div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0 pb-5">
               <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0">
                 <div className="flex items-center space-x-3">

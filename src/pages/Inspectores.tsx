@@ -49,7 +49,6 @@ useEffect(() => {
     nro_legajo: "",
   });
 
-  
   const API_URL = "http://localhost:4000/api/v1";
   
   const normalizeActivoFromBackend = (value: any): boolean => {
@@ -97,7 +96,7 @@ useEffect(() => {
     } catch (error) {
       console.error("Error al obtener inspectores:", error);
     } finally {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
   

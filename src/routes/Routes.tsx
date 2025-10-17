@@ -11,7 +11,7 @@ export const Routes = () => {
   const routes = useRoutes(
     isAuthenticated === Status.AUTHENTICATED ? PrivateRoute : PublicRoute,
   );
- return <>{isAuthenticated === Status.CHECKING ? "loading": routes}</>;
+ return <>{isAuthenticated === Status.CHECKING ? "": routes}</>;
 
   // return <>{routes}</>;
 }
