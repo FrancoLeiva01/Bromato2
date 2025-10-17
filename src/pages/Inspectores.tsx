@@ -289,7 +289,9 @@ const updateInspector = async (
     >
       <>
         <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
+
           {/* Titulo */}
+
           <div className="mb-6">
             <div className="bg-slate-800 rounded-lg p-4 flex justify-center items-center">
               <UserCheck className="w-8 h-8 text-blue-500 mr-2" />
@@ -300,6 +302,7 @@ const updateInspector = async (
           </div>
 
           {/* Filtros + boton nuevo inspector */}
+
           <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
               <select
@@ -341,6 +344,7 @@ const updateInspector = async (
           </div>
 
           {/* Tabla */}
+
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -441,6 +445,7 @@ const updateInspector = async (
             </div>
 
             {/* Paginación */}
+
             <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6 flex justify-center">
               <div className="flex items-center space-x-2">
                 <button
@@ -474,6 +479,7 @@ const updateInspector = async (
         </div>
 
         {/* Modal detalles */}
+
         {isModalOpen && selectedInspector && (
           <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-slate-600 rounded-lg shadow-xl max-w-2xl w-full p-8 relative">
@@ -518,6 +524,7 @@ const updateInspector = async (
         )}
 
         {/* Formulario Nuevo Inspector */}
+
         {isFormOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
             <form
@@ -587,6 +594,7 @@ const updateInspector = async (
         )}
 
         {/* Formulario Editar Inspector */}
+        
         {isEditModalOpen && inspectorToEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
             <form

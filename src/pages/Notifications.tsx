@@ -98,6 +98,8 @@ const Notifications: React.FC = () => {
 
   const API_URL = "http://localhost:4000/api/v1";
 
+// GET INSPECTORES
+
   const getAllInspectorForSelect = async () => {
     const { data } = await apiClient.get(`inspector/all-inspector`);
     setAllInspector(data);
@@ -119,8 +121,9 @@ const Notifications: React.FC = () => {
       fecha_notificacion: raw.fecha_notificacion ?? "",
       plazo_dias: raw.plazo_dias ?? 0,
       fecha_vencimiento: raw.fecha_vencimiento ?? "",
-      nombre_inspector: raw.nombre_inspector ?? "",
-      identificador_inspector: raw.identificador_inspector ?? "",
+      nombre_inspector: raw.nombre_inspector ?? raw.inspector?.nombres ?? "",
+      identificador_inspector:
+        raw.identificador_inspector ?? raw.inspector?.identificador ?? "",
       nombre_contribuyente:
         raw.nombre_contribuyente ?? raw.contribuyente?.nombre ?? "",
       apellido_contribuyente:
@@ -139,6 +142,8 @@ const Notifications: React.FC = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+// GET NOTIS
 
   const getNotifications = async () => {
     try {
@@ -167,6 +172,8 @@ const Notifications: React.FC = () => {
     getNotifications();
   }, [currentPage]);
 
+// CREATE
+
   const createNotification = async () => {
     try {
       const payload = {
@@ -188,7 +195,9 @@ const Notifications: React.FC = () => {
       };
 
       console.log("📤 Payload enviado:", payload);
+
       const res = await axios.post(`${API_URL}/notificacion`, payload);
+
       console.log("✅ Respuesta del backend:", res.data);
 
       await getNotifications();
@@ -207,6 +216,8 @@ const Notifications: React.FC = () => {
     }
   };
 
+// UPDATE
+
   const updateNotification = async (
     id: number,
     updatedData: Partial<typeof editFormData>
@@ -223,6 +234,8 @@ const Notifications: React.FC = () => {
 
       const res = await axios.patch(`${API_URL}/notificacion/${id}`, payload);
 
+// GET
+
       await getNotifications();
       alert("✅ Notificación actualizada exitosamente");
     } catch (error: any) {
@@ -235,26 +248,28 @@ const Notifications: React.FC = () => {
     }
   };
 
+// DELETE
+
   const deleteNotification = async (id: number) => {
-    if (!confirm("¿Está seguro de que desea desactivar esta notificacion?")) {
+    if (!confirm("¿Está seguro de que desea desactivar este inspector?")) {
       return;
     }
 
     try {
-      console.log("🗑️ Eliminando notificacion:", id);
+      console.log("🗑️ Desactivando notificacion:", id);
       await axios.get(`${API_URL}/notificacion/delete/${id}`, {
         data: { activo: "false" },
       });
-      console.log("✅ notificacion eliminada");
+      console.log("✅ notificacion desactivado");
 
       await getNotifications();
 
-      alert("✅ notificacion eliminada exitosamente");
+      alert("✅ notificacion desactivado exitosamente");
     } catch (error: any) {
-      console.error("❌ Error al borrar notificacion:", error);
+      console.error("❌ Error al desactivar notificacion:", error);
       console.error("❌ Respuesta del error:", error.response?.data);
       alert(
-        `Error al eliminar notificacion: ${
+        `Error al desactivar notificacion: ${
           error.response?.data?.message || error.message
         }`
       );
@@ -414,14 +429,13 @@ const Notifications: React.FC = () => {
       loadingText="Cargando Notificaciones..."
       minHeight="400px"
     >
-      {/* Notis proximas a vncer */}
-      
+      {/* Proximas a vncer */}
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6">
         <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <FolderClock className="w-6 h-6 text-blue-600" />
+                <FolderClock className="w-6 h-6 text-blue-700" />
                 <h1 className="text-xl font-semibold text-gray-900">
                   Notificaciones Próximas a Vencer
                 </h1>
@@ -434,19 +448,18 @@ const Notifications: React.FC = () => {
               currentNotifications.slice(0, 3).map((notification) => (
                 <div
                   key={`preview-${notification.id}`}
-                  className="p-6 hover:bg-red-200 transition-colors border-l-4 border-l-red-500 bg-gray-100"
+                  className="p-6 hover:bg-red-300 transition-colors border-l-4 border-l-red-600 bg-gray-100"
                 >
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 mt-1">
-                      <TriangleAlert className="w-6 h-6 text-red-500" />
+                      <TriangleAlert className="w-5 h-5 text-red-500" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                      <p className="capitalize mt-1 text-sm text-gray-800">
-                        {notification.detalle_notificacion}
-                      </p>
-                      {/* Luego acomodar cuando se vea el tipo de infraccion, que se vea primero */}
-                        <h3 className="text-sm font-medium text-gray-900">    
+                        <p className=" capitalize mt-1 text-sm text-gray-800">
+                          {notification.detalle_notificacion}
+                        </p>
+                        <h3 className="text-sm font-medium text-gray-900">
                           {notification.tipo_infraccion.join(", ")}
                         </h3>
                         <span className="text-xs text-gray-500">
@@ -468,7 +481,7 @@ const Notifications: React.FC = () => {
           </div>
         </div>
 
-{/* LISTA DE NOTIS */}
+ {/* Lista de notis */}
 
         <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
           <div className="bg-gray-100 p-6 rounded-lg">
@@ -480,8 +493,6 @@ const Notifications: React.FC = () => {
                     Lista de Notificaciones
                   </h1>
                 </div>
-
-{/* FILTROS */}
 
                 <select
                   className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600"
@@ -621,7 +632,7 @@ const Notifications: React.FC = () => {
               </table>
             </div>
 
-{/* PAGINACION */}
+ {/* Paginacion */}
 
             <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6 flex justify-center">
               <div className="flex items-center space-x-2">
@@ -653,66 +664,117 @@ const Notifications: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
 
-{/* NUEVA NOTI */}
+        {showForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
+              <button
+                onClick={handleCloseForm}
+                className="absolute top-3 right-3 text-white hover:text-red-500 text-xl font-bold"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <br />
 
-          {showForm && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-              <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
-                <button
-                  onClick={handleCloseForm}
-                  className="absolute top-3 right-3 text-white hover:text-red-500 text-xl font-bold"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-                <br />
+              <div className="bg-slate-800 rounded-lg p-4 flex items-center justify-center">
+                <Bell className="w-8 h-8 text-orange-500 mr-2" />
+                <h2 className="text-3xl font-bold text-white text-center">
+                  Nueva Notificación
+                </h2>
+              </div>
 
-                <div className="bg-slate-800 rounded-lg p-4 flex items-center justify-center">
-                  <Bell className="w-8 h-8 text-orange-500 mr-2" />
-                  <h2 className="text-3xl font-bold text-white text-center">
-                    Nueva Notificación
-                  </h2>
+              <br />
+              <form className="space-y-4" onSubmit={handleFormSubmit}>
+                <div>
+                  <label className="font-semibold text-white mt-4 mb-2 block">
+                    Selecciona Inspector *
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {allInspector.length > 0 &&
+                      allInspector.map((insp) => (
+                        <div key={insp.id} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={formData.inspector_id.includes(insp.id)}
+                            onChange={() => handleInspectorToggle(insp.id)}
+                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500"
+                          />
+                          <label className="ms-2 text-sm font-medium text-white">
+                            {insp.nombres} {insp.apellidos}
+                          </label>
+                        </div>
+                      ))}
+                  </div>
+                  {allInspector.length === 0 && (
+                    <p className="text-yellow-300 text-sm mt-2">
+                      No hay inspectores disponibles. Por favor, agregue
+                      inspectores primero.
+                    </p>
+                  )}
                 </div>
 
-                <br />
-                <form className="space-y-4" onSubmit={handleFormSubmit}>
-                  <div>
-                    <label className="font-semibold text-white mt-4 mb-2 block">
-                      Selecciona Inspector *
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {allInspector.length > 0 &&
-                        allInspector.map((insp) => (
-                          <div key={insp.id} className="flex items-center">
-                            <input
-                              type="checkbox"
-                              checked={formData.inspector_id.includes(insp.id)}
-                              onChange={() => handleInspectorToggle(insp.id)}
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500"
-                            />
-                            <label className="ms-2 text-sm font-medium text-white">
-                              {insp.nombres} {insp.apellidos}
-                            </label>
-                          </div>
-                        ))}
-                    </div>
-                    {allInspector.length === 0 && (
-                      <p className="text-yellow-300 text-sm mt-2">
-                        No hay inspectores disponibles. Por favor, agregue
-                        inspectores primero.
-                      </p>
-                    )}
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder="N° Notificación *"
+                    value={formData.nro_notificacion}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        nro_notificacion: e.target.value,
+                      })
+                    }
+                    required
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h3 className="font-semibold text-white mt-4 mb-2">
+                    Tipo de Infracción: *
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {Object.entries(TIPO_INFRACCION).map(([key, label]) => (
+                      <label key={key} className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={formData.tipo_infraccion.includes(label)}
+                          onChange={() => handleTipoInfraccionToggle(label)}
+                          className="accent-blue-600"
+                        />
+                        <span className="text-white text-sm">{label}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <textarea
+                  maxLength={600}
+                  placeholder="Observaciones... *"
+                  value={formData.detalle_notificacion}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      detalle_notificacion: e.target.value,
+                    })
+                  }
+                  required
+                  className="border p-2 rounded w-full h-24 resize-none"
+                />
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-white text-sm block mb-1">
+                      Fecha Notificación *
+                    </label>
                     <input
-                      type="text"
-                      placeholder="N° Notificación *"
-                      value={formData.nro_notificacion}
+                      type="date"
+                      value={formData.fecha_notificacion}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          nro_notificacion: e.target.value,
+                          fecha_notificacion: e.target.value,
                         })
                       }
                       required
@@ -721,444 +783,381 @@ const Notifications: React.FC = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-white mt-4 mb-2">
-                      Tipo de Infracción: *
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {Object.entries(TIPO_INFRACCION).map(([key, label]) => (
-                        <label
-                          key={key}
-                          className="flex items-center space-x-2"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={formData.tipo_infraccion.includes(label)}
-                            onChange={() => handleTipoInfraccionToggle(label)}
-                            className="accent-blue-600"
-                          />
-                          <span className="text-white text-sm">{label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <textarea
-                    maxLength={600}
-                    placeholder="Observaciones... *"
-                    value={formData.detalle_notificacion}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        detalle_notificacion: e.target.value,
-                      })
-                    }
-                    required
-                    className="border p-2 rounded w-full h-24 resize-none"
-                  />
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-white text-sm block mb-1">
-                        Fecha Notificación *
-                      </label>
-                      <input
-                        type="date"
-                        value={formData.fecha_notificacion}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            fecha_notificacion: e.target.value,
-                          })
-                        }
-                        required
-                        className="border p-2 rounded w-full"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-white text-sm block mb-1">
-                        Hora *
-                      </label>
-                      <input
-                        type="time"
-                        value={formData.hora_notificacion}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            hora_notificacion: e.target.value,
-                          })
-                        }
-                        required
-                        className="border p-2 rounded w-full"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-white text-sm block mb-1">
-                        Plazo (días) *
-                      </label>
-                      <input
-                        type="number"
-                        min="1"
-                        placeholder="Plazo en días"
-                        value={formData.plazo_dias}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            plazo_dias: Number.parseInt(e.target.value) || 0,
-                          })
-                        }
-                        required
-                        className="border p-2 rounded w-full"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-400 pt-4 mt-4">
-                    <h3 className="text-white font-semibold mb-3">
-                      Datos del Contribuyente
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        placeholder="Nombre *"
-                        value={formData.nombre_contribuyente}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            nombre_contribuyente: e.target.value,
-                          })
-                        }
-                        required
-                        className="border p-2 rounded w-full"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Apellido *"
-                        value={formData.apellido_contribuyente}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            apellido_contribuyente: e.target.value,
-                          })
-                        }
-                        required
-                        className="border p-2 rounded w-full"
-                      />
-                      <input
-                        type="text"
-                        placeholder="DNI *"
-                        value={formData.dni_contribuyente}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            dni_contribuyente: e.target.value,
-                          })
-                        }
-                        required
-                        className="border p-2 rounded w-full"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Dirección *"
-                        value={formData.direccion_contribuyente}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            direccion_contribuyente: e.target.value,
-                          })
-                        }
-                        required
-                        className="border p-2 rounded w-full md:col-span-2"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mt-6">
-                    <button
-                      type="button"
-                      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
-                      onClick={handleCloseForm}
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-300 transition-colors"
-                    >
-                      Agregar Notificación +
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-{/* EDITAR NOTI */}
-
-          {isEditModalOpen && notificationToEdit && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-              <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
-                <button
-                  onClick={() => {
-                    setIsEditModalOpen(false);
-                    setNotificationToEdit(null);
-                  }}
-                  className="absolute top-3 right-3 text-white hover:text-red-500 text-xl font-bold"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-                <br />
-
-                <div className="bg-slate-800 rounded-lg p-4 flex items-center justify-center">
-                  <Bell className="w-8 h-8 text-orange-500 mr-2" />
-                  <h2 className="text-3xl font-bold text-white text-center">
-                    Editar Notificación
-                  </h2>
-                </div>
-
-                <br />
-                <form className="space-y-4" onSubmit={handleEditFormSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className="text-white text-sm block mb-1">
+                      Hora *
+                    </label>
                     <input
-                      type="text"
-                      placeholder="N° Notificación"
-                      value={editFormData.nro_notificacion}
+                      type="time"
+                      value={formData.hora_notificacion}
                       onChange={(e) =>
-                        setEditFormData({
-                          ...editFormData,
-                          nro_notificacion: e.target.value,
+                        setFormData({
+                          ...formData,
+                          hora_notificacion: e.target.value,
                         })
                       }
+                      required
                       className="border p-2 rounded w-full"
                     />
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-white mt-4 mb-2">
-                      Tipo de Infracción:
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {Object.entries(TIPO_INFRACCION).map(([key, label]) => (
-                        <label
-                          key={key}
-                          className="flex items-center space-x-2"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={editFormData.tipo_infraccion.includes(
-                              label
-                            )}
-                            onChange={() =>
-                              handleEditTipoInfraccionToggle(label)
-                            }
-                            className="accent-blue-600"
-                          />
-                          <span className="text-white text-sm">{label}</span>
-                        </label>
-                      ))}
-                    </div>
+                    <label className="text-white text-sm block mb-1">
+                      Plazo (días) *
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      placeholder="Plazo en días"
+                      value={formData.plazo_dias}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          plazo_dias: Number.parseInt(e.target.value) || 0,
+                        })
+                      }
+                      required
+                      className="border p-2 rounded w-full"
+                    />
                   </div>
+                </div>
 
-                  <textarea
-                    maxLength={500}
-                    placeholder="Observaciones..."
-                    value={editFormData.detalle_notificacion}
+                <div className="border-t border-gray-400 pt-4 mt-4">
+                  <h3 className="text-white font-semibold mb-3">
+                    Datos del Contribuyente
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="Nombre *"
+                      value={formData.nombre_contribuyente}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          nombre_contribuyente: e.target.value,
+                        })
+                      }
+                      required
+                      className="border p-2 rounded w-full"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Apellido *"
+                      value={formData.apellido_contribuyente}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          apellido_contribuyente: e.target.value,
+                        })
+                      }
+                      required
+                      className="border p-2 rounded w-full"
+                    />
+                    <input
+                      type="text"
+                      placeholder="DNI *"
+                      value={formData.dni_contribuyente}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          dni_contribuyente: e.target.value,
+                        })
+                      }
+                      required
+                      className="border p-2 rounded w-full"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Dirección *"
+                      value={formData.direccion_contribuyente}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          direccion_contribuyente: e.target.value,
+                        })
+                      }
+                      required
+                      className="border p-2 rounded w-full md:col-span-2"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mt-6">
+                  <button
+                    type="button"
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+                    onClick={handleCloseForm}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-300 transition-colors"
+                  >
+                    Agregar Notificación +
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+ {/* Editar notis */}
+
+        {isEditModalOpen && notificationToEdit && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
+              <button
+                onClick={() => {
+                  setIsEditModalOpen(false);
+                  setNotificationToEdit(null);
+                }}
+                className="absolute top-3 right-3 text-white hover:text-red-500 text-xl font-bold"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <br />
+
+              <div className="bg-slate-800 rounded-lg p-4 flex items-center justify-center">
+                <Bell className="w-8 h-8 text-orange-500 mr-2" />
+                <h2 className="text-3xl font-bold text-white text-center">
+                  Editar Notificación
+                </h2>
+              </div>
+
+              <br />
+              <form className="space-y-4" onSubmit={handleEditFormSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder="N° Notificación"
+                    value={editFormData.nro_notificacion}
                     onChange={(e) =>
                       setEditFormData({
                         ...editFormData,
-                        detalle_notificacion: e.target.value,
+                        nro_notificacion: e.target.value,
                       })
                     }
-                    className="border p-2 rounded w-full h-24 resize-none"
+                    className="border p-2 rounded w-full"
                   />
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-white text-sm block mb-1">
-                        Fecha Notificación
+                <div>
+                  <h3 className="font-semibold text-white mt-4 mb-2">
+                    Tipo de Infracción:
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {Object.entries(TIPO_INFRACCION).map(([key, label]) => (
+                      <label key={key} className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={editFormData.tipo_infraccion.includes(label)}
+                          onChange={() => handleEditTipoInfraccionToggle(label)}
+                          className="accent-blue-600"
+                        />
+                        <span className="text-white text-sm">{label}</span>
                       </label>
-                      <input
-                        type="date"
-                        value={editFormData.fecha_notificacion}
-                        onChange={(e) =>
-                          setEditFormData({
-                            ...editFormData,
-                            fecha_notificacion: e.target.value,
-                          })
-                        }
-                        className="border p-2 rounded w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-white text-sm block mb-1">
-                        Hora
-                      </label>
-                      <input
-                        type="time"
-                        value={editFormData.hora_notificacion}
-                        onChange={(e) =>
-                          setEditFormData({
-                            ...editFormData,
-                            hora_notificacion: e.target.value,
-                          })
-                        }
-                        className="border p-2 rounded w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-white text-sm block mb-1">
-                        Plazo (días)
-                      </label>
-                      <input
-                        type="number"
-                        min="1"
-                        placeholder="Plazo en días"
-                        value={editFormData.plazo_dias}
-                        onChange={(e) =>
-                          setEditFormData({
-                            ...editFormData,
-                            plazo_dias: Number.parseInt(e.target.value) || 0,
-                          })
-                        }
-                        className="border p-2 rounded w-full"
-                      />
-                    </div>
+                    ))}
                   </div>
+                </div>
 
-                  <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mt-6">
-                    <button
-                      type="button"
-                      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
-                      onClick={() => {
-                        setIsEditModalOpen(false);
-                        setNotificationToEdit(null);
-                      }}
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-300 transition-colors"
-                    >
-                      Actualizar Notificación
-                    </button>
+                <textarea
+                  maxLength={500}
+                  placeholder="Observaciones..."
+                  value={editFormData.detalle_notificacion}
+                  onChange={(e) =>
+                    setEditFormData({
+                      ...editFormData,
+                      detalle_notificacion: e.target.value,
+                    })
+                  }
+                  className="border p-2 rounded w-full h-24 resize-none"
+                />
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-white text-sm block mb-1">
+                      Fecha Notificación
+                    </label>
+                    <input
+                      type="date"
+                      value={editFormData.fecha_notificacion}
+                      onChange={(e) =>
+                        setEditFormData({
+                          ...editFormData,
+                          fecha_notificacion: e.target.value,
+                        })
+                      }
+                      className="border p-2 rounded w-full"
+                    />
                   </div>
-                </form>
-              </div>
+                  <div>
+                    <label className="text-white text-sm block mb-1">
+                      Hora
+                    </label>
+                    <input
+                      type="time"
+                      value={editFormData.hora_notificacion}
+                      onChange={(e) =>
+                        setEditFormData({
+                          ...editFormData,
+                          hora_notificacion: e.target.value,
+                        })
+                      }
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-white text-sm block mb-1">
+                      Plazo (días)
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      placeholder="Plazo en días"
+                      value={editFormData.plazo_dias}
+                      onChange={(e) =>
+                        setEditFormData({
+                          ...editFormData,
+                          plazo_dias: Number.parseInt(e.target.value) || 0,
+                        })
+                      }
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mt-6">
+                  <button
+                    type="button"
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+                    onClick={() => {
+                      setIsEditModalOpen(false);
+                      setNotificationToEdit(null);
+                    }}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-300 transition-colors"
+                  >
+                    Actualizar Notificación
+                  </button>
+                </div>
+              </form>
             </div>
-          )}
+          </div>
+        )}
 
-          {isModalOpen && selectedNotification && (
-            <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
-              <div className="bg-slate-600 rounded-lg shadow-xl max-w-3xl w-full p-8 relative">
-                <button
-                  onClick={handleCloseModal}
-                  className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-                <div className="space-y-6">
-                  <div className="text-center border-b border-gray-400 pb-4">
-                    <h3 className="text-sm font-medium text-white mb-2">
-                      Notificación
-                    </h3>
-                    <h2 className="text-2xl font-bold text-gray-200">
-                      {selectedNotification.nro_notificacion}
-                    </h2>
-                  </div>
+        {isModalOpen && selectedNotification && (
+          <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-slate-600 rounded-lg shadow-xl max-w-3xl w-full p-8 relative">
+              <button
+                onClick={handleCloseModal}
+                className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div className="space-y-6">
+                <div className="text-center border-b border-gray-400 pb-4">
+                  <h3 className="text-sm font-medium text-white mb-2">
+                    Notificación
+                  </h3>
+                  <h2 className="text-2xl font-bold text-gray-200">
+                    {selectedNotification.nro_notificacion}
+                  </h2>
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="text-center">
-                      <h3 className="text-sm font-medium text-white mb-2">
-                        Tipo de Infracción
-                      </h3>
-                      <p className="text-xl font-bold text-orange-500">
-                        {selectedNotification.tipo_infraccion.join(", ")}
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <h3 className="text-sm font-medium text-white mb-2">
-                        Inspector
-                      </h3>
-                      <p className="text-xl font-bold text-blue-400">
-                        {selectedNotification.nombre_inspector}
-                      </p>
-                    </div>
-                  </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="text-center">
                     <h3 className="text-sm font-medium text-white mb-2">
-                      Observaciones
+                      Tipo de Infracción
                     </h3>
-                    <p className="text-gray-200">
-                      {selectedNotification.detalle_notificacion}
+                    <p className="text-xl font-bold text-orange-500">
+                      {selectedNotification.tipo_infraccion.join(", ")}
                     </p>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="text-center">
-                      <h3 className="text-sm font-medium text-white mb-1">
-                        Fecha de Notificación
-                      </h3>
-                      <p className="text-gray-200">
-                        {selectedNotification.fecha_notificacion}
-                      </p>
-                    </div>
-                    <div className="text-center">
-                      <h3 className="text-sm font-medium text-white mb-1">
-                        Fecha de Vencimiento
-                      </h3>
-                      <p className="text-gray-200">
-                        {selectedNotification.fecha_vencimiento}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-400 pt-4">
-                    <h3 className="text-lg font-semibold text-white mb-4 text-center">
-                      Datos del Contribuyente
+                  <div className="text-center">
+                    <h3 className="text-sm font-medium text-white mb-2">
+                      Inspector
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="text-center">
-                        <h4 className="text-sm font-medium text-white mb-1">
-                          Nombre
-                        </h4>
-                        <p className="text-gray-200">
-                          {selectedNotification.nombre_contribuyente}
-                        </p>
-                      </div>
-                      <div className="text-center">
-                        <h4 className="text-sm font-medium text-white mb-1">
-                          Apellido
-                        </h4>
-                        <p className="text-gray-200">
-                          {selectedNotification.apellido_contribuyente}
-                        </p>
-                      </div>
-                      <div className="text-center">
-                        <h4 className="text-sm font-medium text-white mb-1">
-                          DNI
-                        </h4>
-                        <p className="text-gray-200">
-                          {selectedNotification.dni_contribuyente}
-                        </p>
-                      </div>
-                      <div className="text-center md:col-span-2">
-                        <h4 className="text-sm font-medium text-white mb-1">
-                          Dirección
-                        </h4>
-                        <p className="text-gray-200">
-                          {selectedNotification.direccion_notificacion}
-                        </p>
-                      </div>
+                    <p className="text-xl font-bold text-blue-400">
+                      {selectedNotification.nombre_inspector}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <h3 className="text-sm font-medium text-white mb-2">
+                    Observaciones
+                  </h3>
+                  <p className="text-gray-200">
+                    {selectedNotification.detalle_notificacion}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="text-center">
+                    <h3 className="text-sm font-medium text-white mb-1">
+                      Fecha de Notificación
+                    </h3>
+                    <p className="text-gray-200">
+                      {selectedNotification.fecha_notificacion}
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-sm font-medium text-white mb-1">
+                      Fecha de Vencimiento
+                    </h3>
+                    <p className="text-gray-200">
+                      {selectedNotification.fecha_vencimiento}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-400 pt-4">
+                  <h3 className="text-lg font-semibold text-white mb-4 text-center">
+                    Datos del Contribuyente
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <h4 className="text-sm font-medium text-white mb-1">
+                        Nombre
+                      </h4>
+                      <p className="text-gray-200">
+                        {selectedNotification.nombre_contribuyente}
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <h4 className="text-sm font-medium text-white mb-1">
+                        Apellido
+                      </h4>
+                      <p className="text-gray-200">
+                        {selectedNotification.apellido_contribuyente}
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <h4 className="text-sm font-medium text-white mb-1">
+                        DNI
+                      </h4>
+                      <p className="text-gray-200">
+                        {selectedNotification.dni_contribuyente}
+                      </p>
+                    </div>
+                    <div className="text-center md:col-span-2">
+                      <h4 className="text-sm font-medium text-white mb-1">
+                        Dirección
+                      </h4>
+                      <p className="text-gray-200">
+                        {selectedNotification.direccion_notificacion}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </LoaderContent>
   );
