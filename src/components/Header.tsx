@@ -78,11 +78,11 @@ const Header: React.FC<HeaderProps> = ({
             >
               <header className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${image})` }}>
                 <div className="flex flex-col items-center justify-center text-center h-full bg-black/50">
-                  <h1 className="text-4xl md:text-6xl font-extrabold uppercase text-orange-400 drop-shadow-lg">
-                    Bienvenido!
+                  <h1 className="text-4xl md:text-6xl font-extrabold capitalize text-orange-400 drop-shadow-lg">
+                    Te damos la bienvenida!
                   </h1>
                   <p className="mt-4 text-lg md:text-2xl text-gray-200 max-w-2xl px-4">
-                    Al Sistema de Control y Seguridad alimentaria para proteger la salud de nuestra ciudad
+                    Al Sistema de Control y Seguridad alimentaria para proteger la salud de nuestra ciudad :)
                   </p>
                 </div>
               </header>

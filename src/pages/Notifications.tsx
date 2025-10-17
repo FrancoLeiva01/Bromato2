@@ -435,7 +435,7 @@ const Notifications: React.FC = () => {
       minHeight="400px"
     >
       {/* Proximas a vncer */}
-      <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 ">
+      <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
         <div className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">

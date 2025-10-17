@@ -14,6 +14,7 @@ import {
   FolderOpen,
   X,
   Users,
+  BellRing
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -51,6 +52,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
           label: "Actas de inspección",
           path: "/actas-inspeccion",
         },
+        {
+         icon: BellRing,
+         label: "Notificaciones",
+         path: "/notifications",
+       },
         {
           icon: ClipboardCheck,
           label: "Actas de comprobación",

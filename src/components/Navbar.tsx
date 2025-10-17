@@ -78,22 +78,12 @@ const {logoutMutation} = useAuth()
             <span>Tutorial</span>
           </button>
 
-          <button
-            onClick={handleNotificationsClick}
-            className="p-2 text-white hover:text-gray-900 hover:bg-red-300 rounded-lg transition-colors relative flex-shrink-0"
-          >
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-              !
-            </span>
-          </button>
-
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
               className="flex items-center space-x-1 bg-gray-100 hover:bg-gray-200 px-2 py-2 rounded-lg transition-colors"
             >
-              <User className="w-4 h-4 text-black flex-shrink-0" />
+              <User className="w-4 h-4 text-red-600 flex-shrink-0" />
               <span className={`text-sm font-medium hidden sm:inline ${getRoleColor(currentUser.role)}`}>
                 {getRoleDisplayName(currentUser.role)}
               </span>
