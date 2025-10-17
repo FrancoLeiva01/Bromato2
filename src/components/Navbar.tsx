@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 // import { toast } from "react-toastify"
 import { useState, useEffect } from "react"
 import { getCurrentUser, User as UserType } from "../utils/auth"
+import { useAuth } from "@/modules/Auth/hook/useAuth"
 
 interface NavbarProps {
   onTutorialClick?: () => void
@@ -29,13 +30,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
   const handleNotificationsClick = () => {
     navigate("/notifications")
   }
-  
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated")
-    localStorage.removeItem("currentUser")
-    // toast.success("Sesión cerrada correctamente")
-    navigate("/")
-  }
+const {logoutMutation} = useAuth()
   
   const getRoleDisplayName = (role: string) => {
     const roleNames = {
@@ -115,7 +110,7 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
                   </p>
                 </div>
                 <button
-                  onClick={handleLogout}
+                  onClick={ () => logoutMutation.mutate()}
                   className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />

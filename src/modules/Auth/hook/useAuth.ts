@@ -1,11 +1,11 @@
-import {useMutation } from '@tanstack/react-query'
+import {useMutation, useQueryClient } from '@tanstack/react-query'
 import { authRepository } from '../repository/authRepository'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 
 export const useAuth = () => {
     const navigate = useNavigate()
-
+    const queryClient = useQueryClient();
     const loginMutation = useMutation({
         mutationFn: authRepository.login,
         onSuccess: () => {
@@ -18,13 +18,11 @@ export const useAuth = () => {
         }
     })
     const logoutMutation = useMutation({
-        mutationFn: () => {
-            return new Promise<void>((resolve) => {
-                localStorage.removeItem('isAuthenticated')
-                toast.success('Sesión cerrada correctamente')
-                navigate('/')
-                resolve()
-            })
+        mutationFn: authRepository.logout,
+        onSuccess: async ( ) => {
+           await  queryClient.invalidateQueries({queryKey:['user']})
+            localStorage.clear()
+            navigate('/')
         }
     })
 

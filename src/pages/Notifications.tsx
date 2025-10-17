@@ -47,7 +47,7 @@ enum TIPO_INFRACCION {
   OEP_ARIDOS = "OEP ÁRIDOS MATERIALES DE CONSTRUCCIÓN",
   VEHICULOS_ABANDONO = "VEHÍCULOS EN ESTADO DE ABANDONO",
   CHATARRA = "CHATARRA",
-  CHASIS = "CHASIS",
+  CHASIS = "CHATARRA, CHASIS, ESQUELETOS VEHÍCULOS, OTROS",
   ESQUELETOS_VEHICULOS = "ESQUELETOS VEHÍCULOS",
   OTROS = "OTROS",
   LAVADO_VEREDA = "LAVADO DE VEREDA",
@@ -435,7 +435,7 @@ const Notifications: React.FC = () => {
       minHeight="400px"
     >
       {/* Proximas a vncer */}
-      <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6">
+      <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 ">
         <div className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
@@ -673,7 +673,7 @@ const Notifications: React.FC = () => {
         </div>
 
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" style={{ marginTop: 0 }}>
             <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
               <button
                 onClick={handleCloseForm}
@@ -1056,7 +1056,7 @@ const Notifications: React.FC = () => {
         )}
 
         {isModalOpen && selectedNotification && (
-          <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4 mt-0" style={{ marginTop: 0 }}>
             <div className="bg-slate-600 rounded-lg shadow-xl max-w-3xl w-full p-8 relative">
               <button
                 onClick={handleCloseModal}

@@ -7,33 +7,34 @@ import { User } from "@/services/authService";
 import { useQuery } from "@tanstack/react-query";
 import { authRepository } from "../repository/authRepository";
 
-
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const {  logoutMutation, loginMutation } = useAuth();
+  const { logoutMutation, loginMutation } = useAuth();
   const { data: user, isLoading } = useQuery<User | null>({
     queryKey: ["user"],
     queryFn: authRepository.AuthgetMe,
     staleTime: Infinity,
     enabled: !!localStorage.getItem("isAuthenticated"),
-    retry: false,
+    retry: true,
   });
   const [isAuthenticated, setIsAuthenticated] = useState<Status>(
-    Status.NOT_AUTHENTICATED,
+    Status.NOT_AUTHENTICATED
   );
 
   useEffect(() => {
-    console.log('useEffect')
-     if (isLoading) {
-      console.log('loading')
+    if (isLoading) {
+      console.log("loading");
       setIsAuthenticated(Status.CHECKING);
-      return
-    } 
-    if (user) {
-      console.log(user)
-      setIsAuthenticated(Status.AUTHENTICATED);
-      return
     }
-  }, [user]);
+    if (user) {
+      console.log(user);
+      setIsAuthenticated(Status.AUTHENTICATED);
+    }
+      console.log(user);
+
+    if (!user) {
+      setIsAuthenticated(Status.NOT_AUTHENTICATED);
+    }
+  }, [user, isLoading]);
 
   return (
     <AuthContext.Provider
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         user,
         isAuthenticated,
         loginUser: loginMutation,
-        logout: logoutMutation.mutate,
+        logout: logoutMutation,
       }}
     >
       {children}

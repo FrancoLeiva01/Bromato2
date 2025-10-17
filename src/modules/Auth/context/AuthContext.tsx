@@ -29,8 +29,12 @@ export interface UserContext {
     LoginCredentials,
     unknown
   >;
-
-  logout?: () => void;
+  logout?: UseMutationResult<
+    any,
+    Error,
+    void,
+    unknown
+  >;
 }
 
 const initialState: UserContext = {
