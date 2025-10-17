@@ -1,5 +1,5 @@
-import { Bell, HelpCircle, User, LogOut, ChevronDown, Menu } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { HelpCircle, User, LogOut, ChevronDown, Menu } from "lucide-react"
+// import { useNavigate } from "react-router-dom"
 // import { toast } from "react-toastify"
 import { useState, useEffect } from "react"
 import { getCurrentUser, User as UserType } from "../utils/auth"
@@ -12,7 +12,6 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSidebarOpen }) => {
-  const navigate = useNavigate()
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [currentUser, setCurrentUser] = useState<UserType | null>(null)
   
@@ -27,9 +26,10 @@ const Navbar: React.FC<NavbarProps> = ({ onTutorialClick, onSidebarToggle, isSid
     }
   }
   
-  const handleNotificationsClick = () => {
-    navigate("/notifications")
-  }
+  // const handleNotificationsClick = () => {
+  //   navigate("/notifications")
+  // }
+
 const {logoutMutation} = useAuth()
   
   const getRoleDisplayName = (role: string) => {

@@ -434,9 +434,16 @@ const Notifications: React.FC = () => {
       loadingText="Cargando Notificaciones..."
       minHeight="400px"
     >
-      {/* Proximas a vncer */}
+      {/* Proximas a vencer */}
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
-        <div className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
+    <div
+      className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
+      style={{
+        borderLeftWidth: 10,
+        borderRightWidth: 10,
+        borderBottomWidth: 10,
+      }}
+    >
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -453,7 +460,7 @@ const Notifications: React.FC = () => {
               currentNotifications.slice(0, 3).map((notification) => (
                 <div
                   key={`preview-${notification.id}`}
-                  className=" mb-1 p-6 hover:bg-red-300 transition-colors border-l-4 border-l-red-600 bg-gray-100 rounded-lg"
+                  className=" mb-1 p-6 hover:bg-orange-200 transition-colors border-l-4 border-l-red-600 bg-gray-100 rounded-lg"
                 >
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 mt-1">
