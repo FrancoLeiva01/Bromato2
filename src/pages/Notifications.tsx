@@ -508,7 +508,7 @@ const Notifications: React.FC = () => {
                 </div>
 
                 <select
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600"
+                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 mr-1"
                   value={filterType}
                   onChange={(e) => handleFilterChange(e.target.value)}
                 >

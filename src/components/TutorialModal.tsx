@@ -82,7 +82,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
       ),
     },
     {
-      title: "Crear Actas de inspección",
+      title: "Crear Nuevo Inspector",
       content: (
         <div className="space-y-4">
           <div className="space-y-3">
@@ -96,8 +96,8 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
                 <FileCheck className="w-10 h-6 text-gray-600" />
                 <div>
                   <h5 className="font-semibold text-gray-900">
-                    Para crear Actas de Inspección tienes que hacerlo desde la
-                    Tabla de Comercios
+                    Para crear un Nuevo ispector, tienes que dirigirte a la
+                    Seccion "Inspectores" en el apartado de "Pre-Cargados"
                   </h5>
                 </div>
               </div>
@@ -113,7 +113,8 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
                 <Building className="w-6 h-6 text-gray-600" />
                 <div>
                   <h5 className="font-semibold text-gray-900">
-                    Selecciona el comercio en el cual se realizo la inspección.
+                    Haz Click en el boton "Nuevo Inspector" y completa el
+                    formulario con los datos correspondientes
                   </h5>
                 </div>
               </div>
@@ -125,9 +126,9 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
               <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
               <div>
                 <p className="text-sm text-yellow-800">
-                  <span className="font-medium">💡</span> Recorda que a cada
-                  comercio pueden agregarse la cantidad de actas de inspección
-                  que se realizan sin volver a crearlo.
+                  <span className="font-medium">💡</span> Recuerda que luego de
+                  crearlo, puedes ver los datos del inspector que creaste,
+                  modificarlo e incluso deshabilitarlo desde la tabla.
                 </p>
               </div>
             </div>

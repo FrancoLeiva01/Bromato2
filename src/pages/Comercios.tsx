@@ -23,7 +23,7 @@ const Comercios: React.FC = () => {
   const [barrioFilter, setBarrioFilter] = useState("")
   const [zonaFilter, setZonaFilter] = useState("")
   const [activoFilter, setActivoFilter] = useState("")
-  const [selectedComercio, setSelectedComercio] = useState<Comercio | null>(null) // 👈 agregado
+  const [selectedComercio, setSelectedComercio] = useState<Comercio | null>(null) 
   const itemsPerPage = 10
 
 
