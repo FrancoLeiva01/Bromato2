@@ -14,12 +14,12 @@ export const InspectorDetailsModal = ({ inspector, isOpen, onClose }: InspectorD
   return (
     <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-slate-600 rounded-lg shadow-xl max-w-2xl w-full p-8 relative">
-        {/* Botón cerrar */}
+        {/* ------------------------------------------- Botón cerrar --------------------------------------*/}
         <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors">
           <X className="w-6 h-6" />
         </button>
 
-        {/* Contenido del modal */}
+        {/* ------------------------------------- Contenido del modal --------------------------------- */}
         <div className="space-y-6">
           <div className="text-center">
             <h3 className="text-sm font-medium text-white mb-2">Inspector</h3>

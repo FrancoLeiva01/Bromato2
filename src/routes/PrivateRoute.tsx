@@ -8,7 +8,7 @@ import ActasInspeccion from "../pages/ActasInspeccion";
 import ActasComprobacion from "../pages/ActasComprobacion";
 import Rubros from "../pages/Rubros";
 import Comercios from "../pages/Comercios";
-import Inspectores from "../pages/Inspectores";
+import Inspectores from "../modules/Inspectores/views/Inspectores";
 import MapComponent from "../pages/MapComponent";
 import Usuarios from "../pages/Usuarios";
 import Header from "@/components/Header";

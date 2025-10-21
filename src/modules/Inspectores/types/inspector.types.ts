@@ -12,8 +12,8 @@ export interface Inspector {
 export interface InspectorFormData {
   nombres: string
   apellidos: string
-  cuil: string|null
-  nro_legajo: string|null
+  cuil: string
+  nro_legajo: string
 }
 
 export interface InspectorApiResponse {

@@ -1,3 +1,5 @@
+const flowbiteReact = require("flowbite-react/plugin/tailwindcss");
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: "class",
@@ -7,6 +9,7 @@ export default {
     "./app/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./*.{js,ts,jsx,tsx,mdx}",
+    ".flowbite-react\\class-list.json"
   ],
   theme: {
     extend: {
@@ -20,7 +23,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate")
-  ],
+  plugins: [require("tailwindcss-animate"), flowbiteReact],
 }
