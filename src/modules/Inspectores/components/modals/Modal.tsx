@@ -22,7 +22,7 @@ const ModalApp = ({
 }: ModalAppProps) => {
   return (
     <Modal show={openModal} onClose={handleCancel}>
-      <ModalHeader className="bg-blue-500">{ModalTitle}</ModalHeader>
+      <ModalHeader>{ModalTitle}</ModalHeader>
       <ModalBody>
         <div className="space-y-2">{contentModal}</div>
       </ModalBody>

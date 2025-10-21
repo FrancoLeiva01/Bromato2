@@ -46,7 +46,7 @@ export const CreateFormInspector = ({
 
   return (
     <Modal className="rounded-lg " show={true} onClose={onClose}>
-      <ModalHeader className="bg-blue-500 text-white">
+      <ModalHeader className="bg-blue-500">
         {isEditing ? "Editar Inspector" : "Crear Inspector"}
       </ModalHeader>
 

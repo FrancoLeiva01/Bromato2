@@ -4,8 +4,8 @@ import * as Yup from "yup"
 import type { InspectorFormData } from "../types/inspector.types"
 
 const validationSchema = Yup.object({
-  nombres: Yup.string().required("El nombre es requerido").min(2, "Mínimo 2 caracteres"),
-  apellidos: Yup.string().required("El apellido es requerido").min(2, "Mínimo 2 caracteres"),
+  nombres: Yup.string().required("El nombre es requerido").min(4, "Mínimo 4 caracteres"),
+  apellidos: Yup.string().required("El apellido es requerido").min(4, "Mínimo 4 caracteres"),
   cuil: Yup.string()
     .required("El CUIL es requerido")
     .matches(/^\d{11}$/, "El CUIL debe tener 11 dígitos"),

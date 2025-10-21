@@ -17,6 +17,8 @@ import axios from "axios";
 import { LoaderContent } from "@/components/LoaderComponent";
 import { apiClient } from "@/services/authService";
 
+// En un types
+
 interface Notification {
   id: number;
   tipo_infraccion: string[];
@@ -28,7 +30,6 @@ interface Notification {
   fecha_vencimiento?: string;
   nombre_inspector: string;
   identificador_inspector: string;
-  // ---------
   nombre_contribuyente: string;
   apellido_contribuyente: string;
   dni_contribuyente: string;
@@ -56,6 +57,10 @@ enum TIPO_INFRACCION {
   HABILITACION_COMERCIAL = "HABILITACIÓN COMERCIAL DEFINITIVA",
 }
 
+//-------------------------------------------------------------------
+
+// Hook?
+
 const Notifications: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,41 +71,48 @@ const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [totalNotifications, setTotalNotifications] = useState(0);
   const [selectedNotification, setSelectedNotification] =
-  useState<Notification | null>(null);
+    useState<Notification | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [notificationToEdit, setNotificationToEdit] =
-  useState<Notification | null>(null);
-  
+    useState<Notification | null>(null);
+
   // Loader
-  
+
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
+  // Llamados como estos en el hook y repository (?
+
   // GET NOTIS
-  
+
   const getNotifications = async () => {
     try {
       setIsLoading(true);
       const url = `${API_URL}/notificacion?page=${currentPage}&size=${itemsPerPage}`;
-  
+
       const res = await axios.get(url);
-  
+
+      console.log("📥 Respuesta COMPLETA del backend:", res.data);
+
       const payload = Array.isArray(res.data)
         ? res.data
         : res.data?.data ?? res.data?.notifications ?? res.data;
-  
+
+      console.log("📦 Payload extraído:", payload);
+
       const total = res.data.total ?? payload.length;
       setTotalNotifications(total);
-  
+
       const normalized = payload.map(normalizeNotificationFromBackend);
+      console.log("✨ Datos normalizados:", normalized); // AGREGAR ESTO
       setNotifications(normalized);
     } catch (error) {
       console.error("Error al obtener notificaciones:", error);
@@ -108,11 +120,10 @@ const Notifications: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     getNotifications();
   }, [currentPage, itemsPerPage]);
-
 
   const [formData, setFormData] = useState({
     nro_notificacion: "",
@@ -137,9 +148,9 @@ const Notifications: React.FC = () => {
     plazo_dias: 3,
   });
 
-  const API_URL = "http://localhost:4000/api/v1";
+  const API_URL = "http://localhost:4000/api/v1"; // despues usar apiClient + normalizacion
 
-  // GET INSPECTORES
+  // GET INSPECTORES ---------------------------------------------------------
 
   const getAllInspectorForSelect = async () => {
     const { data } = await apiClient.get(`inspector/all-inspector`);
@@ -150,7 +161,12 @@ const Notifications: React.FC = () => {
     getAllInspectorForSelect();
   }, []);
 
+  // -------------------------------------------------------------------------
+
+  // En el repository
+
   const normalizeNotificationFromBackend = (raw: any): Notification => {
+    console.log("📥 Datos crudos del backend:", raw); // Agregar esto
     return {
       id: raw.id,
       tipo_infraccion: Array.isArray(raw.tipo_infraccion)
@@ -174,8 +190,6 @@ const Notifications: React.FC = () => {
         raw.direccion_notificacion ?? raw.contribuyente?.direccion ?? "",
     };
   };
-
-
 
   // CREATE
 
@@ -262,7 +276,7 @@ const Notifications: React.FC = () => {
 
     try {
       console.log("🗑️ Desactivando notificacion:", id);
-      await axios.get(`${API_URL}/notificacion/delete/${id}`, {
+      await axios.get(`${API_URL}/notifications/delete${id}`, {
         data: { activo: "false" },
       });
       console.log("✅ notificacion desactivado");
@@ -280,6 +294,8 @@ const Notifications: React.FC = () => {
       );
     }
   };
+
+  // funciones de la tabla (? en componentes onda NotificationsTable
 
   const filteredNotifications = Array.isArray(notifications)
     ? notifications.filter((notification) => {
@@ -392,6 +408,7 @@ const Notifications: React.FC = () => {
   };
 
   const handleViewDetails = (notification: Notification) => {
+    console.log("👁️ Abriendo modal con:", notification);
     setSelectedNotification(notification);
     setIsModalOpen(true);
   };
@@ -428,6 +445,10 @@ const Notifications: React.FC = () => {
     }));
   };
 
+  // ------------------------------------------------------------------------------
+
+  // Ver si divido en card, los checks, modals, tabla, paginacion, etc
+
   return (
     <LoaderContent
       isLoading={isLoading}
@@ -436,14 +457,14 @@ const Notifications: React.FC = () => {
     >
       {/* Proximas a vencer */}
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
-    <div
-      className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
-      style={{
-        borderLeftWidth: 10,
-        borderRightWidth: 10,
-        borderBottomWidth: 10,
-      }}
-    >
+        <div
+          className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
+          style={{
+            borderLeftWidth: 10,
+            borderRightWidth: 10,
+            borderBottomWidth: 10,
+          }}
+        >
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -680,7 +701,10 @@ const Notifications: React.FC = () => {
         </div>
 
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" style={{ marginTop: 0 }}>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            style={{ marginTop: 0 }}
+          >
             <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
               <button
                 onClick={handleCloseForm}
@@ -1063,7 +1087,10 @@ const Notifications: React.FC = () => {
         )}
 
         {isModalOpen && selectedNotification && (
-          <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4 mt-0" style={{ marginTop: 0 }}>
+          <div
+            className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4 mt-0"
+            style={{ marginTop: 0 }}
+          >
             <div className="bg-slate-600 rounded-lg shadow-xl max-w-3xl w-full p-8 relative">
               <button
                 onClick={handleCloseModal}
