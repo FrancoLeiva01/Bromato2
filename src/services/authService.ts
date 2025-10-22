@@ -43,6 +43,7 @@ export interface LoginCredentials {
   password: string
 }
 
+
 export interface User {
   id: string
   email: string

@@ -37,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       hasDropdown: true,
       subItems: [
         { icon: Tag, label: "Rubros", path: "/rubros" },
-        { icon: Store, label: "Comercios", path: "/comercios" },
+        { icon: Store, label: "Grandes Contribuyentes", path: "/grandes-contribuyentes" },
         { icon: UserCheck, label: "Inspectores", path: "/inspectores" },
       ],
     },

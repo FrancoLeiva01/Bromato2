@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { Store, Plus, Eye, X } from "lucide-react"
 import { LoaderContent } from "@/components/LoaderComponent"
 
-interface Comercio {
+interface GrandesContribuyentes {
   id: number
   nombreRazonSocial: string
   nombreFantasia: string
@@ -15,7 +15,7 @@ interface Comercio {
   activo: boolean
 }
 
-const Comercios: React.FC = () => {
+const GrandesContribuyentes: React.FC = () => {
    const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState("")
@@ -23,7 +23,7 @@ const Comercios: React.FC = () => {
   const [barrioFilter, setBarrioFilter] = useState("")
   const [zonaFilter, setZonaFilter] = useState("")
   const [activoFilter, setActivoFilter] = useState("")
-  const [selectedComercio, setSelectedComercio] = useState<Comercio | null>(null) // 👈 agregado
+  const [selectedGrandesContribuyente, setSelectedGrandesContribuyente] = useState<GrandesContribuyentes | null>(null)
   const itemsPerPage = 10
 
 
@@ -36,7 +36,7 @@ const Comercios: React.FC = () => {
       return () => clearTimeout(timer)
     }, [])
 
-  const comercios: Comercio[] = Array.from({ length: 67 }, (_, i) => ({
+  const grandescontribuyentes: GrandesContribuyentes[] = Array.from({ length: 67 }, (_, i) => ({
     id: i + 1,
     nombreRazonSocial: `Comercio S.R.L. ${i + 1}`,
     nombreFantasia: `Fantasía ${i + 1}`,
@@ -46,20 +46,20 @@ const Comercios: React.FC = () => {
     activo: Math.random() > 0.3,
   }))
 
-  const filteredComercios = comercios.filter((comercio) => {
+  const filteredGranContribuyente = grandescontribuyentes.filter((grandescontribuyentes) => {
     if (filterType === "Filtros" || filterType === "Todos") return true
-    if (filterType === "Nombre de Fantasia") return comercio.nombreFantasia.toLowerCase().includes(searchTerm.toLowerCase())
-    if (filterType === "Nombre/Razon Social comercio") return comercio.nombreRazonSocial.toLowerCase().includes(searchTerm.toLowerCase())
-    if (filterType === "Calle") return comercio.calle.toLowerCase().includes(searchTerm.toLowerCase())
-    if (filterType === "Barrio") return barrioFilter === "" || comercio.barrio === barrioFilter
-    if (filterType === "Zona") return zonaFilter === "" || comercio.zona === zonaFilter
-    if (filterType === "Activo") return activoFilter === "" || comercio.activo.toString() === activoFilter
+    if (filterType === "Nombre de Fantasia") return grandescontribuyentes.nombreFantasia.toLowerCase().includes(searchTerm.toLowerCase())
+    if (filterType === "Nombre/Razon Social comercio") return grandescontribuyentes.nombreRazonSocial.toLowerCase().includes(searchTerm.toLowerCase())
+    if (filterType === "Calle") return grandescontribuyentes.calle.toLowerCase().includes(searchTerm.toLowerCase())
+    if (filterType === "Barrio") return barrioFilter === "" || grandescontribuyentes.barrio === barrioFilter
+    if (filterType === "Zona") return zonaFilter === "" || grandescontribuyentes.zona === zonaFilter
+    if (filterType === "Activo") return activoFilter === "" || grandescontribuyentes.activo.toString() === activoFilter
     return true
   })
 
-  const totalPages = Math.ceil(filteredComercios.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredGranContribuyente.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
-  const currentComercios = filteredComercios.slice(startIndex, startIndex + itemsPerPage)
+  const currentComercios = filteredGranContribuyente.slice(startIndex, startIndex + itemsPerPage)
 
   const handleSearch = () => setCurrentPage(1)
 
@@ -83,8 +83,8 @@ const Comercios: React.FC = () => {
       {/* Titulo */}
       <div className="mb-6">
         <div className="bg-slate-800 rounded-lg p-4 flex justify-center items-center">
-          <Store className="w-8 h-8 text-blue-500 mr-2" />
-          <h1 className="text-3xl font-bold text-white text-center">Comercios</h1>
+          <Store className="w-10 h-8 text-blue-500 mr-2" />
+          <h1 className="text-3xl font-bold text-white text-center">Grandes Contribuyentes</h1>
         </div>
       </div>
 
@@ -170,7 +170,7 @@ const Comercios: React.FC = () => {
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2"
           >
           <Plus className="w-4 h-4" />
-          <span>Nuevo Comercio</span>
+          <span>Nuevo Gran Contribuyente</span>
         </button>
       </div>
 
@@ -209,7 +209,7 @@ const Comercios: React.FC = () => {
                       <button
                         className="text-blue-500 hover:text-blue-500 transition-colors"
                         title="Ver detalles"
-                        onClick={() => setSelectedComercio(comercio)} // 👈 abre modal
+                        onClick={() => setSelectedGrandesContribuyente(comercio)}
                         >
                         <Eye className="w-4 h-4" />
                       </button>
@@ -258,31 +258,31 @@ const Comercios: React.FC = () => {
       </div>
 
       {/* Detalles ojito */}
-      {selectedComercio && (
+      {selectedGrandesContribuyente && (
         <div className="fixed inset-0 bg-orange-200 bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-slate-600 rounded-xl p-6 w-[700px] shadow-lg relative">
             <button
-              onClick={() => setSelectedComercio(null)}
+              onClick={() => setSelectedGrandesContribuyente(null)}
               className="absolute top-4 right-4 text-white hover:text-red-500"
               >
               <X className="w-6 h-6" />
             </button>
 
             <h2 className="text-xl font-bold text-center mb-4 text-orange-500">
-              Comercio ID N° {selectedComercio.id}
+              Comercio ID N° {selectedGrandesContribuyente.id}
             </h2>
 
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="bg-gray-200 p-2 rounded">Razón Social <br/> <b>{selectedComercio.nombreRazonSocial}</b></div>
-              <div className="bg-gray-200 p-2 rounded">Nombre de Fantasía <br/> <b>{selectedComercio.nombreFantasia}</b></div>
-              <div className="bg-gray-200 p-2 rounded">Barrio <br/> <b>{selectedComercio.barrio}</b></div>
-              <div className="bg-gray-200 p-2 rounded">Calle <br/> <b>{selectedComercio.calle}</b></div>
-              <div className="bg-gray-200 p-2 rounded">Zona <br/> <b>{selectedComercio.zona}</b></div>
-              <div className="bg-gray-200 p-2 rounded">Activo <br/> <b>{selectedComercio.activo ? "Sí" : "No"}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Razón Social <br/> <b>{selectedGrandesContribuyente.nombreRazonSocial}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Nombre de Fantasía <br/> <b>{selectedGrandesContribuyente.nombreFantasia}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Barrio <br/> <b>{selectedGrandesContribuyente.barrio}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Calle <br/> <b>{selectedGrandesContribuyente.calle}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Zona <br/> <b>{selectedGrandesContribuyente.zona}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Activo <br/> <b>{selectedGrandesContribuyente.activo ? "Sí" : "No"}</b></div>
               <div className="bg-gray-200 p-2 rounded">Habilitación Bromatologica <br/> <b>-</b></div>
               <div className="bg-gray-200 p-2 rounded">Habilitación Comercial Municipal <br/> <b>-</b></div>
               <div className="bg-gray-200 p-2 rounded">CUIT <br/> <b>000000000</b></div>
-              <div className="bg-gray-200 p-2 rounded">Es movil? <br/> <b>{selectedComercio.activo ? "Sí" : "No"}</b></div>
+              <div className="bg-gray-200 p-2 rounded">Es movil? <br/> <b>{selectedGrandesContribuyente.activo ? "Sí" : "No"}</b></div>
               <div className="bg-gray-200 p-2 rounded">Expediente N° <br/> <b>S/N</b></div>
               <div className="bg-gray-200 p-2 rounded">N° de Suministro <br/> <b>S/N</b></div>
             </div>
@@ -294,4 +294,4 @@ const Comercios: React.FC = () => {
   )
 }
 
-export default Comercios
+export default GrandesContribuyentes

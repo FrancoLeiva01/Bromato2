@@ -1,9 +1,9 @@
 "use client"
 
 import type React from "react"
-import { X } from "lucide-react"
+import { X, ClipboardCheck } from "lucide-react"
 
-interface ActaData {
+interface Acta {
   id: number
   numero: string
   propietarios: string
@@ -11,72 +11,97 @@ interface ActaData {
   creado: string
   nombreFantasia: string
   razonSocial: string
+  fecha_acta_comprobacion?: string
+  hora_acta_comprobacion?: string
+  detalle_procedimiento?: string
+  procedimientos?: string
+  domicilio_inspeccionado?: string
+  inspectores?: string
 }
 
 interface ComprobacionDataProps {
   isOpen: boolean
   onClose: () => void
-  acta: ActaData | null
+  acta: Acta | null
 }
 
 const ComprobacionData: React.FC<ComprobacionDataProps> = ({ isOpen, onClose, acta }) => {
   if (!isOpen || !acta) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
-        {/* Header */}
-        <div className="bg-green-600 text-white px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold">Detalles del Acta de Comprobación</h2>
-          <button onClick={onClose} className="text-white hover:text-red-300 transition-colors">
-            <X className="w-6 h-6" />
-          </button>
-        </div>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-600 rounded-lg shadow-xl max-w-4xl w-full p-8 relative max-h-[90vh] overflow-y-auto">
+        <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors">
+          <X className="w-6 h-6" />
+        </button>
 
-        {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(80vh-80px)]">
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm font-semibold text-gray-600">Número de Acta</p>
-                <p className="text-base text-gray-900">{acta.numero}</p>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-gray-600">Fecha de Creación</p>
-                <p className="text-base text-gray-900">{acta.creado}</p>
-              </div>
+        <div className="space-y-6">
+          <div className="text-center border-b border-gray-400 pb-4">
+            <div className="flex items-center justify-center mb-2">
+              <ClipboardCheck className="w-8 h-8 text-green-500 mr-2" />
+              <h2 className="text-2xl font-bold text-white">Acta de Comprobación</h2>
             </div>
+            <h3 className="text-xl font-bold text-gray-200">{acta.numero}</h3>
+          </div>
 
-            <div>
-              <p className="text-sm font-semibold text-gray-600">Propietarios</p>
-              <p className="text-base text-gray-900">{acta.propietarios}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">Nombre de Fantasía</h3>
+              <p className="text-xl font-bold text-green-400">{acta.nombreFantasia}</p>
             </div>
-
-            <div>
-              <p className="text-sm font-semibold text-gray-600">N° de Juzgado</p>
-              <p className="text-base text-gray-900">{acta.nJuzgado}</p>
-            </div>
-
-            <div className="border-t pt-4">
-              <p className="text-sm font-semibold text-gray-600">Nombre de Fantasía</p>
-              <p className="text-base text-gray-900">{acta.nombreFantasia}</p>
-            </div>
-
-            <div>
-              <p className="text-sm font-semibold text-gray-600">Razón Social</p>
-              <p className="text-base text-gray-900">{acta.razonSocial}</p>
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">Razón Social</h3>
+              <p className="text-xl font-bold text-blue-400">{acta.razonSocial}</p>
             </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="bg-gray-50 px-6 py-4 flex justify-end border-t">
-          <button
-            onClick={onClose}
-            className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
-          >
-            Cerrar
-          </button>
+          <div className="text-center">
+            <h3 className="text-sm font-medium text-white mb-2">Propietarios</h3>
+            <p className="text-gray-200">{acta.propietarios}</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">N° Juzgado</h3>
+              <p className="text-gray-200">{acta.nJuzgado}</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">Fecha de Creación</h3>
+              <p className="text-gray-200">{acta.creado}</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">Hora</h3>
+              <p className="text-gray-200">{acta.hora_acta_comprobacion || "N/A"}</p>
+            </div>
+          </div>
+
+          {acta.domicilio_inspeccionado && (
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">Domicilio Inspeccionado</h3>
+              <p className="text-gray-200">{acta.domicilio_inspeccionado}</p>
+            </div>
+          )}
+
+          {acta.procedimientos && (
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">Procedimiento</h3>
+              <p className="text-gray-200">{acta.procedimientos}</p>
+            </div>
+          )}
+
+          {acta.detalle_procedimiento && (
+            <div className="text-center">
+              <h3 className="text-sm font-medium text-white mb-2">Detalle del Procedimiento</h3>
+              <p className="text-gray-200">{acta.detalle_procedimiento}</p>
+            </div>
+          )}
+
+          {acta.inspectores && (
+            <div className="border-t border-gray-400 pt-4">
+              <h3 className="text-lg font-semibold text-white mb-4 text-center">Inspectores</h3>
+              <p className="text-gray-200 text-center">{acta.inspectores}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

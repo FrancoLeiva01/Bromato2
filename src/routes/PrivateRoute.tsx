@@ -7,18 +7,11 @@ import Notifications from "../pages/Notifications";
 import ActasInspeccion from "../pages/ActasInspeccion";
 import ActasComprobacion from "../pages/ActasComprobacion";
 import Rubros from "../pages/Rubros";
-import Comercios from "../pages/Comercios";
 import Inspectores from "../pages/Inspectores";
 import MapComponent from "../pages/MapComponent";
 import Usuarios from "../pages/Usuarios";
 import Header from "@/components/Header";
-
-// import path from "path";
-// import path from "path";
-// import Rubros from "../pages/Rubros";
-// import Comercios from "../pages/Comercios";
-
-
+import GrandesContribuyentes from "../pages/Grandes-Contribuyentes";
 
 export const PrivateRoute = [
 
@@ -59,9 +52,9 @@ export const PrivateRoute = [
                 <Rubros />
             </ProtectedRoute>
         )},   
-        {path: "/comercios", element: (
+        {path: "/grandes-contribuyentes", element: (
             <ProtectedRoute>
-                <Comercios />
+                <GrandesContribuyentes />
             </ProtectedRoute>
         )}, 
         {path: "/inspectores", element: (
@@ -83,59 +76,6 @@ export const PrivateRoute = [
     },
 ]
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //     {
-    //         path: "/notifications",   
-    //         element: (
-    //         //<ProtectedRoute>
-    //             <Layout>
-    //               <Notifications />
-    //             </Layout>
-    //             //</ProtectedRoute>
-    //         )
-    //     },
-    
-    //     {path: "/actas-inspeccion",
-    //         element: (
-    //         //<ProtectedRoute>
-    //             <Layout>
-    //               <ActasInspeccion />
-    //             </Layout>
-    //         //</ProtectedRoute>
-    //         )
-    //     },
-    
-    //     {
-    //         path: "/actas-comprobacion",
-    //         element: (
-    //                //<ProtectedRoute>
-    //             <Layout>
-    //               <ActasComprobacion />
-    //             </Layout>
-    //             //</ProtectedRoute>
-    //         )
-    //     }
-    // ]
 
 
 
