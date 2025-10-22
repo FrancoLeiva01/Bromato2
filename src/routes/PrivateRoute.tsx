@@ -3,7 +3,7 @@ import Calendar from "../components/Calendar";
 import Register from "../pages/Register";
 import Layout from "../layouts/Layout";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Notifications from "../pages/Notifications";
+import Notifications from "../modules/Notificaciones/view/Notifications";
 import ActasInspeccion from "../pages/ActasInspeccion";
 import ActasComprobacion from "../pages/ActasComprobacion";
 import Rubros from "../pages/Rubros";
@@ -82,68 +82,3 @@ export const PrivateRoute = [
         ]
     },
 ]
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //     {
-    //         path: "/notifications",   
-    //         element: (
-    //         //<ProtectedRoute>
-    //             <Layout>
-    //               <Notifications />
-    //             </Layout>
-    //             //</ProtectedRoute>
-    //         )
-    //     },
-    
-    //     {path: "/actas-inspeccion",
-    //         element: (
-    //         //<ProtectedRoute>
-    //             <Layout>
-    //               <ActasInspeccion />
-    //             </Layout>
-    //         //</ProtectedRoute>
-    //         )
-    //     },
-    
-    //     {
-    //         path: "/actas-comprobacion",
-    //         element: (
-    //                //<ProtectedRoute>
-    //             <Layout>
-    //               <ActasComprobacion />
-    //             </Layout>
-    //             //</ProtectedRoute>
-    //         )
-    //     }
-    // ]
-
-
-
-
-
-
-
-
-
-
-

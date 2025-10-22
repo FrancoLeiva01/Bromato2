@@ -29,7 +29,7 @@ export const useInspector = () => {
       setTotalPages(Math.ceil(((response as any).total || 0) / 10))
     } catch (err: any) {
       setError(err.message || "Error al cargar inspectores")
-      console.error("[v0] Error fetching inspectores:", err)
+      console.error("Error fetching inspectores:", err)
     } finally {
       setLoading(false)
     }
