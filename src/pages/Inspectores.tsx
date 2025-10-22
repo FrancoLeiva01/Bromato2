@@ -17,6 +17,11 @@ interface Inspector {
   nro_legajo?: string;
 }
 
+export enum FUNCION_INSPECTOR {
+  CONTROL_MD = "CONTROL M/D",
+}
+
+
 const Inspectores: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Loader
   const [currentPage, setCurrentPage] = useState(1);
@@ -114,6 +119,8 @@ useEffect(() => {
       apellidos: newInspector.apellidos,
       cuil: newInspector.cuil,
       nro_legajo: newInspector.nro_legajo,
+      funcion: FUNCION_INSPECTOR.CONTROL_MD
+
     };
 
     const res = await axios.post(`${API_URL}/inspector`, payload);

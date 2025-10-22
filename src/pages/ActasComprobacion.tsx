@@ -34,6 +34,7 @@ interface Acta {
   procedimientos?: string;
   domicilio_inspeccionado?: string;
   inspectores_id?: number[];
+  // VER COMO PONGO EL PDF
 }
 
 interface Inspector {
@@ -63,7 +64,7 @@ const ActasComprobacion: React.FC = () => {
   const API_URL = "http://localhost:4000/api/v1"; // Dspues apiClient + normaizacion
 
   const PROCEDIMIENTOS = [
-    "CLAUSURA_PREVENTIVA",
+    "CLAUSURA PREVENTIVA",
     "DECOMISO",
     "SECUESTRO",
     "INSPECCION",
@@ -140,7 +141,7 @@ const ActasComprobacion: React.FC = () => {
       const res = await axios.get(
         `${API_URL}/acta-comprobacion?page=${currentPage}`
       );
-      console.log("[v0] Respuesta del backend:", res.data);
+      console.log("Respuesta del backend:", res.data);
 
       const payload = Array.isArray(res.data)
         ? res.data
@@ -223,7 +224,7 @@ const ActasComprobacion: React.FC = () => {
     }
 
     try {
-      console.log("[v0] Eliminando acta:", id);
+      console.log("Eliminando acta:", id);
       await axios.delete(`${API_URL}/acta-comprobacion/${id}`);
       console.log("✅ Acta eliminada");
 
@@ -670,7 +671,8 @@ const ActasComprobacion: React.FC = () => {
                     />
                   </div>
 
-                  {/* Sección 4: DATOS DEL DOMICILIO */}
+                  {/* Sección 4: DATOS DEL DOMICILIO (POSIBLEMENTE ENTRE EL MAPA MAPIN MAPITA)*/}
+
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
                       4. Datos del Domicilio
@@ -701,6 +703,7 @@ const ActasComprobacion: React.FC = () => {
                   </div>
 
                   {/* Sección 5: INSPECTORES */}
+
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
                       5. Inspectores
@@ -754,7 +757,8 @@ const ActasComprobacion: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Sección 6: DOCUMENTACION */}
+                  {/* Sección 6: DOCUMENTACION (PDF) */}
+
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
                       6. Documentación
@@ -784,6 +788,7 @@ const ActasComprobacion: React.FC = () => {
                   </div>
 
                   {/* Sección 7: OBSERVACIONES */}
+
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
                       7. Observaciones
