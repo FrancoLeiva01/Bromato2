@@ -119,8 +119,7 @@ useEffect(() => {
       apellidos: newInspector.apellidos,
       cuil: newInspector.cuil,
       nro_legajo: newInspector.nro_legajo,
-      funcion: FUNCION_INSPECTOR.CONTROL_MD
-
+      funcion: FUNCION_INSPECTOR.CONTROL_MD  
     };
 
     const res = await axios.post(`${API_URL}/inspector`, payload);

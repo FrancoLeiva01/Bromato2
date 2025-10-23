@@ -11,13 +11,14 @@ import {
   X,
   Edit,
   Trash2,
+  Upload,
 } from "lucide-react";
 import ComprobacionData from "@/components/ComprobacionData";
 import { LoaderContent } from "@/components/LoaderComponent";
 import axios from "axios";
 import { apiClient } from "@/services/authService";
 
-// va a ir Types
+// En types
 
 interface Acta {
   id: number;
@@ -34,7 +35,8 @@ interface Acta {
   procedimientos?: string;
   domicilio_inspeccionado?: string;
   inspectores_id?: number[];
-  // VER COMO PONGO EL PDF
+  observaciones?: string;
+  pdf_url?: string;
 }
 
 interface Inspector {
@@ -43,10 +45,10 @@ interface Inspector {
   identificador: string;
 }
 
-// Repository y hook?
+// Hook y Repository (?
 
 const ActasComprobacion: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // LOADER
   const [currentPage, setCurrentPage] = useState(1);
   const [filterType, setFilterType] = useState("Todos");
   const [filterValue, setFilterValue] = useState("");
@@ -61,7 +63,7 @@ const ActasComprobacion: React.FC = () => {
   const [totalActas, setTotalActas] = useState(0);
   const [allInspectors, setAllInspectors] = useState<Inspector[]>([]);
 
-  const API_URL = "http://localhost:4000/api/v1"; // Dspues apiClient + normaizacion
+  const API_URL = "http://localhost:4000/api/v1"; // despues es apiClient y normalizacion
 
   const PROCEDIMIENTOS = [
     "CLAUSURA PREVENTIVA",
@@ -79,6 +81,7 @@ const ActasComprobacion: React.FC = () => {
     procedimientos: "",
     domicilio_inspeccionado: "",
     inspectores_id: [] as number[],
+    observaciones: "",
   });
 
   const [editFormData, setEditFormData] = useState({
@@ -88,7 +91,10 @@ const ActasComprobacion: React.FC = () => {
     detalle_procedimiento: "",
     procedimientos: "",
     domicilio_inspeccionado: "",
+    observaciones: "",
   });
+
+  const [selectedPdfFile, setSelectedPdfFile] = useState<File | null>(null);
 
   const normalizeActaFromBackend = (raw: any): Acta => {
     return {
@@ -106,10 +112,12 @@ const ActasComprobacion: React.FC = () => {
       procedimientos: raw.procedimientos ?? "",
       domicilio_inspeccionado: raw.domicilio_inspeccionado ?? "",
       inspectores_id: raw.inspectores_id ?? [],
+      observaciones: raw.observaciones ?? "",
+      pdf_url: raw.pdf_url ?? "",
     };
   };
 
-  // GET INSPECTORS
+  // GET INSPECTORES
 
   const getAllInspectors = async () => {
     try {
@@ -124,6 +132,8 @@ const ActasComprobacion: React.FC = () => {
     getAllInspectors();
   }, []);
 
+  // LOADER
+
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
@@ -133,6 +143,8 @@ const ActasComprobacion: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // ------------------------------------------
+
   // GET ACTAS
 
   const getActas = async () => {
@@ -141,7 +153,7 @@ const ActasComprobacion: React.FC = () => {
       const res = await axios.get(
         `${API_URL}/acta-comprobacion?page=${currentPage}`
       );
-      console.log("Respuesta del backend:", res.data);
+      console.log("[v0] Respuesta del backend:", res.data);
 
       const payload = Array.isArray(res.data)
         ? res.data
@@ -195,6 +207,7 @@ const ActasComprobacion: React.FC = () => {
         detalle_procedimiento: updatedData.detalle_procedimiento,
         procedimientos: updatedData.procedimientos,
         domicilio_inspeccionado: updatedData.domicilio_inspeccionado,
+        observaciones: updatedData.observaciones,
       };
 
       console.log("Actualizando acta ID:", id, "con payload:", payload);
@@ -240,6 +253,8 @@ const ActasComprobacion: React.FC = () => {
     }
   };
 
+  // FILTER
+
   const filteredActas = actas.filter((acta) => {
     if (!filterValue) return true;
     const value = filterValue.toLowerCase();
@@ -283,6 +298,7 @@ const ActasComprobacion: React.FC = () => {
 
   const handleCloseForm = () => {
     setIsFormOpen(false);
+    setSelectedPdfFile(null);
     setFormData({
       acta_comprobacion_nro: "",
       fecha_acta_comprobacion: "",
@@ -291,43 +307,72 @@ const ActasComprobacion: React.FC = () => {
       procedimientos: "",
       domicilio_inspeccionado: "",
       inspectores_id: [],
+      observaciones: "",
     });
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload = {
-      acta_comprobacion_nro: formData.acta_comprobacion_nro,
-      fecha_acta_comprobacion: formData.fecha_acta_comprobacion,
-      hora_acta_comprobacion: formData.hora_acta_comprobacion,
-      detalle_procedimiento: formData.detalle_procedimiento,
-      procedimientos: formData.procedimientos,
-      domicilio_inspeccionado: formData.domicilio_inspeccionado,
-      inspectores_id: formData.inspectores_id,
-    };
+    const formDataToSend = new FormData();
+    formDataToSend.append(
+      "acta_comprobacion_nro",
+      formData.acta_comprobacion_nro
+    );
+    formDataToSend.append(
+      "fecha_acta_comprobacion",
+      formData.fecha_acta_comprobacion
+    );
+    formDataToSend.append(
+      "hora_acta_comprobacion",
+      formData.hora_acta_comprobacion
+    );
+    formDataToSend.append(
+      "detalle_procedimiento",
+      formData.detalle_procedimiento
+    );
+    formDataToSend.append("procedimientos", formData.procedimientos);
+    formDataToSend.append(
+      "domicilio_inspeccionado",
+      formData.domicilio_inspeccionado
+    );
+    formDataToSend.append("observaciones", formData.observaciones);
+    formDataToSend.append(
+      "inspectores_id",
+      JSON.stringify(formData.inspectores_id)
+    );
 
-    console.log("[v0] Enviando payload:", payload);
+    if (selectedPdfFile) {
+      formDataToSend.append("pdf", selectedPdfFile);
+    }
+
+    console.log("Enviando payload con PDF");
 
     try {
-      await createActa(payload);
+      const res = await axios.post(
+        `${API_URL}/acta-comprobacion`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      const createdRaw = res.data?.data ?? res.data;
+      const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
+
+      const normalized = normalizeActaFromBackend(created);
+      setActas((prev) => [...prev, normalized]);
+
+      await getActas();
+      alert("✅ Acta de Comprobación creada exitosamente");
       handleCloseForm();
     } catch (error: any) {
       console.error("❌ Error al crear acta:", error);
+      alert(
+        `Error al crear acta: ${error.response?.data?.message || error.message}`
+      );
     }
-  };
-
-  const handleEditClick = (acta: Acta) => {
-    setActaToEdit(acta);
-    setEditFormData({
-      acta_comprobacion_nro: acta.acta_comprobacion_nro || acta.numero,
-      fecha_acta_comprobacion: acta.fecha_acta_comprobacion || acta.creado,
-      hora_acta_comprobacion: acta.hora_acta_comprobacion || "",
-      detalle_procedimiento: acta.detalle_procedimiento || "",
-      procedimientos: acta.procedimientos || "",
-      domicilio_inspeccionado: acta.domicilio_inspeccionado || "",
-    });
-    setIsEditModalOpen(true);
   };
 
   const handleEditFormSubmit = async (e: React.FormEvent) => {
@@ -348,14 +393,24 @@ const ActasComprobacion: React.FC = () => {
     }));
   };
 
+  const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === "application/pdf") {
+      setSelectedPdfFile(file);
+    } else {
+      alert("Por favor seleccione un archivo PDF válido");
+    }
+  };
+
   return (
     <LoaderContent
       isLoading={isLoading}
       loadingText="Cargando Actas..."
       minHeight="400px"
     >
+      {/* TITULO */}
+
       <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600">
-        {/* ------------------------------------------ Título centrado ------------------------------------------ */}
         <div className="mb-6">
           <div className="bg-slate-800 p-4 rounded-lg flex justify-center items-center shadow-inner">
             <ClipboardCheck className="w-8 h-8 text-green-500 mr-2" />
@@ -365,7 +420,8 @@ const ActasComprobacion: React.FC = () => {
           </div>
         </div>
 
-        {/* ----------------------------------- Filtros ------------------------------------------------------- */}
+        {/* TABLA */}
+
         <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
           <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
             <select
@@ -391,6 +447,9 @@ const ActasComprobacion: React.FC = () => {
               className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
             />
           </div>
+
+          {/* CREAR ACTA DE COMPROBACION */}
+
           <button
             onClick={() => setIsFormOpen(true)}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2"
@@ -400,7 +459,6 @@ const ActasComprobacion: React.FC = () => {
           </button>
         </div>
 
-        {/*----------------------------------------- Tabla -------------------------------------- */}
         <div className="overflow-x-auto bg-white rounded-lg shadow">
           <table className="w-full">
             <thead className="bg-gray-200">
@@ -440,6 +498,9 @@ const ActasComprobacion: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       <div className="flex space-x-2">
+                        
+                        {/* VER DETALLES DEL ACTA */}
+
                         <button
                           onClick={() => handleViewDetails(acta)}
                           className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-lg"
@@ -447,13 +508,36 @@ const ActasComprobacion: React.FC = () => {
                         >
                           <Eye className="w-5 h-5" />
                         </button>
+
+                        {/* EDITAR EL ACTA */}
+
                         <button
-                          onClick={() => handleEditClick(acta)}
+                          onClick={() => {
+                            setActaToEdit(acta);
+                            setEditFormData({
+                              acta_comprobacion_nro:
+                                acta.acta_comprobacion_nro || acta.numero,
+                              fecha_acta_comprobacion:
+                                acta.fecha_acta_comprobacion || acta.creado,
+                              hora_acta_comprobacion:
+                                acta.hora_acta_comprobacion || "",
+                              detalle_procedimiento:
+                                acta.detalle_procedimiento || "",
+                              procedimientos: acta.procedimientos || "",
+                              domicilio_inspeccionado:
+                                acta.domicilio_inspeccionado || "",
+                              observaciones: acta.observaciones || "",
+                            });
+                            setIsEditModalOpen(true);
+                          }}
                           className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
                           title="Editar acta"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
+
+                        {/* ELIMINAR ACTA */}
+
                         <button
                           onClick={() => deleteActa(acta.id)}
                           className="text-red-600 hover:text-red-900 transition-colors p-1 rounded hover:bg-red-50"
@@ -479,7 +563,8 @@ const ActasComprobacion: React.FC = () => {
           </table>
         </div>
 
-        {/* ----------------------------------------- Paginacion ------------------------------------------------------------ */}
+        {/* PAGINACION */}
+
         <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-center space-x-2">
           <button
             onClick={handlePreviousPage}
@@ -515,7 +600,9 @@ const ActasComprobacion: React.FC = () => {
           onClose={() => setIsModalOpen(false)}
           acta={selectedActa}
         />
-        {/* ----------------------------------------- Nueva Acta de Comprobacion ------------------------------------------------------------ */}
+
+        {/* FORMULARIO DE CREACION DE ACTA */}
+
         {isFormOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
@@ -534,7 +621,7 @@ const ActasComprobacion: React.FC = () => {
                 </button>
               </div>
 
-              {/* Sección 1: DATOS DEL ACATA */}
+              {/* CAMPO 1. DATOS DEL ACTA */}
 
               <div className="overflow-y-auto flex-1 p-6 bg-slate-500">
                 <form className="space-y-6" onSubmit={handleFormSubmit}>
@@ -598,7 +685,7 @@ const ActasComprobacion: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Sección 2: PROCEDIMIENTOS */}
+                  {/* CAMPO 2. PROCEDIMENTO */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
@@ -650,7 +737,7 @@ const ActasComprobacion: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Sección 3: DOMCILIO */}
+                  {/* CAMPO 3. ACA VA MAPA MAPIN MAPITA */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
@@ -671,106 +758,58 @@ const ActasComprobacion: React.FC = () => {
                     />
                   </div>
 
-                  {/* Sección 4: DATOS DEL DOMICILIO (POSIBLEMENTE ENTRE EL MAPA MAPIN MAPITA)*/}
+                  {/* CAMPO 4. INSPECTORES (YA CARGADOS) */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      4. Datos del Domicilio
+                      4. Inspectores
                     </h3>
-                    <div className="space-y-3">
-                      <label className="flex items-center space-x-2">
-                        <input type="checkbox" className="accent-green-600" />
-                        <span className="text-sm font-medium text-gray-700">
-                          Coincide el domicilio declarado con el inspeccionado
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Domicilio Inspeccionado"
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                      />
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Google Maps
-                        </label>
-                        <input
-                          type="text"
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                          placeholder="URL de Google Maps o coordenadas"
-                        />
-                      </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {allInspectors.length > 0 ? (
+                        allInspectors.map((inspector) => (
+                          <label
+                            key={inspector.id}
+                            className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={formData.inspectores_id.includes(
+                                inspector.id
+                              )}
+                              onChange={() =>
+                                handleInspectorToggle(inspector.id)
+                              }
+                              className="accent-green-600 w-4 h-4"
+                            />
+                            <span className="text-sm text-gray-700">
+                              {inspector.nombres} - Legajo:{" "}
+                              {inspector.identificador}
+                            </span>
+                          </label>
+                        ))
+                      ) : (
+                        <p className="text-sm text-gray-500 italic col-span-2">
+                          No hay inspectores disponibles
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  {/* Sección 5: INSPECTORES */}
+                  {/* CAMPO 5. DOCUMENTACION (PDF) */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      5. Inspectores
-                    </h3>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Inspector 1
-                          </label>
-                          <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                            placeholder="Nombre del inspector"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Legajo 1
-                          </label>
-                          <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                            placeholder="Número de legajo"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Inspector 2
-                          </label>
-                          <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                            placeholder="Nombre del inspector"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Legajo/DNI 2
-                          </label>
-                          <input
-                            type="text"
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                            placeholder="Número de legajo o DNI"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Sección 6: DOCUMENTACION (PDF) */}
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      6. Documentación
+                      5. Documentación
                     </h3>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         PDF del Acta
                       </label>
-                      <div className="border-2 border-dashed border-green-500 rounded-lg p-6 text-center hover:border-green-500 transition-colors">
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors">
                         <input
                           type="file"
                           accept=".pdf"
+                          onChange={handlePdfFileChange}
                           className="hidden"
                           id="pdfUpload"
                         />
@@ -778,27 +817,57 @@ const ActasComprobacion: React.FC = () => {
                           htmlFor="pdfUpload"
                           className="cursor-pointer text-gray-500 hover:text-green-600"
                         >
-                          <div className="text-4xl mb-2">📄</div>
-                          <div className="text-sm">
-                            Haz click para subir un PDF
-                          </div>
+                          {selectedPdfFile ? (
+                            <div>
+                              <Upload className="w-8 h-8 mx-auto mb-2 text-green-600" />
+                              <div className="text-sm font-medium text-green-600">
+                                {selectedPdfFile.name}
+                              </div>
+                              <div className="text-xs text-gray-500 mt-1">
+                                {(selectedPdfFile.size / 1024 / 1024).toFixed(
+                                  2
+                                )}{" "}
+                                MB
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div className="text-4xl mb-2">📄</div>
+                              <div className="text-sm">
+                                Haz click para subir un PDF
+                              </div>
+                              <div className="text-xs text-gray-400 mt-1">
+                                Tamaño máximo: 10MB
+                              </div>
+                            </div>
+                          )}
                         </label>
                       </div>
                     </div>
                   </div>
 
-                  {/* Sección 7: OBSERVACIONES */}
+                  {/* CAMPO 6. OBSERVACIONES */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      7. Observaciones
+                      6. Observaciones
                     </h3>
                     <textarea
                       maxLength={700}
                       rows={6}
+                      value={formData.observaciones}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          observaciones: e.target.value,
+                        })
+                      }
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
                       placeholder="Escriba sus observaciones aquí..."
                     />
+                    <div className="text-xs text-gray-500 mt-1 text-right">
+                      {formData.observaciones.length}/700 caracteres
+                    </div>
                   </div>
 
                   <div className="flex justify-between items-center pt-4 border-t border-gray-200">
@@ -822,7 +891,7 @@ const ActasComprobacion: React.FC = () => {
           </div>
         )}
 
-        {/* ----------------------------------------- Editar Acta ------------------------------------------------------------ */}
+        {/* MISMO FORMULARIO PERO PARA EDITAR */}
 
         {isEditModalOpen && actaToEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -965,6 +1034,28 @@ const ActasComprobacion: React.FC = () => {
                       }
                       className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                     />
+                  </div>
+
+                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
+                      Observaciones
+                    </h3>
+                    <textarea
+                      maxLength={700}
+                      rows={6}
+                      value={editFormData.observaciones}
+                      onChange={(e) =>
+                        setEditFormData({
+                          ...editFormData,
+                          observaciones: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
+                      placeholder="Escriba sus observaciones aquí..."
+                    />
+                    <div className="text-xs text-gray-500 mt-1 text-right">
+                      {editFormData.observaciones.length}/700 caracteres
+                    </div>
                   </div>
 
                   <div className="flex justify-between items-center pt-4 border-t border-gray-200">
