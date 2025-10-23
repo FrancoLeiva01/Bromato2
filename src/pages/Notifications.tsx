@@ -498,8 +498,8 @@ const Notifications: React.FC = () => {
 
         <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
           <div className="bg-gray-200 p-6 rounded-lg">
-            <div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0 pb-5">
-              <div className="flex flex-col space-y-3 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
+              <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
                 <div className="flex items-center space-x-3">
                   <ClipboardList className="w-8 h-8 text-blue-600" />
                   <h1 className="text-2xl font-bold text-black">
@@ -546,6 +546,8 @@ const Notifications: React.FC = () => {
                   </button>
                 )}
               </div>
+
+{/* NUEVA NOTIFICACION */}
 
               <button
                 onClick={handleNuevaNotificacion}

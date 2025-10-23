@@ -36,7 +36,7 @@ interface Acta {
   domicilio_inspeccionado?: string;
   inspectores_id?: number[];
   observaciones?: string;
-  pdf_url?: string;
+  pdf_url?: string;   // PDF
 }
 
 interface Inspector {
@@ -113,7 +113,7 @@ const ActasComprobacion: React.FC = () => {
       domicilio_inspeccionado: raw.domicilio_inspeccionado ?? "",
       inspectores_id: raw.inspectores_id ?? [],
       observaciones: raw.observaciones ?? "",
-      pdf_url: raw.pdf_url ?? "",
+      pdf_url: raw.pdf_url ?? "",  // PDF
     };
   };
 
@@ -153,7 +153,7 @@ const ActasComprobacion: React.FC = () => {
       const res = await axios.get(
         `${API_URL}/acta-comprobacion?page=${currentPage}`
       );
-      console.log("[v0] Respuesta del backend:", res.data);
+      console.log("Respuesta del backend:", res.data);
 
       const payload = Array.isArray(res.data)
         ? res.data
@@ -344,9 +344,9 @@ const ActasComprobacion: React.FC = () => {
 
     if (selectedPdfFile) {
       formDataToSend.append("pdf", selectedPdfFile);
+      console.log("Enviando payload con PDF");    // PDF
     }
 
-    console.log("Enviando payload con PDF");
 
     try {
       const res = await axios.post(
@@ -354,7 +354,7 @@ const ActasComprobacion: React.FC = () => {
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data", // PDF
           },
         }
       );
@@ -498,7 +498,7 @@ const ActasComprobacion: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       <div className="flex space-x-2">
-                        
+
                         {/* VER DETALLES DEL ACTA */}
 
                         <button
