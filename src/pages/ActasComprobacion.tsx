@@ -36,7 +36,7 @@ interface Acta {
   domicilio_inspeccionado?: string;
   inspectores_id?: number[];
   observaciones?: string;
-  pdf_url?: string;   // PDF
+  pdf_url?: string; // PDF
 }
 
 interface Inspector {
@@ -63,7 +63,7 @@ const ActasComprobacion: React.FC = () => {
   const [totalActas, setTotalActas] = useState(0);
   const [allInspectors, setAllInspectors] = useState<Inspector[]>([]);
 
-  const API_URL = "http://localhost:4000/api/v1"; // despues es apiClient y normalizacion
+  const API_URL = "http://localhost:4000/api/v1"; // despues es apiClient + normalizacion
 
   const PROCEDIMIENTOS = [
     "CLAUSURA PREVENTIVA",
@@ -113,7 +113,7 @@ const ActasComprobacion: React.FC = () => {
       domicilio_inspeccionado: raw.domicilio_inspeccionado ?? "",
       inspectores_id: raw.inspectores_id ?? [],
       observaciones: raw.observaciones ?? "",
-      pdf_url: raw.pdf_url ?? "",  // PDF
+      pdf_url: raw.pdf_url ?? "", // PDF
     };
   };
 
@@ -344,9 +344,8 @@ const ActasComprobacion: React.FC = () => {
 
     if (selectedPdfFile) {
       formDataToSend.append("pdf", selectedPdfFile);
-      console.log("Enviando payload con PDF");    // PDF
+      console.log("Enviando payload con PDF"); // PDF
     }
-
 
     try {
       const res = await axios.post(
@@ -498,7 +497,6 @@ const ActasComprobacion: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       <div className="flex space-x-2">
-
                         {/* VER DETALLES DEL ACTA */}
 
                         <button

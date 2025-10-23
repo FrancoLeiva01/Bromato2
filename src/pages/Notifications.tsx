@@ -447,9 +447,9 @@ const Notifications: React.FC = () => {
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <FolderClock className="w-6 h-6 text-blue-700" />
-                <h1 className="text-xl font-semibold text-gray-900">
-                  Notificaciones Próximas a Vencer
+                <FolderClock className="w-10 h-10 text-blue-700" />
+                <h1 className="text-2xl font-bold text-black">
+                 Próximas a Vencer
                 </h1>
               </div>
             </div>
