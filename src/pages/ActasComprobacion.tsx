@@ -36,7 +36,7 @@ interface Acta {
   domicilio_inspeccionado?: string;
   inspectores_id?: number[];
   observaciones?: string;
-  pdf_url?: string; // PDF
+  // pdf_url?: string; // PDF
 }
 
 interface Inspector {
@@ -113,7 +113,7 @@ const ActasComprobacion: React.FC = () => {
       domicilio_inspeccionado: raw.domicilio_inspeccionado ?? "",
       inspectores_id: raw.inspectores_id ?? [],
       observaciones: raw.observaciones ?? "",
-      pdf_url: raw.pdf_url ?? "", // PDF
+      // pdf_url: raw.pdf_url ?? "", // PDF
     };
   };
 
@@ -392,14 +392,14 @@ const ActasComprobacion: React.FC = () => {
     }));
   };
 
-  const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type === "application/pdf") {
-      setSelectedPdfFile(file);
-    } else {
-      alert("Por favor seleccione un archivo PDF válido");
-    }
-  };
+  // const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file && file.type === "application/pdf") {
+  //     setSelectedPdfFile(file);
+  //   } else {
+  //     alert("Por favor seleccione un archivo PDF válido");
+  //   }
+  // };
 
   return (
     <LoaderContent
@@ -804,13 +804,13 @@ const ActasComprobacion: React.FC = () => {
                         PDF del Acta
                       </label>
                       <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors">
-                        <input
+                        {/* <input
                           type="file"
                           accept=".pdf"
-                          onChange={handlePdfFileChange}
+                          // onChange={handlePdfFileChange}
                           className="hidden"
                           id="pdfUpload"
-                        />
+                        /> */}
                         <label
                           htmlFor="pdfUpload"
                           className="cursor-pointer text-gray-500 hover:text-green-600"
