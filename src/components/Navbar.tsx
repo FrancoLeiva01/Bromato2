@@ -53,7 +53,7 @@ const {logoutMutation} = useAuth()
   if (!currentUser) return null;
 
   return (
-    <header className="bg-slate-800 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 px-4 py-4 ">
+    <header className="bg-slate-800 border-b-4 border-orange-500 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-slate-700 px-4 py-4 ">
       <div className="flex items-center justify-between max-w-full">
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           <button
@@ -81,17 +81,17 @@ const {logoutMutation} = useAuth()
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center space-x-1 bg-gray-100 hover:bg-gray-200 px-2 py-2 rounded-lg transition-colors"
+              className="flex items-center space-x-1 bg-red-500 hover:bg-red-700 px-2 py-2 rounded-lg transition-colors"
             >
-              <User className="w-4 h-4 text-red-600 flex-shrink-0" />
-              <span className={`text-sm font-medium hidden sm:inline ${getRoleColor(currentUser.role)}`}>
+              <User className="w-4 h-4 text-white flex-shrink-0" />
+              <span className={`text-sm text-white font-medium hidden sm:inline ${getRoleColor(currentUser.role)}`}>
                 {getRoleDisplayName(currentUser.role)}
               </span>
-              <ChevronDown className="w-4 h-4 text-gray-600 flex-shrink-0" />
+              <ChevronDown className="w-4 h-4 text-white flex-shrink-0" />
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border py-2 z-50 rounded-lg">
                 <div className="px-4 py-2 border-b border-gray-100">
                   <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
                   <p className="text-xs text-gray-500">{currentUser.email}</p>
@@ -101,7 +101,7 @@ const {logoutMutation} = useAuth()
                 </div>
                 <button
                   onClick={ () => logoutMutation.mutate()}
-                  className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600  hover:bg-red-300 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Cerrar Sesión</span>

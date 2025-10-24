@@ -66,40 +66,40 @@ const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [totalNotifications, setTotalNotifications] = useState(0);
   const [selectedNotification, setSelectedNotification] =
-  useState<Notification | null>(null);
+    useState<Notification | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [notificationToEdit, setNotificationToEdit] =
-  useState<Notification | null>(null);
-  
+    useState<Notification | null>(null);
+
   // Loader
-  
+
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   // GET NOTIS
-  
+
   const getNotifications = async () => {
     try {
       setIsLoading(true);
       const url = `${API_URL}/notificacion?page=${currentPage}&size=${itemsPerPage}`;
-  
+
       const res = await axios.get(url);
-  
+
       const payload = Array.isArray(res.data)
         ? res.data
         : res.data?.data ?? res.data?.notifications ?? res.data;
-  
+
       const total = res.data.total ?? payload.length;
       setTotalNotifications(total);
-  
+
       const normalized = payload.map(normalizeNotificationFromBackend);
       setNotifications(normalized);
     } catch (error) {
@@ -108,11 +108,10 @@ const Notifications: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     getNotifications();
   }, [currentPage, itemsPerPage]);
-
 
   const [formData, setFormData] = useState({
     nro_notificacion: "",
@@ -145,11 +144,12 @@ const Notifications: React.FC = () => {
     const { data } = await apiClient.get(`inspector/all-inspector`);
     setAllInspector(data);
   };
-
   useEffect(() => {
     getAllInspectorForSelect();
   }, []);
 
+
+  
   const normalizeNotificationFromBackend = (raw: any): Notification => {
     return {
       id: raw.id,
@@ -174,8 +174,6 @@ const Notifications: React.FC = () => {
         raw.direccion_notificacion ?? raw.contribuyente?.direccion ?? "",
     };
   };
-
-
 
   // CREATE
 
@@ -435,22 +433,22 @@ const Notifications: React.FC = () => {
       minHeight="400px"
     >
       {/* Proximas a vencer */}
-      
+
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
-    <div
-      className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
-      style={{
-        borderLeftWidth: 10,
-        borderRightWidth: 10,
-        borderBottomWidth: 10,
-      }}
-    >
+        <div
+          className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
+          style={{
+            borderLeftWidth: 10,
+            borderRightWidth: 10,
+            borderBottomWidth: 10,
+          }}
+        >
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <FolderClock className="w-10 h-10 text-blue-700" />
                 <h1 className="text-2xl font-bold text-black">
-                 Próximas a Vencer
+                  Próximas a Vencer
                 </h1>
               </div>
             </div>
@@ -548,7 +546,7 @@ const Notifications: React.FC = () => {
                 )}
               </div>
 
-{/* NUEVA NOTIFICACION */}
+              {/* NUEVA NOTIFICACION */}
 
               <button
                 onClick={handleNuevaNotificacion}
@@ -683,7 +681,10 @@ const Notifications: React.FC = () => {
         </div>
 
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" style={{ marginTop: 0 }}>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+            style={{ marginTop: 0 }}
+          >
             <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
               <button
                 onClick={handleCloseForm}
@@ -1066,7 +1067,10 @@ const Notifications: React.FC = () => {
         )}
 
         {isModalOpen && selectedNotification && (
-          <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4 mt-0" style={{ marginTop: 0 }}>
+          <div
+            className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4 mt-0"
+            style={{ marginTop: 0 }}
+          >
             <div className="bg-slate-600 rounded-lg shadow-xl max-w-3xl w-full p-8 relative">
               <button
                 onClick={handleCloseModal}

@@ -97,7 +97,7 @@ const Footer = () => {
                 href="https://www.facebook.com/catamarcatucapital"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-green-700 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 bg-emerald-500 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
               >
                 <Facebook size={20} />
               </a>
@@ -105,7 +105,7 @@ const Footer = () => {
                 href="https://x.com/MuniSFVC"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-green-700 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 bg-emerald-500 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
               >
                 <Twitter size={20} />
               </a>
@@ -113,7 +113,7 @@ const Footer = () => {
                 href="https://www.instagram.com/catamarcacapital/#"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-green-700 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 bg-emerald-500 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
               >
                 <Instagram size={20} />
               </a>
@@ -121,7 +121,7 @@ const Footer = () => {
                 href="https://www.youtube.com/channel/UCMAeIcE5sQa7chR-J13zlDw"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-green-700 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
+                className="w-10 h-10 bg-emerald-500 hover:bg-gray-400 rounded-full flex items-center justify-center transition-colors duration-200"
               >
                 <Youtube size={20} />
               </a>

@@ -128,9 +128,6 @@ useEffect(() => {
     
     const normalized = normalizeInspectorFromBackend(created);
     
-    // 👇 Fuerza visualmente el estado activo
-    normalized.activo = true;
-    
     // 👇 Actualiza el estado de la tabla sin depender del backend
     setInspectores((prev) => [...prev, normalized]);
     

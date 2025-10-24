@@ -93,7 +93,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       <aside
         className={`
         fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
-        w-64 bg-gradient-to-b from-slate-700 to-slate-900 text-white min-h-screen shadow-lg
+        w-64 bg-gradient-to-b from-slate-800 to-slate-600 text-white min-h-screen shadow-lg
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
@@ -140,7 +140,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                         item.subItems?.some(
                           (sub) => location.pathname === sub.path
                         )
-                          ? "bg-blue-400 text-white"
+                          ? "bg-blue-500 text-white"
                           : "text-white hover:to-blue-700 hover:text-white"
                       }`}
                     >

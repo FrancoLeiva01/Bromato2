@@ -131,7 +131,7 @@ const Calendar: React.FC = () => {
   return (
      <LoaderContent isLoading={isLoading} loadingText="Cargando Inicio..." minHeight="400px">
 
-    <div className="bg-slate-400 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 border border-gray-500 ">
+    <div className="bg-slate-500 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 border border-gray-500 ">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-3xl font-bold text-white">
@@ -148,7 +148,7 @@ const Calendar: React.FC = () => {
 
             <button
               onClick={goToToday}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-orange-400 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
             >
               Hoy
             </button>

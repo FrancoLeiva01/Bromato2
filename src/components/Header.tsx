@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <LoaderContent isLoading={isLoading} loadingText="Cargando Inicio..." minHeight="400px">
-      <div className="relative w-full mb-8 rounded-lg overflow-hidden shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
+      <div className="relative w-full mb-8 rounded-lg overflow-hidden shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-slate-700">
         {/* Carrusel*/}
         <div className="relative h-96">
           {images.map((image, index) => (
@@ -78,11 +78,11 @@ const Header: React.FC<HeaderProps> = ({
             >
               <header className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url(${image})` }}>
                 <div className="flex flex-col items-center justify-center text-center h-full bg-black/50">
-                  <h1 className="text-4xl md:text-6xl font-extrabold capitalize text-orange-400 drop-shadow-lg">
+                  <h1 className="text-4xl md:text-6xl font-extrabold capitalize text-gray-200 drop-shadow-lg">
                     Te damos la bienvenida!
                   </h1>
                   <p className="mt-4 text-lg md:text-2xl text-gray-200 max-w-2xl px-4">
-                    Al Sistema de Control y Seguridad alimentaria para proteger la salud de nuestra ciudad :)
+                    Al Sistema de Control y Seguridad alimentaria para proteger la salud de nuestra ciudad
                   </p>
                 </div>
               </header>
@@ -121,7 +121,7 @@ const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={() => goToSlide(index)}
               className={`w-3 h-3 rounded-full transition-all ${
-                index === currentIndex ? "bg-orange-400 w-8" : "bg-white/50 hover:bg-white/80"
+                index === currentIndex ? "bg-emerald-400 w-8" : "bg-white/50 hover:bg-white/80"
               }`}
               aria-current={index === currentIndex}
               aria-label={`Slide ${index + 1}`}

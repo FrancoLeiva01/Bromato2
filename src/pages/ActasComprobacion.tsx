@@ -11,14 +11,12 @@ import {
   X,
   Edit,
   Trash2,
-  Upload,
 } from "lucide-react";
 import ComprobacionData from "@/components/ComprobacionData";
 import { LoaderContent } from "@/components/LoaderComponent";
 import axios from "axios";
-import { apiClient } from "@/services/authService";
 
-// En types
+// types
 
 interface Acta {
   id: number;
@@ -36,8 +34,8 @@ interface Acta {
   domicilio_inspeccionado?: string;
   inspectores_id?: number[];
   observaciones?: string;
-  // pdf_url?: string; // PDF
-}
+  // pdf_url?: string; //PDF
+} 
 
 interface Inspector {
   id: number;
@@ -45,10 +43,8 @@ interface Inspector {
   identificador: string;
 }
 
-// Hook y Repository (?
-
 const ActasComprobacion: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true); // LOADER
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterType, setFilterType] = useState("Todos");
   const [filterValue, setFilterValue] = useState("");
@@ -63,7 +59,8 @@ const ActasComprobacion: React.FC = () => {
   const [totalActas, setTotalActas] = useState(0);
   const [allInspectors, setAllInspectors] = useState<Inspector[]>([]);
 
-  const API_URL = "http://localhost:4000/api/v1"; // despues es apiClient + normalizacion
+  const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:4000/api/v1";
 
   const PROCEDIMIENTOS = [
     "CLAUSURA PREVENTIVA",
@@ -94,7 +91,7 @@ const ActasComprobacion: React.FC = () => {
     observaciones: "",
   });
 
-  const [selectedPdfFile, setSelectedPdfFile] = useState<File | null>(null);
+  // const [selectedPdfFile, setSelectedPdfFile] = useState<File | null>(null); //PDF
 
   const normalizeActaFromBackend = (raw: any): Acta => {
     return {
@@ -113,18 +110,22 @@ const ActasComprobacion: React.FC = () => {
       domicilio_inspeccionado: raw.domicilio_inspeccionado ?? "",
       inspectores_id: raw.inspectores_id ?? [],
       observaciones: raw.observaciones ?? "",
-      // pdf_url: raw.pdf_url ?? "", // PDF
+      // pdf_url: raw.pdf_url ?? "", //PDF
     };
   };
 
-  // GET INSPECTORES
+  // GET INSPECTOS
 
   const getAllInspectors = async () => {
     try {
-      const { data } = await apiClient.get(`inspector/all-inspector`);
+      const { data } = await axios.get(`${API_URL}/inspector/all-inspector`);
       setAllInspectors(data);
+      console.log("Inspectores cargados:", data.length);
     } catch (error) {
       console.error("Error al obtener inspectores:", error);
+      console.warn(
+        "No se pudieron cargar los inspectores. El formulario seguirá funcionando pero sin la lista de inspectores."
+      );
     }
   };
 
@@ -132,8 +133,7 @@ const ActasComprobacion: React.FC = () => {
     getAllInspectors();
   }, []);
 
-  // LOADER
-
+  
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
@@ -142,8 +142,6 @@ const ActasComprobacion: React.FC = () => {
 
     return () => clearTimeout(timer);
   }, []);
-
-  // ------------------------------------------
 
   // GET ACTAS
 
@@ -177,21 +175,36 @@ const ActasComprobacion: React.FC = () => {
 
   // CREATE
 
-  const createActa = async (newActa: any) => {
+  const createActa = async (newActa: typeof formData) => {
     try {
-      const res = await axios.post(`${API_URL}/acta-comprobacion`, newActa);
+      const payload = {
+        acta_comprobacion_nro: newActa.acta_comprobacion_nro,
+        fecha_acta_comprobacion: newActa.fecha_acta_comprobacion,
+        hora_acta_comprobacion: newActa.hora_acta_comprobacion,
+        detalle_procedimiento: newActa.detalle_procedimiento,
+        procedimientos: newActa.procedimientos,
+        domicilio_inspeccionado: newActa.domicilio_inspeccionado,
+        observaciones: newActa.observaciones,
+        inspectores_id: newActa.inspectores_id,
+      };
+
+      const res = await axios.post(`${API_URL}/acta-comprobacion`, payload);
       const createdRaw = res.data?.data ?? res.data;
       const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
 
       const normalized = normalizeActaFromBackend(created);
+
+      // 👇 Actualiza el estado de la tabla sin depender del backend
       setActas((prev) => [...prev, normalized]);
 
+      // Si querés actualizar desde el backend también:
       await getActas();
-      alert("✅ Acta de Comprobación creada exitosamente");
+
+      alert("✅ Acta de Comprobacion creado exitosamente");
     } catch (error: any) {
-      console.error("❌ Error al crear acta:", error);
+      console.error("❌ Error al crear Acta:", error);
       alert(
-        `Error al crear acta: ${error.response?.data?.message || error.message}`
+        `Error al crear Acta: ${error.response?.data?.message || error.message}`
       );
     }
   };
@@ -253,8 +266,6 @@ const ActasComprobacion: React.FC = () => {
     }
   };
 
-  // FILTER
-
   const filteredActas = actas.filter((acta) => {
     if (!filterValue) return true;
     const value = filterValue.toLowerCase();
@@ -298,7 +309,7 @@ const ActasComprobacion: React.FC = () => {
 
   const handleCloseForm = () => {
     setIsFormOpen(false);
-    setSelectedPdfFile(null);
+    // setSelectedPdfFile(null); //PDF
     setFormData({
       acta_comprobacion_nro: "",
       fecha_acta_comprobacion: "",
@@ -313,65 +324,18 @@ const ActasComprobacion: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const formDataToSend = new FormData();
-    formDataToSend.append(
-      "acta_comprobacion_nro",
-      formData.acta_comprobacion_nro
-    );
-    formDataToSend.append(
-      "fecha_acta_comprobacion",
-      formData.fecha_acta_comprobacion
-    );
-    formDataToSend.append(
-      "hora_acta_comprobacion",
-      formData.hora_acta_comprobacion
-    );
-    formDataToSend.append(
-      "detalle_procedimiento",
-      formData.detalle_procedimiento
-    );
-    formDataToSend.append("procedimientos", formData.procedimientos);
-    formDataToSend.append(
-      "domicilio_inspeccionado",
-      formData.domicilio_inspeccionado
-    );
-    formDataToSend.append("observaciones", formData.observaciones);
-    formDataToSend.append(
-      "inspectores_id",
-      JSON.stringify(formData.inspectores_id)
-    );
-
-    if (selectedPdfFile) {
-      formDataToSend.append("pdf", selectedPdfFile);
-      console.log("Enviando payload con PDF"); // PDF
-    }
-
-    try {
-      const res = await axios.post(
-        `${API_URL}/acta-comprobacion`,
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // PDF
-          },
-        }
-      );
-      const createdRaw = res.data?.data ?? res.data;
-      const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
-
-      const normalized = normalizeActaFromBackend(created);
-      setActas((prev) => [...prev, normalized]);
-
-      await getActas();
-      alert("✅ Acta de Comprobación creada exitosamente");
-      handleCloseForm();
-    } catch (error: any) {
-      console.error("❌ Error al crear acta:", error);
-      alert(
-        `Error al crear acta: ${error.response?.data?.message || error.message}`
-      );
-    }
+    await createActa(formData);
+    setFormData({
+      acta_comprobacion_nro: "",
+      fecha_acta_comprobacion: "",
+      hora_acta_comprobacion: "",
+      detalle_procedimiento: "",
+      procedimientos: "",
+      domicilio_inspeccionado: "",
+      inspectores_id: [],
+      observaciones: "",
+    });
+    setIsFormOpen(false);
   };
 
   const handleEditFormSubmit = async (e: React.FormEvent) => {
@@ -392,14 +356,16 @@ const ActasComprobacion: React.FC = () => {
     }));
   };
 
+  // QEPD PDF
+
   // const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
+  //   const file = e.target.files?.[0]
   //   if (file && file.type === "application/pdf") {
-  //     setSelectedPdfFile(file);
+  //     setSelectedPdfFile(file)
   //   } else {
-  //     alert("Por favor seleccione un archivo PDF válido");
+  //     alert("Por favor seleccione un archivo PDF válido")
   //   }
-  // };
+  // }
 
   return (
     <LoaderContent
@@ -497,8 +463,6 @@ const ActasComprobacion: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       <div className="flex space-x-2">
-                        {/* VER DETALLES DEL ACTA */}
-
                         <button
                           onClick={() => handleViewDetails(acta)}
                           className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-lg"
@@ -507,7 +471,7 @@ const ActasComprobacion: React.FC = () => {
                           <Eye className="w-5 h-5" />
                         </button>
 
-                        {/* EDITAR EL ACTA */}
+                        {/* EDITAR/ACTUALIZAR EL ACTA */}
 
                         <button
                           onClick={() => {
@@ -683,7 +647,7 @@ const ActasComprobacion: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* CAMPO 2. PROCEDIMENTO */}
+                  {/* CAMPO 2. PROCEDIMIENTOS */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
@@ -756,7 +720,7 @@ const ActasComprobacion: React.FC = () => {
                     />
                   </div>
 
-                  {/* CAMPO 4. INSPECTORES (YA CARGADOS) */}
+                  {/* CAMPO 4. INSPECTORES */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
@@ -793,53 +757,27 @@ const ActasComprobacion: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* CAMPO 5. DOCUMENTACION (PDF) */}
+                  {/* CAMPO 5. DOCUMENTACION */}
 
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
+                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 opacity-60">
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase flex items-center justify-between">
                       5. Documentación
+                      <span className="text-xs font-normal text-gray-500 bg-gray-200 px-2 py-1 rounded">
+                        Próximamente
+                      </span>
                     </h3>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         PDF del Acta
                       </label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors">
-                        {/* <input
-                          type="file"
-                          accept=".pdf"
-                          // onChange={handlePdfFileChange}
-                          className="hidden"
-                          id="pdfUpload"
-                        /> */}
-                        <label
-                          htmlFor="pdfUpload"
-                          className="cursor-pointer text-gray-500 hover:text-green-600"
-                        >
-                          {selectedPdfFile ? (
-                            <div>
-                              <Upload className="w-8 h-8 mx-auto mb-2 text-green-600" />
-                              <div className="text-sm font-medium text-green-600">
-                                {selectedPdfFile.name}
-                              </div>
-                              <div className="text-xs text-gray-500 mt-1">
-                                {(selectedPdfFile.size / 1024 / 1024).toFixed(
-                                  2
-                                )}{" "}
-                                MB
-                              </div>
-                            </div>
-                          ) : (
-                            <div>
-                              <div className="text-4xl mb-2">📄</div>
-                              <div className="text-sm">
-                                Haz click para subir un PDF
-                              </div>
-                              <div className="text-xs text-gray-400 mt-1">
-                                Tamaño máximo: 10MB
-                              </div>
-                            </div>
-                          )}
-                        </label>
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-100 cursor-not-allowed">
+                        <div className="text-4xl mb-2 opacity-50">📄</div>
+                        <div className="text-sm text-gray-400">
+                          Funcionalidad de carga de PDF deshabilitada
+                        </div>
+                        <div className="text-xs text-gray-400 mt-1">
+                          Esta función estará disponible próximamente
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -877,7 +815,7 @@ const ActasComprobacion: React.FC = () => {
                       Cancelar
                     </button>
                     <button
-                      type="submit"
+                      onClick={handleFormSubmit}
                       className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors ml-5"
                     >
                       Guardar Acta de Comprobación
@@ -889,7 +827,7 @@ const ActasComprobacion: React.FC = () => {
           </div>
         )}
 
-        {/* MISMO FORMULARIO PERO PARA EDITAR */}
+        {/* EDITAR/ACTUALIZAR ACTA */}
 
         {isEditModalOpen && actaToEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
