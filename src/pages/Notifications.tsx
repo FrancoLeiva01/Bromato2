@@ -680,6 +680,8 @@ const Notifications: React.FC = () => {
           </div>
         </div>
 
+   {/* NUEVA NOTIFICACION */}
+
         {showForm && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"

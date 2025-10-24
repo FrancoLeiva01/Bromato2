@@ -121,7 +121,7 @@ const Header: React.FC<HeaderProps> = ({
               type="button"
               onClick={() => goToSlide(index)}
               className={`w-3 h-3 rounded-full transition-all ${
-                index === currentIndex ? "bg-emerald-400 w-8" : "bg-white/50 hover:bg-white/80"
+                index === currentIndex ? "bg-orange-500 w-8" : "bg-white/50 hover:bg-white/80"
               }`}
               aria-current={index === currentIndex}
               aria-label={`Slide ${index + 1}`}

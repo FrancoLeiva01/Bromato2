@@ -15,6 +15,7 @@ import {
 import ComprobacionData from "@/components/ComprobacionData";
 import { LoaderContent } from "@/components/LoaderComponent";
 import axios from "axios";
+import { apiClient } from "@/services/authService";
 
 // types
 
@@ -30,17 +31,27 @@ interface Acta {
   fecha_acta_comprobacion?: string;
   hora_acta_comprobacion?: string;
   detalle_procedimiento?: string;
-  procedimientos?: string;
+  procedimientos?: string[];
   domicilio_inspeccionado?: string;
   inspectores_id?: number[];
   observaciones?: string;
   // pdf_url?: string; //PDF
-} 
+}
 
 interface Inspector {
   id: number;
   nombres: string;
   identificador: string;
+}
+
+enum PROCEDIMIENTOS_ENUM {
+  CLAUSURA8_INSECTOS = "CLAUSURA 8 INSECTOS",
+  TOMADEMUESTRA = "TOMA DE MUESTRA",
+  ACTADECOMPROBACION = "ACTA DE COMPROBACION",
+  INTERVENCION_MERCADERIA_PRECINTADO = "INTERVENCION DE MERCADERIA Y PRECINTADO",
+  SECUESTRO_PREVENTIVO = "SECUESTRO PREVENTIVO",
+  CLAUSURA_PREVENTIVA = "CLAUSURA PREVENTIVA",
+  OTROS = "OTROS",
 }
 
 const ActasComprobacion: React.FC = () => {
@@ -62,20 +73,20 @@ const ActasComprobacion: React.FC = () => {
   const API_URL =
     import.meta.env.VITE_API_URL || "http://localhost:4000/api/v1";
 
-  const PROCEDIMIENTOS = [
-    "CLAUSURA PREVENTIVA",
-    "DECOMISO",
-    "SECUESTRO",
-    "INSPECCION",
-    "OTROS",
-  ];
+  // const PROCEDIMIENTOS = [
+  //   "CLAUSURA PREVENTIVA",
+  //   "DECOMISO",
+  //   "SECUESTRO",
+  //   "INSPECCION",
+  //   "OTROS",
+  // ];
 
   const [formData, setFormData] = useState({
     acta_comprobacion_nro: "",
     fecha_acta_comprobacion: "",
     hora_acta_comprobacion: "",
     detalle_procedimiento: "",
-    procedimientos: "",
+   procedimientos: "" as string,
     domicilio_inspeccionado: "",
     inspectores_id: [] as number[],
     observaciones: "",
@@ -86,7 +97,7 @@ const ActasComprobacion: React.FC = () => {
     fecha_acta_comprobacion: "",
     hora_acta_comprobacion: "",
     detalle_procedimiento: "",
-    procedimientos: "",
+    procedimientos: [] as string[],
     domicilio_inspeccionado: "",
     observaciones: "",
   });
@@ -106,7 +117,9 @@ const ActasComprobacion: React.FC = () => {
       fecha_acta_comprobacion: raw.fecha_acta_comprobacion ?? "",
       hora_acta_comprobacion: raw.hora_acta_comprobacion ?? "",
       detalle_procedimiento: raw.detalle_procedimiento ?? "",
-      procedimientos: raw.procedimientos ?? "",
+      procedimientos: Array.isArray(raw.procedimientos)
+        ? raw.procedimientos
+        : [raw.procedimientos ?? ""],
       domicilio_inspeccionado: raw.domicilio_inspeccionado ?? "",
       inspectores_id: raw.inspectores_id ?? [],
       observaciones: raw.observaciones ?? "",
@@ -114,26 +127,18 @@ const ActasComprobacion: React.FC = () => {
     };
   };
 
-  // GET INSPECTOS
+  // GET INSPECTORES
 
-  const getAllInspectors = async () => {
-    try {
-      const { data } = await axios.get(`${API_URL}/inspector/all-inspector`);
-      setAllInspectors(data);
-      console.log("Inspectores cargados:", data.length);
-    } catch (error) {
-      console.error("Error al obtener inspectores:", error);
-      console.warn(
-        "No se pudieron cargar los inspectores. El formulario seguirá funcionando pero sin la lista de inspectores."
-      );
-    }
+  const getAllInspectorForSelect = async () => {
+    const { data } = await apiClient.get(`inspector/all-inspector`);
+    setAllInspectors(data);
   };
-
   useEffect(() => {
-    getAllInspectors();
+    getAllInspectorForSelect();
   }, []);
 
-  
+  //LOADER
+
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
@@ -173,19 +178,19 @@ const ActasComprobacion: React.FC = () => {
     getActas();
   }, [currentPage]);
 
-  // CREATE
-
   const createActa = async (newActa: typeof formData) => {
     try {
       const payload = {
-        acta_comprobacion_nro: newActa.acta_comprobacion_nro,
-        fecha_acta_comprobacion: newActa.fecha_acta_comprobacion,
-        hora_acta_comprobacion: newActa.hora_acta_comprobacion,
-        detalle_procedimiento: newActa.detalle_procedimiento,
-        procedimientos: newActa.procedimientos,
-        domicilio_inspeccionado: newActa.domicilio_inspeccionado,
-        observaciones: newActa.observaciones,
-        inspectores_id: newActa.inspectores_id,
+        acta_comprobacion: {
+          acta_comprobacion_nro: newActa.acta_comprobacion_nro,
+          fecha_acta_comprobacion: newActa.fecha_acta_comprobacion,
+          hora_acta_comprobacion: newActa.hora_acta_comprobacion,
+          detalle_procedimiento: newActa.detalle_procedimiento,
+          procedimientos: newActa.procedimientos,
+          domicilio_inspeccionado: newActa.domicilio_inspeccionado,
+          // observaciones: newActa.observaciones, // si la agregaste en el backend
+          inspectores_id: newActa.inspectores_id,
+        },
       };
 
       const res = await axios.post(`${API_URL}/acta-comprobacion`, payload);
@@ -193,14 +198,10 @@ const ActasComprobacion: React.FC = () => {
       const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
 
       const normalized = normalizeActaFromBackend(created);
-
-      // 👇 Actualiza el estado de la tabla sin depender del backend
       setActas((prev) => [...prev, normalized]);
 
-      // Si querés actualizar desde el backend también:
       await getActas();
-
-      alert("✅ Acta de Comprobacion creado exitosamente");
+      alert("✅ Acta de Comprobación creada exitosamente");
     } catch (error: any) {
       console.error("❌ Error al crear Acta:", error);
       alert(
@@ -315,7 +316,7 @@ const ActasComprobacion: React.FC = () => {
       fecha_acta_comprobacion: "",
       hora_acta_comprobacion: "",
       detalle_procedimiento: "",
-      procedimientos: "",
+     procedimientos: "",
       domicilio_inspeccionado: "",
       inspectores_id: [],
       observaciones: "",
@@ -330,7 +331,7 @@ const ActasComprobacion: React.FC = () => {
       fecha_acta_comprobacion: "",
       hora_acta_comprobacion: "",
       detalle_procedimiento: "",
-      procedimientos: "",
+     procedimientos: "",
       domicilio_inspeccionado: "",
       inspectores_id: [],
       observaciones: "",
@@ -346,6 +347,17 @@ const ActasComprobacion: React.FC = () => {
       setActaToEdit(null);
     }
   };
+
+  // PROCEDIMIENTOS
+
+  // const handleProcedimientoToggle = (tipo: string) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     procedimientos: prev.procedimientos.includes(tipo)
+  //       ? prev.procedimientos.filter((t) => t !== tipo)
+  //       : [...prev.procedimientos, tipo],
+  //   }));
+  // };
 
   const handleInspectorToggle = (inspectorId: number) => {
     setFormData((prev) => ({
@@ -648,16 +660,18 @@ const ActasComprobacion: React.FC = () => {
                   </div>
 
                   {/* CAMPO 2. PROCEDIMIENTOS */}
-
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
                       2. Procedimiento
                     </h3>
+
                     <div className="space-y-3">
+                    {/* Tipo de Procedimiento */}
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                           Tipo de Procedimiento
                         </label>
+                        {/* <CHANGE> Changed from checkboxes to select dropdown */}
                         <select
                           value={formData.procedimientos}
                           onChange={(e) =>
@@ -670,13 +684,17 @@ const ActasComprobacion: React.FC = () => {
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         >
                           <option value="">Seleccione un procedimiento</option>
-                          {PROCEDIMIENTOS.map((proc) => (
-                            <option key={proc} value={proc}>
-                              {proc}
-                            </option>
-                          ))}
+                          {Object.entries(PROCEDIMIENTOS_ENUM).map(
+                            ([key, label]) => (
+                              <option key={key} value={label}>
+                                {label}
+                              </option>
+                            )
+                          )}
                         </select>
                       </div>
+
+                      {/* Detalle del Procedimiento */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Detalle del Procedimiento
@@ -757,13 +775,13 @@ const ActasComprobacion: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* CAMPO 5. DOCUMENTACION */}
+                  {/* CAMPO 5. DOCUMENTACION (PDF) */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 opacity-60">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase flex items-center justify-between">
                       5. Documentación
                       <span className="text-xs font-normal text-gray-500 bg-gray-200 px-2 py-1 rounded">
-                        Próximamente
+                        Proximamente
                       </span>
                     </h3>
                     <div>
@@ -907,6 +925,8 @@ const ActasComprobacion: React.FC = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/*TIPO DE PROCEDIMIENTO edit*/}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
