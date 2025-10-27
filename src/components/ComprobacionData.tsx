@@ -19,6 +19,7 @@ interface Acta {
   inspectores?: string
 }
 
+
 interface ComprobacionDataProps {
   isOpen: boolean
   onClose: () => void

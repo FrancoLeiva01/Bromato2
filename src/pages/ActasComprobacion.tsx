@@ -64,6 +64,7 @@ const ActasComprobacion: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [actaToEdit, setActaToEdit] = useState<Acta | null>(null);
+
   const itemsPerPage = 10;
 
   const [actas, setActas] = useState<Acta[]>([]);
@@ -86,19 +87,9 @@ const ActasComprobacion: React.FC = () => {
     fecha_acta_comprobacion: "",
     hora_acta_comprobacion: "",
     detalle_procedimiento: "",
-   procedimientos: "" as string,
+    procedimientos: "" as string,
     domicilio_inspeccionado: "",
     inspectores_id: [] as number[],
-    observaciones: "",
-  });
-
-  const [editFormData, setEditFormData] = useState({
-    acta_comprobacion_nro: "",
-    fecha_acta_comprobacion: "",
-    hora_acta_comprobacion: "",
-    detalle_procedimiento: "",
-    procedimientos: [] as string[],
-    domicilio_inspeccionado: "",
     observaciones: "",
   });
 
@@ -252,7 +243,7 @@ const ActasComprobacion: React.FC = () => {
 
     try {
       console.log("Eliminando acta:", id);
-      await axios.delete(`${API_URL}/acta-comprobacion/${id}`);
+      await axios.get(`${API_URL}/acta-comprobacion/delete/${id}`);
       console.log("✅ Acta eliminada");
 
       await getActas();
@@ -316,7 +307,7 @@ const ActasComprobacion: React.FC = () => {
       fecha_acta_comprobacion: "",
       hora_acta_comprobacion: "",
       detalle_procedimiento: "",
-     procedimientos: "",
+      procedimientos: "",
       domicilio_inspeccionado: "",
       inspectores_id: [],
       observaciones: "",
@@ -331,34 +322,14 @@ const ActasComprobacion: React.FC = () => {
       fecha_acta_comprobacion: "",
       hora_acta_comprobacion: "",
       detalle_procedimiento: "",
-     procedimientos: "",
+      procedimientos: "",
       domicilio_inspeccionado: "",
       inspectores_id: [],
       observaciones: "",
     });
     setIsFormOpen(false);
   };
-
-  const handleEditFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (actaToEdit) {
-      await updateActa(actaToEdit.id, editFormData);
-      setIsEditModalOpen(false);
-      setActaToEdit(null);
-    }
-  };
-
-  // PROCEDIMIENTOS
-
-  // const handleProcedimientoToggle = (tipo: string) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     procedimientos: prev.procedimientos.includes(tipo)
-  //       ? prev.procedimientos.filter((t) => t !== tipo)
-  //       : [...prev.procedimientos, tipo],
-  //   }));
-  // };
-
+  
   const handleInspectorToggle = (inspectorId: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -378,6 +349,26 @@ const ActasComprobacion: React.FC = () => {
   //     alert("Por favor seleccione un archivo PDF válido")
   //   }
   // }
+
+  // EDITAR ACTAS
+
+  const [editFormData, setEditFormData] = useState({
+    acta_comprobacion_nro: "",
+    fecha_acta_comprobacion: "",
+    hora_acta_comprobacion: "",
+    detalle_procedimiento: "",
+    PROCEDIMIENTOS_ENUM: "",
+    domicilio_inspeccionado: "",
+    observaciones: "",
+  });
+  const handleEditFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (actaToEdit) {
+      await updateActa(actaToEdit.id, editFormData);
+      setIsEditModalOpen(false);
+      setActaToEdit(null);
+    }
+  };
 
   return (
     <LoaderContent
@@ -497,7 +488,7 @@ const ActasComprobacion: React.FC = () => {
                                 acta.hora_acta_comprobacion || "",
                               detalle_procedimiento:
                                 acta.detalle_procedimiento || "",
-                              procedimientos: acta.procedimientos || "",
+                              PROCEDIMIENTOS_ENUM: "",
                               domicilio_inspeccionado:
                                 acta.domicilio_inspeccionado || "",
                               observaciones: acta.observaciones || "",
@@ -666,7 +657,7 @@ const ActasComprobacion: React.FC = () => {
                     </h3>
 
                     <div className="space-y-3">
-                    {/* Tipo de Procedimiento */}
+                      {/* Tipo de Procedimiento */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Tipo de Procedimiento
@@ -877,6 +868,7 @@ const ActasComprobacion: React.FC = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           N° Acta
                         </label>
+
                         <input
                           type="text"
                           value={editFormData.acta_comprobacion_nro}
@@ -890,6 +882,7 @@ const ActasComprobacion: React.FC = () => {
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         />
                       </div>
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Fecha
@@ -907,6 +900,7 @@ const ActasComprobacion: React.FC = () => {
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         />
                       </div>
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Hora
@@ -938,17 +932,17 @@ const ActasComprobacion: React.FC = () => {
                           Tipo
                         </label>
                         <select
-                          value={editFormData.procedimientos}
+                          value={editFormData.PROCEDIMIENTOS_ENUM}
                           onChange={(e) =>
                             setEditFormData({
                               ...editFormData,
-                              procedimientos: e.target.value,
+                              PROCEDIMIENTOS_ENUM: e.target.value,
                             })
                           }
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         >
                           <option value="">Seleccione</option>
-                          {PROCEDIMIENTOS.map((proc) => (
+                          {Object.values(PROCEDIMIENTOS_ENUM).map((proc) => (
                             <option key={proc} value={proc}>
                               {proc}
                             </option>

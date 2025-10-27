@@ -127,15 +127,6 @@ const Notifications: React.FC = () => {
     direccion_contribuyente: "",
   });
 
-  const [editFormData, setEditFormData] = useState({
-    nro_notificacion: "",
-    tipo_infraccion: [] as string[],
-    detalle_notificacion: "",
-    fecha_notificacion: "",
-    hora_notificacion: "",
-    plazo_dias: 3,
-  });
-
   const API_URL = "http://localhost:4000/api/v1";
 
   // GET INSPECTORES
@@ -148,8 +139,6 @@ const Notifications: React.FC = () => {
     getAllInspectorForSelect();
   }, []);
 
-
-  
   const normalizeNotificationFromBackend = (raw: any): Notification => {
     return {
       id: raw.id,
@@ -228,7 +217,7 @@ const Notifications: React.FC = () => {
     try {
       const payload = {
         nro_notificacion: updatedData.nro_notificacion,
-        tipo_infraccion: updatedData.tipo_infraccion,
+        TIPO_INFRACCION: updatedData.TIPO_INFRACCION,
         detalle_notificacion: updatedData.detalle_notificacion,
         fecha_notificacion: updatedData.fecha_notificacion,
         hora_notificacion: updatedData.hora_notificacion,
@@ -380,6 +369,16 @@ const Notifications: React.FC = () => {
     setIsEditModalOpen(true);
   };
 
+  // EDITAR NOTI
+
+  const [editFormData, setEditFormData] = useState({
+    nro_notificacion: "",
+    tipo_infraccion: "",
+    detalle_notificacion: "",
+    fecha_notificacion: "",
+    hora_notificacion: "",
+    plazo_dias: 3,
+  });
   const handleEditFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (notificationToEdit) {
@@ -389,10 +388,14 @@ const Notifications: React.FC = () => {
     }
   };
 
+  // VER DETALLES
+
   const handleViewDetails = (notification: Notification) => {
     setSelectedNotification(notification);
     setIsModalOpen(true);
   };
+
+  // CERRAR MODAL
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -420,7 +423,7 @@ const Notifications: React.FC = () => {
   const handleEditTipoInfraccionToggle = (tipo: string) => {
     setEditFormData((prev) => ({
       ...prev,
-      tipo_infraccion: prev.tipo_infraccion.includes(tipo)
+      TIPO_INFRACCION: prev.tipo_infraccion.includes(tipo)
         ? prev.tipo_infraccion.filter((t) => t !== tipo)
         : [...prev.tipo_infraccion, tipo],
     }));
@@ -680,7 +683,7 @@ const Notifications: React.FC = () => {
           </div>
         </div>
 
-   {/* NUEVA NOTIFICACION */}
+        {/* NUEVA NOTIFICACION */}
 
         {showForm && (
           <div
@@ -873,7 +876,7 @@ const Notifications: React.FC = () => {
                     />
                     <input
                       type="text"
-                      placeholder="DNI *"
+                      placeholder="CUIL*"
                       value={formData.dni_contribuyente}
                       onChange={(e) =>
                         setFormData({
@@ -965,12 +968,21 @@ const Notifications: React.FC = () => {
                     Tipo de Infracción:
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {Object.entries(TIPO_INFRACCION).map(([key, label]) => (
+                    {(
+                      Object.entries(TIPO_INFRACCION) as [
+                        keyof typeof TIPO_INFRACCION,
+                        string
+                      ][]
+                    ).map(([key, label]) => (
                       <label key={key} className="flex items-center space-x-2">
                         <input
                           type="checkbox"
-                          checked={editFormData.tipo_infraccion.includes(label)}
-                          onChange={() => handleEditTipoInfraccionToggle(label)}
+                          checked={editFormData.tipo_infraccion.includes(
+                            TIPO_INFRACCION[key]
+                          )}
+                          onChange={() =>
+                            handleEditTipoInfraccionToggle(TIPO_INFRACCION[key])
+                          }
                           className="accent-blue-600"
                         />
                         <span className="text-white text-sm">{label}</span>

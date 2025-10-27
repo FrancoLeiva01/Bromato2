@@ -268,6 +268,8 @@ const updateInspector = async (
     setIsEditModalOpen(true);
   };
   
+// EDITAR INSPECTOR
+
   const [editFormData, setEditFormData] = useState({
     nombres: "",
     apellidos: "",
