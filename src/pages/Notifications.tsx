@@ -444,18 +444,18 @@ const Notifications: React.FC = () => {
 
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
         <div
-          className="bg-gray-200 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
+          className="bg-slate-500 rounded-lg border-slate-500 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
           style={{
             borderLeftWidth: 10,
             borderRightWidth: 10,
             borderBottomWidth: 10,
           }}
         >
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <FolderClock className="w-10 h-10 text-blue-700" />
-                <h1 className="text-2xl font-bold text-black">
+                <FolderClock className="w-10 h-10 text-blue-400" />
+                <h1 className="text-2xl font-bold text-white">
                   Próximas a Vencer
                 </h1>
               </div>
@@ -467,7 +467,7 @@ const Notifications: React.FC = () => {
               currentNotifications.slice(0, 3).map((notification) => (
                 <div
                   key={`preview-${notification.id}`}
-                  className=" mb-1 p-6 hover:bg-orange-200 transition-colors border-l-4 border-l-red-600 bg-gray-100 rounded-lg"
+                  className=" mb-1 p-6 hover:bg-orange-200 transition-colors border-l-4 border-l-red-600 bg-slate-100 rounded-lg"
                 >
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 mt-1">
@@ -503,13 +503,13 @@ const Notifications: React.FC = () => {
 
         {/* Lista de notis */}
 
-        <div className="bg-gray-100 rounded-lg border border-gray-200 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
-          <div className="bg-gray-200 p-6 rounded-lg">
+        <div className="bg-slate-500 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
+          <div className="bg-slate-500 p-6 rounded-lg">
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
               <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
                 <div className="flex items-center space-x-3">
-                  <ClipboardList className="w-8 h-8 text-blue-600" />
-                  <h1 className="text-2xl font-bold text-black">
+                  <ClipboardList className="w-8 h-8 text-blue-400" />
+                  <h1 className="text-2xl font-bold text-white">
                     Lista de Notificaciones
                   </h1>
                 </div>

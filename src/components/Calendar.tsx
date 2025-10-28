@@ -2,6 +2,7 @@ import type React from "react";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { LoaderContent } from "@/components/LoaderComponent"
+
 interface CalendarEvent {
   id: string;
   title: string;
@@ -21,8 +22,6 @@ const Calendar: React.FC = () => {
 
     return () => clearTimeout(timer)
   }, [])
-
-
 
   const events: CalendarEvent[] = [
     { id: "2025-3221", title: "2025-3221", date: 1, type: "notification" },
@@ -124,7 +123,6 @@ const Calendar: React.FC = () => {
         </div>
       );
     }
-
     return days;
   };
 

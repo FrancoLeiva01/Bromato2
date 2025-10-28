@@ -466,23 +466,23 @@ const ActasComprobacion: React.FC = () => {
           </button>
         </div>
 
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <div className="overflow-x-auto bg-slate-500 rounded-lg shadow">
           <table className="w-full">
-            <thead className="bg-gray-200">
+            <thead className="bg-slate-500">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
                   Número
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
                   Propietarios
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
                   N° Juzgado
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
                   Creado
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
                   Opciones
                 </th>
               </tr>
@@ -490,7 +490,7 @@ const ActasComprobacion: React.FC = () => {
             <tbody className="divide-y divide-gray-200">
               {currentActas.length > 0 ? (
                 currentActas.map((acta) => (
-                  <tr key={acta.id} className="hover:bg-gray-50">
+                  <tr key={acta.id} className="bg-slate-100 hover:bg-gray-50">
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">
                       {acta.numero}
                     </td>
@@ -542,7 +542,7 @@ const ActasComprobacion: React.FC = () => {
                                 acta.hora_acta_comprobacion || "",
                               detalle_procedimiento:
                                 acta.detalle_procedimiento || "",
-                              procedimientos: procedimientoValue, // Changed from PROCEDIMIENTOS_ENUM
+                              procedimientos: procedimientoValue, 
                               domicilio_inspeccionado:
                                 acta.domicilio_inspeccionado || "",
                               observaciones: acta.observaciones || "",
@@ -584,7 +584,7 @@ const ActasComprobacion: React.FC = () => {
 
         {/* PAGINACION */}
 
-        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-center space-x-2">
+        <div className="px-6 py-4 flex items-center justify-center space-x-2">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
