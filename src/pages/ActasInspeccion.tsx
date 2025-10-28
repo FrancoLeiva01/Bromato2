@@ -44,6 +44,18 @@ interface ActaInspeccion {
   observaciones_generales?: string
 }
 
+enum CONDICION_ENUM {
+  BUENA = 'BUENA',
+  MALA = 'MALA',
+}
+
+enum CONFIRMACION_ENUM {
+  SI = 'SI',
+  NO = 'NO',
+  ENTRAMITE = 'ENTRAMITE',
+}
+
+
 const ActasInspeccion: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedActa, setSelectedActa] = useState<ActaInspeccion | null>(null)
@@ -222,7 +234,7 @@ const ActasInspeccion: React.FC = () => {
 
     try {
       console.log("Eliminando acta:", id)
-      await axios.delete(`${API_URL}/acta-inspeccion/${id}`)
+      await axios.get(`${API_URL}/acta-inspeccion/delete/${id}`)
       console.log("✅ Acta eliminada")
 
       await getActas()

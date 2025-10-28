@@ -65,6 +65,8 @@ const ActasComprobacion: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [actaToEdit, setActaToEdit] = useState<Acta | null>(null);
 
+  const [deletedActaIds, setDeletedActaIds] = useState<Set<number>>(new Set());
+
   const itemsPerPage = 10;
 
   const [actas, setActas] = useState<Acta[]>([]);
@@ -141,7 +143,7 @@ const ActasComprobacion: React.FC = () => {
 
   // GET ACTAS
 
-  const getActas = async () => {
+  const getActas = async (deletedId?: number) => {
     try {
       setIsLoading(true);
       const res = await axios.get(
@@ -157,7 +159,23 @@ const ActasComprobacion: React.FC = () => {
       setTotalActas(total);
 
       const normalized = payload.map(normalizeActaFromBackend);
-      setActas(normalized);
+
+      const filtered = normalized.filter((acta) => {
+        const isInDeletedSet = deletedActaIds.has(acta.id);
+        const isJustDeleted = deletedId !== undefined && acta.id === deletedId;
+        return !isInDeletedSet && !isJustDeleted;
+      });
+      console.log(
+        "Actas después de filtrar eliminadas localmente:",
+        filtered.length
+      );
+      console.log(
+        "IDs eliminados:",
+        Array.from(deletedActaIds),
+        deletedId ? `+ ${deletedId}` : ""
+      );
+
+      setActas(filtered);
     } catch (error) {
       console.error("Error al obtener actas:", error);
     } finally {
@@ -179,7 +197,7 @@ const ActasComprobacion: React.FC = () => {
           detalle_procedimiento: newActa.detalle_procedimiento,
           procedimientos: newActa.procedimientos,
           domicilio_inspeccionado: newActa.domicilio_inspeccionado,
-          // observaciones: newActa.observaciones, // si la agregaste en el backend
+          observaciones: newActa.observaciones, // si la agregaste en el backend
           inspectores_id: newActa.inspectores_id,
         },
       };
@@ -242,14 +260,31 @@ const ActasComprobacion: React.FC = () => {
     }
 
     try {
-      console.log("Eliminando acta:", id);
-      await axios.get(`${API_URL}/acta-comprobacion/delete/${id}`);
+      console.log("Iniciando eliminación de acta con ID:", id);
+      console.log(
+        "URL completa:",
+        `${API_URL}/acta-comprobacion/delete/${id}`
+      );
+
+      const response = await axios.get(
+        `${API_URL}/acta-comprobacion/delete/${id}`
+      );
+
+      console.log("Respuesta del servidor:", response.data);
+      console.log("Status code:", response.status);
       console.log("✅ Acta eliminada");
 
-      await getActas();
+      setDeletedActaIds((prev) => new Set(prev).add(id));
+      console.log("Acta marcada como eliminada localmente");
+
+      await getActas(id);
+
       alert("✅ Acta eliminada exitosamente");
     } catch (error: any) {
       console.error("❌ Error al eliminar acta:", error);
+      console.error("Error response:", error.response?.data);
+      console.error("Error status:", error.response?.status);
+      console.error("Error message:", error.message);
       alert(
         `Error al eliminar acta: ${
           error.response?.data?.message || error.message
@@ -329,7 +364,7 @@ const ActasComprobacion: React.FC = () => {
     });
     setIsFormOpen(false);
   };
-  
+
   const handleInspectorToggle = (inspectorId: number) => {
     setFormData((prev) => ({
       ...prev,
@@ -357,13 +392,17 @@ const ActasComprobacion: React.FC = () => {
     fecha_acta_comprobacion: "",
     hora_acta_comprobacion: "",
     detalle_procedimiento: "",
-    PROCEDIMIENTOS_ENUM: "",
+    procedimientos: "", 
     domicilio_inspeccionado: "",
     observaciones: "",
   });
   const handleEditFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (actaToEdit) {
+      console.log(
+        "Enviando actualización con editFormData:",
+        editFormData
+      );
       await updateActa(actaToEdit.id, editFormData);
       setIsEditModalOpen(false);
       setActaToEdit(null);
@@ -479,6 +518,21 @@ const ActasComprobacion: React.FC = () => {
                         <button
                           onClick={() => {
                             setActaToEdit(acta);
+                            const procedimientoValue = Array.isArray(
+                              acta.procedimientos
+                            )
+                              ? acta.procedimientos[0] || ""
+                              : acta.procedimientos || "";
+
+                            console.log(
+                              "Abriendo modal de edición para acta:",
+                              acta.id
+                            );
+                            console.log(
+                              "Procedimiento actual:",
+                              procedimientoValue
+                            );
+
                             setEditFormData({
                               acta_comprobacion_nro:
                                 acta.acta_comprobacion_nro || acta.numero,
@@ -488,7 +542,7 @@ const ActasComprobacion: React.FC = () => {
                                 acta.hora_acta_comprobacion || "",
                               detalle_procedimiento:
                                 acta.detalle_procedimiento || "",
-                              PROCEDIMIENTOS_ENUM: "",
+                              procedimientos: procedimientoValue, // Changed from PROCEDIMIENTOS_ENUM
                               domicilio_inspeccionado:
                                 acta.domicilio_inspeccionado || "",
                               observaciones: acta.observaciones || "",
@@ -651,6 +705,7 @@ const ActasComprobacion: React.FC = () => {
                   </div>
 
                   {/* CAMPO 2. PROCEDIMIENTOS */}
+
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
                       2. Procedimiento
@@ -662,7 +717,7 @@ const ActasComprobacion: React.FC = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Tipo de Procedimiento
                         </label>
-                        {/* <CHANGE> Changed from checkboxes to select dropdown */}
+                        {/* Changed from checkboxes to select dropdown */}
                         <select
                           value={formData.procedimientos}
                           onChange={(e) =>
@@ -932,13 +987,17 @@ const ActasComprobacion: React.FC = () => {
                           Tipo
                         </label>
                         <select
-                          value={editFormData.PROCEDIMIENTOS_ENUM}
-                          onChange={(e) =>
+                          value={editFormData.procedimientos}
+                          onChange={(e) => {
+                            console.log(
+                              "Cambiando procedimiento a:",
+                              e.target.value
+                            );
                             setEditFormData({
                               ...editFormData,
-                              PROCEDIMIENTOS_ENUM: e.target.value,
-                            })
-                          }
+                              procedimientos: e.target.value,
+                            });
+                          }}
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         >
                           <option value="">Seleccione</option>

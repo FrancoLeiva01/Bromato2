@@ -47,7 +47,7 @@ enum TIPO_INFRACCION {
   OEP_ARIDOS = "OEP ÁRIDOS MATERIALES DE CONSTRUCCIÓN",
   VEHICULOS_ABANDONO = "VEHÍCULOS EN ESTADO DE ABANDONO",
   CHATARRA = "CHATARRA",
-  CHASIS = "CHATARRA, CHASIS, ESQUELETOS VEHÍCULOS, OTROS",
+  CHASIS = "CHASIS",
   ESQUELETOS_VEHICULOS = "ESQUELETOS VEHÍCULOS",
   OTROS = "OTROS",
   LAVADO_VEREDA = "LAVADO DE VEREDA",
@@ -217,21 +217,25 @@ const Notifications: React.FC = () => {
     try {
       const payload = {
         nro_notificacion: updatedData.nro_notificacion,
-        TIPO_INFRACCION: updatedData.TIPO_INFRACCION,
+        tipo_infraccion: updatedData.tipo_infraccion,
         detalle_notificacion: updatedData.detalle_notificacion,
         fecha_notificacion: updatedData.fecha_notificacion,
         hora_notificacion: updatedData.hora_notificacion,
         plazo_dias: updatedData.plazo_dias,
       };
 
+      console.log("📤 Actualizando notificación ID:", id);
+      console.log("📤 Payload enviado:", JSON.stringify(payload, null, 2));
+
       const res = await axios.patch(`${API_URL}/notificacion/${id}`, payload);
 
-      // GET
+      console.log("✅ Respuesta del backend:", res.data);
 
       await getNotifications();
       alert("✅ Notificación actualizada exitosamente");
     } catch (error: any) {
       console.error("❌ Error al actualizar notificación:", error);
+      console.error("❌ Respuesta del error:", error.response?.data);
       alert(
         `Error al actualizar notificación: ${
           error.response?.data?.message || error.message
@@ -373,12 +377,13 @@ const Notifications: React.FC = () => {
 
   const [editFormData, setEditFormData] = useState({
     nro_notificacion: "",
-    tipo_infraccion: "",
+    tipo_infraccion: [] as string[], // Changed from string to string[]
     detalle_notificacion: "",
     fecha_notificacion: "",
     hora_notificacion: "",
     plazo_dias: 3,
   });
+
   const handleEditFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (notificationToEdit) {
@@ -423,7 +428,7 @@ const Notifications: React.FC = () => {
   const handleEditTipoInfraccionToggle = (tipo: string) => {
     setEditFormData((prev) => ({
       ...prev,
-      TIPO_INFRACCION: prev.tipo_infraccion.includes(tipo)
+      tipo_infraccion: prev.tipo_infraccion.includes(tipo) // Fixed: was TIPO_INFRACCION
         ? prev.tipo_infraccion.filter((t) => t !== tipo)
         : [...prev.tipo_infraccion, tipo],
     }));
@@ -693,7 +698,7 @@ const Notifications: React.FC = () => {
             <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
               <button
                 onClick={handleCloseForm}
-                className="absolute top-3 right-3 text-white hover:text-red-500 text-xl font-bold"
+                className="absolute top-3 right-3 text-white hover:text-red-500 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -977,12 +982,8 @@ const Notifications: React.FC = () => {
                       <label key={key} className="flex items-center space-x-2">
                         <input
                           type="checkbox"
-                          checked={editFormData.tipo_infraccion.includes(
-                            TIPO_INFRACCION[key]
-                          )}
-                          onChange={() =>
-                            handleEditTipoInfraccionToggle(TIPO_INFRACCION[key])
-                          }
+                          checked={editFormData.tipo_infraccion.includes(label)}
+                          onChange={() => handleEditTipoInfraccionToggle(label)}
                           className="accent-blue-600"
                         />
                         <span className="text-white text-sm">{label}</span>
