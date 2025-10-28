@@ -377,7 +377,7 @@ const Notifications: React.FC = () => {
 
   const [editFormData, setEditFormData] = useState({
     nro_notificacion: "",
-    tipo_infraccion: [] as string[], // Changed from string to string[]
+    tipo_infraccion: [] as string[],
     detalle_notificacion: "",
     fecha_notificacion: "",
     hora_notificacion: "",
@@ -428,7 +428,7 @@ const Notifications: React.FC = () => {
   const handleEditTipoInfraccionToggle = (tipo: string) => {
     setEditFormData((prev) => ({
       ...prev,
-      tipo_infraccion: prev.tipo_infraccion.includes(tipo) // Fixed: was TIPO_INFRACCION
+      tipo_infraccion: prev.tipo_infraccion.includes(tipo)
         ? prev.tipo_infraccion.filter((t) => t !== tipo)
         : [...prev.tipo_infraccion, tipo],
     }));
@@ -444,7 +444,7 @@ const Notifications: React.FC = () => {
 
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
         <div
-          className="bg-slate-500 rounded-lg border-slate-500 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600"
+          className="bg-slate-600 rounded-lg border-slate-600"
           style={{
             borderLeftWidth: 10,
             borderRightWidth: 10,
@@ -503,8 +503,8 @@ const Notifications: React.FC = () => {
 
         {/* Lista de notis */}
 
-        <div className="bg-slate-500 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600">
-          <div className="bg-slate-500 p-6 rounded-lg">
+        <div className="bg-slate-500 rounded-lg">
+          <div className="bg-slate-600 p-6 rounded-lg">
             <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
               <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
                 <div className="flex items-center space-x-3">

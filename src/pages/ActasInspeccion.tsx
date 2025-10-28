@@ -1688,7 +1688,7 @@ const ActasInspeccion: React.FC = () => {
         )}
 
         {/* PAGINACION */}
-        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-center space-x-2">
+        <div className="px-6 py-4 flex items-center justify-center space-x-2">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}

@@ -153,26 +153,26 @@ const Rubros: React.FC = () => {
         <div className="bg-slate-900 rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-300">
+              <thead className="bg-slate-500">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">ID</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Nombre
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Riesgo
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Prohibiciones
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                     Detalles
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {currentRubros.map((rubro) => (
-                  <tr key={rubro.id} className="hover:bg-gray-50">
+                  <tr key={rubro.id} className="hover:bg-gray-200">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{rubro.id}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{rubro.nombre}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
