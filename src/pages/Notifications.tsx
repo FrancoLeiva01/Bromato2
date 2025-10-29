@@ -11,6 +11,8 @@ import {
   Plus,
   X,
   TriangleAlert,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -62,6 +64,7 @@ const Notifications: React.FC = () => {
   const itemsPerPage = 5;
   const [filterType, setFilterType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterValue, setFilterValue] = useState("");
   const [allInspector, setAllInspector] = useState<Inspector[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [totalNotifications, setTotalNotifications] = useState(0);
@@ -444,7 +447,7 @@ const Notifications: React.FC = () => {
 
       <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
         <div
-          className="bg-slate-600 rounded-lg border-slate-600"
+          className="bg-slate-800 rounded-lg border-slate-800"
           style={{
             borderLeftWidth: 10,
             borderRightWidth: 10,
@@ -454,7 +457,7 @@ const Notifications: React.FC = () => {
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <FolderClock className="w-10 h-10 text-blue-400" />
+                <FolderClock className="w-10 h-10 text-red-500" />
                 <h1 className="text-2xl font-bold text-white">
                   Próximas a Vencer
                 </h1>
@@ -503,42 +506,52 @@ const Notifications: React.FC = () => {
 
         {/* Lista de notis */}
 
-        <div className="bg-slate-500 rounded-lg">
-          <div className="bg-slate-600 p-6 rounded-lg">
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
-              <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
-                <div className="flex items-center space-x-3">
-                  <ClipboardList className="w-8 h-8 text-blue-400" />
-                  <h1 className="text-2xl font-bold text-white">
+        <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-800 to-slate-800 p-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-8">
+              <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-600/50 backdrop-blur-sm">
+                <div className="flex justify-center items-center space-x-4">
+                  <div className="bg-yellow-500/10 p-3 rounded-xl border border-yellow-500/30">
+                    <ClipboardList className="w-10 h-10 text-yellow-500" />
+                  </div>
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
                     Lista de Notificaciones
                   </h1>
                 </div>
+              </div>
+            </div>
 
-                <select
-                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600"
-                  value={filterType}
-                  onChange={(e) => handleFilterChange(e.target.value)}
-                >
-                  <option value="">Filtros</option>
-                  <option value="Fecha">Fecha</option>
-                  <option value="Numero de Notificacion">
-                    Número de Notificación
-                  </option>
-                  <option value="Tipo">Tipo de Infracción</option>
-                </select>
+            {/* FILTROS */}
 
-                {filterType && (
+            <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-slate-700/50 mb-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 flex-1">
+                  <select
+                    value={filterType}
+                    onChange={(e) => handleFilterChange(e.target.value)}
+                    className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                  >
+                    <option value="">Filtros</option>
+                    <option value="Fecha">Fecha</option>
+                    <option value="Numero de Notificacion">
+                      Número de Notificación
+                    </option>
+                    <option value="Tipo">Tipo de Infracción</option>
+                  </select>
+
                   <input
                     type="text"
-                    placeholder={`Buscar por ${filterType.toLowerCase()}...`}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                    placeholder="Buscar actas..."
+                    value={filterValue}
+                    onChange={(e) => {
+                      setCurrentPage(1);
+                      setFilterValue(e.target.value);
+                    }}
+                    className="flex-1 bg-slate-700/80 border border-slate-600/50 text-white placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
                   />
-                )}
-
+                </div>
                 <button
-                  className="flex items-center px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-400 transition-colors"
+                  className="flex items-center px-4 py-2 bg-orange-600 text-white text-sm rounded-lg hover:bg-orange-400 transition-colors"
                   onClick={handleSearch}
                 >
                   Buscar
@@ -552,136 +565,150 @@ const Notifications: React.FC = () => {
                     Limpiar
                   </button>
                 )}
+                {/* NUEVA NOTIFICACION */}
+                <button
+                  onClick={handleNuevaNotificacion}
+                  className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-400 transition-colors flex items-center space-x-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Nueva Notificación</span>
+                </button>
               </div>
-
-              {/* NUEVA NOTIFICACION */}
-
-              <button
-                onClick={handleNuevaNotificacion}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Nueva Notificación</span>
-              </button>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-300">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Número
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Tipo Infracción
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Fecha Notificación
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Vencimiento
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Inspector
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Opciones
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {currentNotifications.length > 0 ? (
-                    currentNotifications.map((notification) => (
-                      <tr
-                        key={`table-${notification.id}`}
-                        className="hover:bg-gray-50"
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {notification.nro_notificacion}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {notification.tipo_infraccion.join(", ")}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {notification.fecha_notificacion}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {notification.fecha_vencimiento}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {notification.nombre_inspector}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          <div className="flex space-x-2">
-                            <button
-                              className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
-                              onClick={() => handleViewDetails(notification)}
-                              title="Ver detalles"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <button
-                              className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
-                              onClick={() => handleEditClick(notification)}
-                              title="Editar notificación"
-                            >
-                              <Edit className="w-4 h-4" />
-                            </button>
-                            <button
-                              className="text-red-600 hover:text-red-900 transition-colors p-1 rounded hover:bg-red-50"
-                              onClick={() =>
-                                deleteNotification(notification.id)
-                              }
-                              title="Eliminar notificación"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+            {/* TABLA */}
+
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 border-b-2 border-yellow-600">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                        Número
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                        Propietarios
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                        N° Juzgado
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                        Fecha
+                      </th>
+                      <th className="px-6 py-4 text-center text-xs font-bold text-white uppercase tracking-wider">
+                        Acciones
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-700/50">
+                    {currentNotifications.length > 0 ? (
+                      currentNotifications.map((notification, index) => (
+                        <tr
+                          key={`table-${notification.id}`}
+                          className={`${
+                            index % 2 === 0
+                              ? "bg-slate-800/30"
+                              : "bg-slate-800/50"
+                          } hover:bg-slate-700/50 transition-all duration-200 hover:shadow-lg`}
+                        >
+                          <td className="px-6 py-4 text-sm font-semibold text-white">
+                            {notification.nro_notificacion}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            {notification.tipo_infraccion.join(", ")}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            {notification.fecha_notificacion}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            {notification.nombre_inspector}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex justify-center space-x-2">
+                              {/* BOTONES */}
+
+                              <button
+                                onClick={() => handleViewDetails(notification)}
+                                className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-cyan-500/30"
+                                title="Ver detalles"
+                              >
+                                <Eye className="w-5 h-5" />
+                              </button>
+
+                              <button
+                                onClick={() => handleEditClick(notification)}
+                                title="Editar notificación"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </button>
+
+                              <button
+                                onClick={() =>
+                                  deleteNotification(notification.id)
+                                }
+                                className="text-red-500 hover:text-red-300 hover:bg-red-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-red-500/30"
+                                title="Eliminar acta"
+                              >
+                                <Trash2 className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={5} className="text-center py-12">
+                          <div className="flex flex-col items-center space-y-3">
+                            <div className="text-6xl opacity-20">📋</div>
+                            <p className="text-slate-400 text-lg font-medium">
+                              No se encontraron resultados
+                            </p>
+                            <p className="text-slate-500 text-sm">
+                              Intenta ajustar los filtros de búsqueda
+                            </p>
                           </div>
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan={6}
-                        className="px-6 py-8 text-center text-sm text-gray-500"
-                      >
-                        No se encontraron notificaciones.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
-            {/* Paginacion */}
+              {/* PAGINACION */}
 
-            <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6 flex justify-center">
-              <div className="flex items-center space-x-2">
+              <div className="bg-slate-800/80 px-6 py-5 flex items-center justify-center space-x-4 border-t border-slate-700/50">
                 <button
                   onClick={handlePreviousPage}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
-                    currentPage === 1
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  disabled={currentPage === 1 || totalPages === 0}
+                  className={`p-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    currentPage === 1 || totalPages === 0
+                      ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
+                      : "bg-slate-700 text-white hover:bg-slate-600 border border-slate-600 hover:scale-105 shadow-lg"
                   }`}
                 >
-                  Anterior
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
-                <span className="px-4 py-2 text-sm font-medium text-gray-700">
-                  Página {currentPage} de {totalPages}
-                </span>
+
+                <div className="bg-slate-700/50 px-6 py-3 rounded-xl border border-slate-600/50">
+                  <span className="text-sm font-semibold text-slate-200">
+                    Página{" "}
+                    <span className="text-white">
+                      {totalPages === 0 ? 0 : currentPage}
+                    </span>{" "}
+                    de <span className="text-white">{totalPages}</span>
+                  </span>
+                </div>
+
                 <button
                   onClick={handleNextPage}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
-                    currentPage === totalPages
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-blue-700 text-white hover:bg-blue-400"
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  className={`p-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    currentPage === totalPages || totalPages === 0
+                      ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
+                      : "bg-gradient-to-r from-cyan-600 to-cyan-500 text-white hover:from-cyan-500 hover:to-cyan-400 hover:scale-105"
                   }`}
                 >
-                  Siguiente
+                  <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
             </div>

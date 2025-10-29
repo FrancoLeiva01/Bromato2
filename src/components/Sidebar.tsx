@@ -144,7 +144,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                         item.subItems?.some(
                           (sub) => location.pathname === sub.path
                         )
-                          ? "bg-blue-500 text-white"
+                          ? "bg-blue-600 text-white"
                           : "text-white hover:to-blue-700 hover:text-white"
                       }`}
                     >
@@ -172,7 +172,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                               onClick={handleLinkClick}
                               className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors ${
                                 isSubActive
-                                  ? "bg-teal-600 text-white"
+                                  ? "bg-cyan-600 text-white"
                                   : "text-white hover:bg-slate-700 hover:text-white"
                               }`}
                             >
@@ -196,7 +196,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
                   onClick={handleLinkClick}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                     isActive
-                      ? "bg-teal-600 text-white"
+                      ? "bg-orange-600 text-white"
                       : "text-white hover:bg-slate-400 hover:text-white"
                   }`}
                 >

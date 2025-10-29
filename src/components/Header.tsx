@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <LoaderContent isLoading={isLoading} loadingText="Cargando Inicio..." minHeight="400px">
-      <div className="relative w-full mb-8 rounded-lg overflow-hidden">
+      <div className="relative w-full mb-8 rounded-lg overflow-hidden shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-slate-800">
         {/* Carrusel*/}
         <div className="relative h-96">
           {images.map((image, index) => (

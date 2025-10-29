@@ -472,10 +472,12 @@ const ActasComprobacion: React.FC = () => {
             </div>
           </div>
 
+          {/* TABLA */}
+
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 border-b-2 border-cyan-500">
+                <thead className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 border-b-2 border-green-500">
                   <tr>
                     <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
                       Número
@@ -571,7 +573,7 @@ const ActasComprobacion: React.FC = () => {
 
                             <button
                               onClick={() => deleteActa(acta.id)}
-                              className="text-red-400 hover:text-red-300 hover:bg-red-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-red-500/30"
+                              className="text-red-500 hover:text-red-300 hover:bg-red-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-red-500/30"
                               title="Eliminar acta"
                             >
                               <Trash2 className="w-5 h-5" />
