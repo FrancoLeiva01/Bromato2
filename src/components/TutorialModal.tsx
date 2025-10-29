@@ -40,24 +40,24 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
       title: "Crear notificaciones",
       content: (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border ">
+          <div className="flex items-center justify-between p-4 bg-cyan-500 rounded-lg border border-slate-700">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                 <span className="text-blue-600 font-semibold">?</span>
               </div>
-              <span className="font-medium text-gray-900">
+              <span className="font-medium text-white">
                 Como creo Notificaciones?
               </span>
             </div>
           </div>
 
           <div className="pl-4">
-            <h4 className="font-semibold text-gray-900 mb-3">
+            <h4 className="font-semibold text-white mb-3">
               Pasos a seguir:
             </h4>
-            <ol className="space-y-2 text-gray-700">
+            <ol className="space-y-2 text-white">
               <li className="flex items-start space-x-2">
-                <span className="bg-blue-600 text-white rounded-full w-7 h-5 flex items-center justify-center text-xs font-semibold mt-0.5">
+                <span className="bg-orange-500 text-white rounded-full w-7 h-5 flex items-center justify-center text-xs font-semibold mt-0.5">
                   1
                 </span>
                 <span>
@@ -66,7 +66,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
                 </span>
               </li>
               <li className="flex items-start space-x-2">
-                <span className="bg-blue-600 text-white rounded-full w-12 h-5 flex items-center justify-center text-xs font-semibold mt-0.5">
+                <span className="bg-orange-500 text-white rounded-full w-12 h-5 flex items-center justify-center text-xs font-semibold mt-0.5">
                   2
                 </span>
                 <span>
@@ -93,9 +93,9 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
               }}
             >
               <div className="flex items-center space-x-3">
-                <FileCheck className="w-10 h-6 text-gray-600" />
+                <FileCheck className="w-10 h-6 text-white" />
                 <div>
-                  <h5 className="font-semibold text-gray-900">
+                  <h5 className="font-semibold text-white">
                     Para crear Actas de Inspección tienes que hacerlo desde la
                     Tabla de Comercios
                   </h5>
@@ -110,9 +110,9 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
               }}
             >
               <div className="flex items-center space-x-3">
-                <Building className="w-6 h-6 text-gray-600" />
+                <Building className="w-6 h-6 text-white" />
                 <div>
-                  <h5 className="font-semibold text-gray-900">
+                  <h5 className="font-semibold text-white">
                     Selecciona el comercio en el cual se realizo la inspección.
                   </h5>
                 </div>
@@ -120,7 +120,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
             </div>
           </div>
 
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="p-4 bg-yellow-200 border border-yellow-200 rounded-lg">
             <div className="flex items-start space-x-3">
               <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
               <div>
@@ -139,10 +139,10 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
       title: "Crear Comercios",
       content: (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+          <div className="flex items-center justify-between p-4 bg-slate-700 rounded-lg border">
             <div className="flex items-center space-x-3">
-              <FileText className="w-10 h-6 text-gray-600" />
-              <span className="font-medium text-gray-900">
+              <FileText className="w-10 h-6 text-white" />
+              <span className="font-medium text-white">
                 Para crear comercios tienes que hacerlo desde la pestaña
                 Pre-cargados , seleccionando la pestaña Comercios y dando al
                 boton "Nuevo Comercio"
@@ -157,24 +157,24 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-teal-500 border-b border-gray-200 p-6 flex items-center justify-between">
+        <div className="sticky top-0 bg-cyan-500 border-b border-slate-500 p-6 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Guía rápida</h2>
+            <h2 className="text-2xl font-bold text-white">Guía rápida</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors hover:bg-gray-100"
           >
-            <X className="w-6 h-6 text-gray-500" />
+            <X className="w-6 h-6 text-black" />
           </button>
         </div>
 
-        <div className="p-6 bg-gray-100">
+        <div className="p-6 bg-slate-700">
           <div className="mb-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
+            <h3 className="text-xl font-bold text-white mb-2">
               Guía Rápida del Sistema
             </h3>
-            <p className="text-gray-600">
+            <p className="text-white">
               Resuelve tus dudas sobre los procesos de la pagina municipal de
               Bromatologia
             </p>
@@ -189,8 +189,8 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
                 <div
                   className={`p-4 cursor-pointer transition-colors ${
                     currentStep === index
-                      ? "bg-blue-50 border-b border-gray-200"
-                      : "hover:bg-gray-50"
+                      ? "bg-gay-500 border-b border-gray-500"
+                      : "hover:bg-gray-500"
                   }`}
                   onClick={() =>
                     setCurrentStep(currentStep === index ? -1 : index)
@@ -199,11 +199,11 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div
-                        className={`w-3 h-3 rounded-full flex items-center justify-center text-sm font-semibold bg-green-600 text-white" : "bg-gray-200 text-gray-600"
+                        className={`w-3 h-3 rounded-full flex items-center justify-center text-sm font-semibold bg-green-600 text-white" : "bg-gray-200 text-white"
                         }`}
                       ></div>
                       <div>
-                        <h4 className="font-semibold text-gray-900">
+                        <h4 className="font-semibold text-white">
                           {step.title}
                         </h4>
                       </div>
@@ -228,7 +228,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
           <div className="mt-8 flex justify-center">
             <button
               onClick={onClose}
-              className="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="px-6 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors"
             >
               Cerrar
             </button>

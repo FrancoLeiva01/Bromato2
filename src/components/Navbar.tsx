@@ -91,17 +91,17 @@ const {logoutMutation} = useAuth()
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border py-2 z-50 rounded-lg">
-                <div className="px-4 py-2 border-b border-gray-100">
-                  <p className="text-sm font-medium text-gray-900">{currentUser.name}</p>
-                  <p className="text-xs text-gray-500">{currentUser.email}</p>
+              <div className="absolute right-0 mt-2 w-48 bg-slate-800 shadow-lg border py-2 z-50 rounded-lg border-b border-slate-600">
+                <div className="px-4 py-2 border-b border-slate-800">
+                  <p className="text-sm font-medium text-red-500">{currentUser.name}</p>
+                  <p className="text-xs text-gray-100">{currentUser.email}</p>
                   <p className={`text-xs font-medium mt-1 ${getRoleColor(currentUser.role)}`}>
                     {currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)}
                   </p>
                 </div>
                 <button
                   onClick={ () => logoutMutation.mutate()}
-                  className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600  hover:bg-red-300 transition-colors"
+                  className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-500  hover:bg-red-300 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Cerrar Sesión</span>

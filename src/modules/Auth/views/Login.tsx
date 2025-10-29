@@ -25,7 +25,7 @@ const Login = () => {
       className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center"
       style={{ backgroundImage: "url('/src/assets/bromato.png')" }} 
     >
-      <div className="bg-slate-600 rounded-2xl shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 w-full max-w-md p-8">
+      <div className="bg-slate-800 rounded-2xl shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 w-full max-w-md p-8">
         
         {/* Header */}
         <div className="text-center mb-8">
@@ -101,8 +101,8 @@ const Login = () => {
         </div>
 
         {/* Información de prueba */}
-        <div className="mt-6 p-7 bg-gray-100 rounded-lg">
-          <p className="text-xs text-gray-600 text-center">
+        <div className="mt-6 p-7 bg-slate-400 rounded-lg">
+          <p className=" text-sm text-white text-center">
             <strong>Usa tus credenciales del sistema</strong>
             <br />
             Email y contraseña proporcionados por el administrador
