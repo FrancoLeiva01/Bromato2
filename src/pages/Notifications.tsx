@@ -465,27 +465,27 @@ const Notifications: React.FC = () => {
             </div>
           </div>
 
-          <div className="divide-y divide-gray-">
+          <div className="">
             {currentNotifications.slice(0, 3).length > 0 ? (
               currentNotifications.slice(0, 3).map((notification) => (
                 <div
                   key={`preview-${notification.id}`}
-                  className=" mb-1 p-6 hover:bg-orange-200 transition-colors border-l-4 border-l-red-600 bg-slate-100 rounded-lg"
+                  className=" mb-1 p-6 hover:bg-red-700 transition-colors border-l-4 border-l-red-600 bg-slate-600 rounded-lg"
                 >
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 mt-1">
                       <TriangleAlert className="w-5 h-5 text-red-500" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <p className=" capitalize mt-1 text-sm text-gray-800">
+                      <div className="flex items-center justify-between capitalize">
+                        <p className="mt-1 font-extrabold text-white">
                           {notification.detalle_notificacion}
                         </p>
                         {/* Cuando se vea los tipos de infraccion, poner primero el h3 */}
                         <h3 className="text-sm font-medium text-gray-900">
                           {notification.tipo_infraccion.join(", ")}
                         </h3>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-white">
                           {notification.fecha_vencimiento}
                         </span>
                       </div>
@@ -529,7 +529,7 @@ const Notifications: React.FC = () => {
                   <select
                     value={filterType}
                     onChange={(e) => handleFilterChange(e.target.value)}
-                    className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                    className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-yellow-600 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
                   >
                     <option value="">Filtros</option>
                     <option value="Fecha">Fecha</option>
@@ -547,7 +547,7 @@ const Notifications: React.FC = () => {
                       setCurrentPage(1);
                       setFilterValue(e.target.value);
                     }}
-                    className="flex-1 bg-slate-700/80 border border-slate-600/50 text-white placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                    className="flex-1 bg-slate-700/80 border border-slate-600/50 text-white placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-yellow-600 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
                   />
                 </div>
                 <button
@@ -637,6 +637,7 @@ const Notifications: React.FC = () => {
 
                               <button
                                 onClick={() => handleEditClick(notification)}
+                                className="text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-amber-500/30"
                                 title="Editar notificación"
                               >
                                 <Edit className="w-4 h-4" />

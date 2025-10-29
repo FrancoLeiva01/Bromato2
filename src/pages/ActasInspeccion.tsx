@@ -414,7 +414,9 @@ const ActasInspeccion: React.FC = () => {
                 className="flex-1 bg-slate-700/80 border border-slate-600/50 text-white placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
               />
             </div>
+
             {/* CREAR ACTA */}
+
             <button
               onClick={() => setIsFormOpen(true)}
               className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-3 rounded-xl hover:from-blue-400 hover:to-blue-400 transition-all duration-300 flex items-center justify-center space-x-2 font-semibold"
