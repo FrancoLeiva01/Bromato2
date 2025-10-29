@@ -147,7 +147,7 @@ const ActasComprobacion: React.FC = () => {
     try {
       setIsLoading(true);
       const res = await axios.get(
-        `${API_URL}/acta-comprobacion?page=${currentPage}`
+        `${API_URL}/acta-comprobacion?page=${currentPage}&size=${itemsPerPage}`
       );
       console.log("Respuesta del backend:", res.data);
 
@@ -156,6 +156,7 @@ const ActasComprobacion: React.FC = () => {
         : res.data?.data ?? res.data?.actas ?? res.data;
 
       const total = res.data.total ?? payload.length;
+      console.log("Total de actas del backend:", total);
       setTotalActas(total);
 
       const normalized = payload.map(normalizeActaFromBackend);
@@ -168,11 +169,6 @@ const ActasComprobacion: React.FC = () => {
       console.log(
         "Actas después de filtrar eliminadas localmente:",
         filtered.length
-      );
-      console.log(
-        "IDs eliminados:",
-        Array.from(deletedActaIds),
-        deletedId ? `+ ${deletedId}` : ""
       );
 
       setActas(filtered);
@@ -261,10 +257,7 @@ const ActasComprobacion: React.FC = () => {
 
     try {
       console.log("Iniciando eliminación de acta con ID:", id);
-      console.log(
-        "URL completa:",
-        `${API_URL}/acta-comprobacion/delete/${id}`
-      );
+      console.log("URL completa:", `${API_URL}/acta-comprobacion/delete/${id}`);
 
       const response = await axios.get(
         `${API_URL}/acta-comprobacion/delete/${id}`
@@ -317,17 +310,26 @@ const ActasComprobacion: React.FC = () => {
     }
   });
 
-  const totalPages = Math.ceil(filteredActas.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentActas = filteredActas.slice(
-    startIndex,
-    startIndex + itemsPerPage
+  const totalPages = Math.ceil(totalActas / itemsPerPage);
+
+  const currentActas = filteredActas;
+
+  console.log(
+    "Total actas:",
+    totalActas,
+    "Total páginas:",
+    totalPages,
+    "Página actual:",
+    currentPage
   );
 
-  const handlePreviousPage = () =>
+  const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const handleNextPage = () =>
+  };
+
+  const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
 
   const handleViewDetails = (acta: Acta) => {
     setSelectedActa(acta);
@@ -392,17 +394,14 @@ const ActasComprobacion: React.FC = () => {
     fecha_acta_comprobacion: "",
     hora_acta_comprobacion: "",
     detalle_procedimiento: "",
-    procedimientos: "", 
+    procedimientos: "" as string,
     domicilio_inspeccionado: "",
     observaciones: "",
   });
   const handleEditFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (actaToEdit) {
-      console.log(
-        "Enviando actualización con editFormData:",
-        editFormData
-      );
+      console.log("Enviando actualización con editFormData:", editFormData);
       await updateActa(actaToEdit.id, editFormData);
       setIsEditModalOpen(false);
       setActaToEdit(null);
@@ -415,682 +414,728 @@ const ActasComprobacion: React.FC = () => {
       loadingText="Cargando Actas..."
       minHeight="400px"
     >
-      {/* TITULO */}
+      {/* HEADER */}
 
-      <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600">
-        <div className="mb-6">
-          <div className="bg-slate-800 p-4 rounded-lg flex justify-center items-center shadow-inner">
-            <ClipboardCheck className="w-8 h-8 text-green-500 mr-2" />
-            <h1 className="text-3xl font-bold text-white text-center">
-              Actas de Comprobación
-            </h1>
-          </div>
-        </div>
-
-        {/* TABLA */}
-
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-            >
-              <option value="Todos">Todos</option>
-              <option value="Numero">N° de Acta de Comprobación</option>
-              <option value="Propietario">Propietario</option>
-              <option value="Fantasia">Nombre de Fantasía Comercio</option>
-              <option value="Razon">Razón Social Comercio</option>
-            </select>
-
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={filterValue}
-              onChange={(e) => {
-                setCurrentPage(1);
-                setFilterValue(e.target.value);
-              }}
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-            />
-          </div>
-
-          {/* CREAR ACTA DE COMPROBACION */}
-
-          <button
-            onClick={() => setIsFormOpen(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Crear Acta de Comprobacion</span>
-          </button>
-        </div>
-
-        <div className="overflow-x-auto bg-slate-500 rounded-lg shadow">
-          <table className="w-full">
-            <thead className="bg-slate-500">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
-                  Número
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
-                  Propietarios
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
-                  N° Juzgado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
-                  Creado
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase">
-                  Opciones
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {currentActas.length > 0 ? (
-                currentActas.map((acta) => (
-                  <tr key={acta.id} className="bg-slate-100 hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                      {acta.numero}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">
-                      {acta.propietarios}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      {acta.nJuzgado}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      {acta.creado}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => handleViewDetails(acta)}
-                          className="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-lg"
-                          title="Ver detalles"
-                        >
-                          <Eye className="w-5 h-5" />
-                        </button>
-
-                        {/* EDITAR/ACTUALIZAR EL ACTA */}
-
-                        <button
-                          onClick={() => {
-                            setActaToEdit(acta);
-                            const procedimientoValue = Array.isArray(
-                              acta.procedimientos
-                            )
-                              ? acta.procedimientos[0] || ""
-                              : acta.procedimientos || "";
-
-                            console.log(
-                              "Abriendo modal de edición para acta:",
-                              acta.id
-                            );
-                            console.log(
-                              "Procedimiento actual:",
-                              procedimientoValue
-                            );
-
-                            setEditFormData({
-                              acta_comprobacion_nro:
-                                acta.acta_comprobacion_nro || acta.numero,
-                              fecha_acta_comprobacion:
-                                acta.fecha_acta_comprobacion || acta.creado,
-                              hora_acta_comprobacion:
-                                acta.hora_acta_comprobacion || "",
-                              detalle_procedimiento:
-                                acta.detalle_procedimiento || "",
-                              procedimientos: procedimientoValue, 
-                              domicilio_inspeccionado:
-                                acta.domicilio_inspeccionado || "",
-                              observaciones: acta.observaciones || "",
-                            });
-                            setIsEditModalOpen(true);
-                          }}
-                          className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
-                          title="Editar acta"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </button>
-
-                        {/* ELIMINAR ACTA */}
-
-                        <button
-                          onClick={() => deleteActa(acta.id)}
-                          className="text-red-600 hover:text-red-900 transition-colors p-1 rounded hover:bg-red-50"
-                          title="Eliminar acta"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="text-center py-4 text-gray-500 italic"
-                  >
-                    No se encontraron resultados
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* PAGINACION */}
-
-        <div className="px-6 py-4 flex items-center justify-center space-x-2">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              currentPage === 1
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
-          <span className="px-4 py-2 text-sm font-medium text-white">
-            Página {currentPage} de {totalPages}
-          </span>
-
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              currentPage === totalPages
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-blue-700 text-white hover:bg-blue-400"
-            }`}
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        <ComprobacionData
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          acta={selectedActa}
-        />
-
-        {/* FORMULARIO DE CREACION DE ACTA */}
-
-        {isFormOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-              <div className="bg-slate-700 text-white p-6 flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <ClipboardCheck className="w-8 h-8 text-green-500" />
-                  <h2 className="text-2xl font-bold">
-                    Nueva Acta de Comprobación
-                  </h2>
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-600/50 backdrop-blur-sm">
+              <div className="flex justify-center items-center space-x-4">
+                <div className="bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/30">
+                  <ClipboardCheck className="w-10 h-10 text-emerald-400" />
                 </div>
-                <button
-                  onClick={handleCloseForm}
-                  className="text-white hover:text-red-300 transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              {/* CAMPO 1. DATOS DEL ACTA */}
-
-              <div className="overflow-y-auto flex-1 p-6 bg-slate-500">
-                <form className="space-y-6" onSubmit={handleFormSubmit}>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      1. Datos del Acta
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          N° Acta de Comprobación
-                        </label>
-                        <input
-                          type="text"
-                          value={formData.acta_comprobacion_nro}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              acta_comprobacion_nro: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                          placeholder="Número de acta"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Fecha Acta
-                        </label>
-                        <input
-                          type="date"
-                          value={formData.fecha_acta_comprobacion}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              fecha_acta_comprobacion: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Hora
-                        </label>
-                        <input
-                          type="time"
-                          value={formData.hora_acta_comprobacion}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              hora_acta_comprobacion: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CAMPO 2. PROCEDIMIENTOS */}
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      2. Procedimiento
-                    </h3>
-
-                    <div className="space-y-3">
-                      {/* Tipo de Procedimiento */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Tipo de Procedimiento
-                        </label>
-                        {/* Changed from checkboxes to select dropdown */}
-                        <select
-                          value={formData.procedimientos}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              procedimientos: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        >
-                          <option value="">Seleccione un procedimiento</option>
-                          {Object.entries(PROCEDIMIENTOS_ENUM).map(
-                            ([key, label]) => (
-                              <option key={key} value={label}>
-                                {label}
-                              </option>
-                            )
-                          )}
-                        </select>
-                      </div>
-
-                      {/* Detalle del Procedimiento */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Detalle del Procedimiento
-                        </label>
-                        <textarea
-                          maxLength={700}
-                          rows={4}
-                          value={formData.detalle_procedimiento}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              detalle_procedimiento: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
-                          placeholder="Describa el procedimiento..."
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CAMPO 3. ACA VA MAPA MAPIN MAPITA */}
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      3. Domicilio Inspeccionado
-                    </h3>
-                    <input
-                      type="text"
-                      value={formData.domicilio_inspeccionado}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          domicilio_inspeccionado: e.target.value,
-                        })
-                      }
-                      required
-                      placeholder="Dirección del domicilio inspeccionado"
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
-                  </div>
-
-                  {/* CAMPO 4. INSPECTORES */}
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      4. Inspectores
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {allInspectors.length > 0 ? (
-                        allInspectors.map((inspector) => (
-                          <label
-                            key={inspector.id}
-                            className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={formData.inspectores_id.includes(
-                                inspector.id
-                              )}
-                              onChange={() =>
-                                handleInspectorToggle(inspector.id)
-                              }
-                              className="accent-green-600 w-4 h-4"
-                            />
-                            <span className="text-sm text-gray-700">
-                              {inspector.nombres} - Legajo:{" "}
-                              {inspector.identificador}
-                            </span>
-                          </label>
-                        ))
-                      ) : (
-                        <p className="text-sm text-gray-500 italic col-span-2">
-                          No hay inspectores disponibles
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* CAMPO 5. DOCUMENTACION (PDF) */}
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 opacity-60">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase flex items-center justify-between">
-                      5. Documentación
-                      <span className="text-xs font-normal text-gray-500 bg-gray-200 px-2 py-1 rounded">
-                        Proximamente
-                      </span>
-                    </h3>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        PDF del Acta
-                      </label>
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-100 cursor-not-allowed">
-                        <div className="text-4xl mb-2 opacity-50">📄</div>
-                        <div className="text-sm text-gray-400">
-                          Funcionalidad de carga de PDF deshabilitada
-                        </div>
-                        <div className="text-xs text-gray-400 mt-1">
-                          Esta función estará disponible próximamente
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CAMPO 6. OBSERVACIONES */}
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      6. Observaciones
-                    </h3>
-                    <textarea
-                      maxLength={700}
-                      rows={6}
-                      value={formData.observaciones}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          observaciones: e.target.value,
-                        })
-                      }
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
-                      placeholder="Escriba sus observaciones aquí..."
-                    />
-                    <div className="text-xs text-gray-500 mt-1 text-right">
-                      {formData.observaciones.length}/700 caracteres
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                    <button
-                      type="button"
-                      onClick={handleCloseForm}
-                      className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition-colors"
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      onClick={handleFormSubmit}
-                      className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors ml-5"
-                    >
-                      Guardar Acta de Comprobación
-                    </button>
-                  </div>
-                </form>
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                  Actas de Comprobación
+                </h1>
               </div>
             </div>
           </div>
-        )}
 
-        {/* EDITAR/ACTUALIZAR ACTA */}
+          {/* FILTROS */}
 
-        {isEditModalOpen && actaToEdit && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-              <div className="bg-slate-700 text-white p-6 flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <ClipboardCheck className="w-8 h-8 text-green-500" />
-                  <h2 className="text-2xl font-bold">Editar Acta</h2>
-                </div>
-                <button
-                  onClick={() => {
-                    setIsEditModalOpen(false);
-                    setActaToEdit(null);
+          <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-slate-700/50 mb-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 flex-1">
+                <select
+                  value={filterType}
+                  onChange={(e) => setFilterType(e.target.value)}
+                  className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                >
+                  <option value="Todos">Todos los campos</option>
+                  <option value="Numero">N° de Acta</option>
+                  <option value="Propietario">Propietario</option>
+                  <option value="Fantasia">Nombre Fantasía</option>
+                  <option value="Razon"> Razón Social</option>
+                </select>
+
+                <input
+                  type="text"
+                  placeholder="Buscar actas..."
+                  value={filterValue}
+                  onChange={(e) => {
+                    setCurrentPage(1);
+                    setFilterValue(e.target.value);
                   }}
-                  className="text-white hover:text-red-300 transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
+                  className="flex-1 bg-slate-700/80 border border-slate-600/50 text-white placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                />
               </div>
 
-              <div className="overflow-y-auto flex-1 p-6 bg-slate-500">
-                <form className="space-y-6" onSubmit={handleEditFormSubmit}>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      Datos del Acta
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          N° Acta
-                        </label>
+              {/* NUEVA ACTA + */}
 
-                        <input
-                          type="text"
-                          value={editFormData.acta_comprobacion_nro}
-                          onChange={(e) =>
-                            setEditFormData({
-                              ...editFormData,
-                              acta_comprobacion_nro: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Fecha
-                        </label>
-                        <input
-                          type="date"
-                          value={editFormData.fecha_acta_comprobacion}
-                          onChange={(e) =>
-                            setEditFormData({
-                              ...editFormData,
-                              fecha_acta_comprobacion: e.target.value,
-                            })
-                          }
-                          required
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Hora
-                        </label>
-                        <input
-                          type="time"
-                          value={editFormData.hora_acta_comprobacion}
-                          onChange={(e) =>
-                            setEditFormData({
-                              ...editFormData,
-                              hora_acta_comprobacion: e.target.value,
-                            })
-                          }
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/*TIPO DE PROCEDIMIENTO edit*/}
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      Procedimiento
-                    </h3>
-                    <div className="space-y-3">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Tipo
-                        </label>
-                        <select
-                          value={editFormData.procedimientos}
-                          onChange={(e) => {
-                            console.log(
-                              "Cambiando procedimiento a:",
-                              e.target.value
-                            );
-                            setEditFormData({
-                              ...editFormData,
-                              procedimientos: e.target.value,
-                            });
-                          }}
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                        >
-                          <option value="">Seleccione</option>
-                          {Object.values(PROCEDIMIENTOS_ENUM).map((proc) => (
-                            <option key={proc} value={proc}>
-                              {proc}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Detalle
-                        </label>
-                        <textarea
-                          maxLength={700}
-                          rows={4}
-                          value={editFormData.detalle_procedimiento}
-                          onChange={(e) =>
-                            setEditFormData({
-                              ...editFormData,
-                              detalle_procedimiento: e.target.value,
-                            })
-                          }
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      Domicilio
-                    </h3>
-                    <input
-                      type="text"
-                      value={editFormData.domicilio_inspeccionado}
-                      onChange={(e) =>
-                        setEditFormData({
-                          ...editFormData,
-                          domicilio_inspeccionado: e.target.value,
-                        })
-                      }
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                    />
-                  </div>
-
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      Observaciones
-                    </h3>
-                    <textarea
-                      maxLength={700}
-                      rows={6}
-                      value={editFormData.observaciones}
-                      onChange={(e) =>
-                        setEditFormData({
-                          ...editFormData,
-                          observaciones: e.target.value,
-                        })
-                      }
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none"
-                      placeholder="Escriba sus observaciones aquí..."
-                    />
-                    <div className="text-xs text-gray-500 mt-1 text-right">
-                      {editFormData.observaciones.length}/700 caracteres
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setIsEditModalOpen(false);
-                        setActaToEdit(null);
-                      }}
-                      className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition-colors"
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
-                    >
-                      Actualizar Acta
-                    </button>
-                  </div>
-                </form>
-              </div>
+              <button
+                onClick={() => setIsFormOpen(true)}
+                className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-6 py-3 rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 flex items-center justify-center space-x-2 font-semibold"
+              >
+                <Plus className="w-5 h-5" />
+                <span>Nueva Acta</span>
+              </button>
             </div>
           </div>
-        )}
+
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 border-b-2 border-cyan-500">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                      Número
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                      Propietarios
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                      N° Juzgado
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                      Fecha
+                    </th>
+                    <th className="px-6 py-4 text-center text-xs font-bold text-white uppercase tracking-wider">
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-700/50">
+                  {currentActas.length > 0 ? (
+                    currentActas.map((acta, index) => (
+                      <tr
+                        key={acta.id}
+                        className={`${
+                          index % 2 === 0
+                            ? "bg-slate-800/30"
+                            : "bg-slate-800/50"
+                        } hover:bg-slate-700/50 transition-all duration-200 hover:shadow-lg`}
+                      >
+                        <td className="px-6 py-4 text-sm font-semibold text-white">
+                          {acta.numero}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-300">
+                          {acta.propietarios}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-300">
+                          {acta.nJuzgado}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-300">
+                          {acta.creado}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex justify-center space-x-2">
+                            {/* BOTONES */}
+
+                            <button
+                              onClick={() => handleViewDetails(acta)}
+                              className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-cyan-500/30"
+                              title="Ver detalles"
+                            >
+                              <Eye className="w-5 h-5" />
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setActaToEdit(acta);
+                                const procedimientoValue = Array.isArray(
+                                  acta.procedimientos
+                                )
+                                  ? acta.procedimientos[0] || ""
+                                  : acta.procedimientos || "";
+
+                                console.log(
+                                  "Abriendo modal de edición para acta:",
+                                  acta.id
+                                );
+                                console.log(
+                                  "Procedimiento actual:",
+                                  procedimientoValue
+                                );
+
+                                setEditFormData({
+                                  acta_comprobacion_nro:
+                                    acta.acta_comprobacion_nro || acta.numero,
+                                  fecha_acta_comprobacion:
+                                    acta.fecha_acta_comprobacion || acta.creado,
+                                  hora_acta_comprobacion:
+                                    acta.hora_acta_comprobacion || "",
+                                  detalle_procedimiento:
+                                    acta.detalle_procedimiento || "",
+                                  procedimientos: procedimientoValue,
+                                  domicilio_inspeccionado:
+                                    acta.domicilio_inspeccionado || "",
+                                  observaciones: acta.observaciones || "",
+                                });
+                                setIsEditModalOpen(true);
+                              }}
+                              className="text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-amber-500/30"
+                              title="Editar acta"
+                            >
+                              <Edit className="w-5 h-5" />
+                            </button>
+
+                            <button
+                              onClick={() => deleteActa(acta.id)}
+                              className="text-red-400 hover:text-red-300 hover:bg-red-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-red-500/30"
+                              title="Eliminar acta"
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={5} className="text-center py-12">
+                        <div className="flex flex-col items-center space-y-3">
+                          <div className="text-6xl opacity-20">📋</div>
+                          <p className="text-slate-400 text-lg font-medium">
+                            No se encontraron resultados
+                          </p>
+                          <p className="text-slate-500 text-sm">
+                            Intenta ajustar los filtros de búsqueda
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* PAGINACION */}
+
+            <div className="bg-slate-800/80 px-6 py-5 flex items-center justify-center space-x-4 border-t border-slate-700/50">
+              <button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1 || totalPages === 0}
+                className={`p-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  currentPage === 1 || totalPages === 0
+                    ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
+                    : "bg-slate-700 text-white hover:bg-slate-600 border border-slate-600 hover:scale-105 shadow-lg"
+                }`}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="bg-slate-700/50 px-6 py-3 rounded-xl border border-slate-600/50">
+                <span className="text-sm font-semibold text-slate-200">
+                  Página{" "}
+                  <span className="text-white">
+                    {totalPages === 0 ? 0 : currentPage}
+                  </span>{" "}
+                  de <span className="text-white">{totalPages}</span>
+                </span>
+              </div>
+
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages || totalPages === 0}
+                className={`p-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  currentPage === totalPages || totalPages === 0
+                    ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
+                    : "bg-gradient-to-r from-cyan-600 to-cyan-500 text-white hover:from-cyan-500 hover:to-cyan-400 hover:scale-105"
+                }`}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <ComprobacionData
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        acta={selectedActa}
+      />
+
+      {/* MODAL NUEVA ACTA */}
+
+      {isFormOpen && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col border-2 border-slate-700/50">
+            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white p-6 flex items-center justify-between border-b-2 border-emerald-500/30">
+              <div className="flex items-center space-x-4">
+                <div className="bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/30">
+                  <ClipboardCheck className="w-8 h-8 text-emerald-500" />
+                </div>
+                <h2 className="text-2xl font-bold">
+                  Nueva Acta de Comprobación
+                </h2>
+              </div>
+              <button
+                onClick={handleCloseForm}
+                className="text-slate-400 hover:text-red-400 hover:bg-red-500/10 p-2 rounded-xl transition-all duration-200"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* CAMPO 1. DATOS DEL ACTA */}
+
+            <div className="overflow-y-auto flex-1 p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+              <form className="space-y-6" onSubmit={handleFormSubmit}>
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
+                    <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
+                      1
+                    </span>
+                    <span>Datos del Acta</span>
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        N° Acta de Comprobación
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.acta_comprobacion_nro}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            acta_comprobacion_nro: e.target.value,
+                          })
+                        }
+                        required
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
+                        placeholder="Ej: AC-2024-001"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Fecha Acta
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.fecha_acta_comprobacion}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            fecha_acta_comprobacion: e.target.value,
+                          })
+                        }
+                        required
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Hora
+                      </label>
+                      <input
+                        type="time"
+                        value={formData.hora_acta_comprobacion}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            hora_acta_comprobacion: e.target.value,
+                          })
+                        }
+                        required
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* CAMPO 2. PROCEDIMIENTOS */}
+
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
+                    <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
+                      2
+                    </span>
+                    <span>Procedimiento</span>
+                  </h3>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Tipo de Procedimiento
+                      </label>
+                      <select
+                        value={formData.procedimientos}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            procedimientos: e.target.value,
+                          })
+                        }
+                        required
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700"
+                      >
+                        <option value="">Seleccione un procedimiento</option>
+                        {Object.entries(PROCEDIMIENTOS_ENUM).map(
+                          ([key, label]) => (
+                            <option key={key} value={label}>
+                              {label}
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Detalle del Procedimiento
+                      </label>
+                      <textarea
+                        maxLength={700}
+                        rows={4}
+                        value={formData.detalle_procedimiento}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            detalle_procedimiento: e.target.value,
+                          })
+                        }
+                        required
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm resize-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
+                        placeholder="Describa detalladamente el procedimiento realizado..."
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* CAMPO 3. DOMICILIO */}
+
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
+                    <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
+                      3
+                    </span>
+                    <span>Domicilio Inspeccionado</span>
+                  </h3>
+                  <input
+                    type="text"
+                    value={formData.domicilio_inspeccionado}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        domicilio_inspeccionado: e.target.value,
+                      })
+                    }
+                    required
+                    placeholder="Calle, número, localidad..."
+                    className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
+                  />
+                </div>
+
+                {/* CAMPO 4. INSPECTORES */}
+
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
+                    <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
+                      4
+                    </span>
+                    <span>Inspectores</span>
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {allInspectors.length > 0 ? (
+                      allInspectors.map((inspector) => (
+                        <label
+                          key={inspector.id}
+                          className="flex items-center space-x-3 p-3 hover:bg-slate-700/50 rounded-xl cursor-pointer transition-all duration-200 border border-transparent hover:border-cyan-500/30"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData.inspectores_id.includes(
+                              inspector.id
+                            )}
+                            onChange={() => handleInspectorToggle(inspector.id)}
+                            className="accent-cyan-500 w-5 h-5 rounded"
+                          />
+                          <span className="text-sm text-slate-300 font-medium">
+                            {inspector.nombres}{" "}
+                            <span className="text-slate-500">
+                              • Legajo: {inspector.identificador}
+                            </span>
+                          </span>
+                        </label>
+                      ))
+                    ) : (
+                      <p className="text-sm text-slate-400 italic col-span-2 text-center py-4">
+                        No hay inspectores disponibles
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* CAMPO 5. DOCUMENTACION */}
+
+                <div className="bg-slate-800/30 backdrop-blur-sm p-6 rounded-xl border border-slate-700/30 shadow-xl opacity-60">
+                  <h3 className="text-lg font-bold text-slate-400 mb-5 uppercase tracking-wide flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <span className="bg-slate-700/50 px-3 py-1 rounded-lg border border-slate-600/30">
+                        5
+                      </span>
+                      <span>Documentación</span>
+                    </div>
+                    <span className="text-xs font-normal text-slate-500 bg-slate-700/50 px-3 py-1.5 rounded-lg border border-slate-600/30">
+                      Próximamente
+                    </span>
+                  </h3>
+                  <div>
+                    <label className="block text-sm font-semibold text-slate-400 mb-3">
+                      PDF del Acta
+                    </label>
+                    <div className="border-2 border-dashed border-slate-700/50 rounded-xl p-8 text-center bg-slate-800/30 cursor-not-allowed">
+                      <div className="text-5xl mb-3 opacity-30">📄</div>
+                      <div className="text-sm text-slate-500 font-medium">
+                        Funcionalidad de carga de PDF deshabilitada
+                      </div>
+                      <div className="text-xs text-slate-600 mt-2">
+                        Esta función estará disponible próximamente
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* CAMPO 6. OBSERVACIONES */}
+
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
+                    <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
+                      6
+                    </span>
+                    <span>Observaciones</span>
+                  </h3>
+                  <textarea
+                    maxLength={700}
+                    rows={6}
+                    value={formData.observaciones}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        observaciones: e.target.value,
+                      })
+                    }
+                    className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm resize-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
+                    placeholder="Agregue cualquier observación adicional relevante..."
+                  />
+                  <div className="text-xs text-slate-400 mt-2 text-right font-medium">
+                    {formData.observaciones.length}/700 caracteres
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center pt-6 border-t-2 border-slate-700/50">
+                  <button
+                    type="button"
+                    onClick={handleCloseForm}
+                    className="bg-slate-700 text-white px-8 py-3 rounded-xl hover:bg-slate-600 transition-all duration-200 font-semibold shadow-lg"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleFormSubmit}
+                    className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-8 py-3 rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 shadow-xl hover:shadow-emerald-500/50 hover:scale-105 font-semibold"
+                  >
+                    Guardar Acta
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* EDITAR ACTA */}
+
+      {isEditModalOpen && actaToEdit && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col border-2 border-slate-700/50">
+            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white p-6 flex items-center justify-between border-b-2 border-amber-500/30">
+              <div className="flex items-center space-x-4">
+                <div className="bg-amber-500/10 p-3 rounded-xl border border-amber-500/30">
+                  <ClipboardCheck className="w-8 h-8 text-amber-400" />
+                </div>
+                <h2 className="text-2xl font-bold">
+                  Editar Acta de Comprobación
+                </h2>
+              </div>
+              <button
+                onClick={() => {
+                  setIsEditModalOpen(false);
+                  setActaToEdit(null);
+                }}
+                className="text-slate-400 hover:text-red-400 hover:bg-red-500/10 p-2 rounded-xl transition-all duration-200"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto flex-1 p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+              <form className="space-y-6" onSubmit={handleEditFormSubmit}>
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
+                    Datos del Acta
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        N° Acta
+                      </label>
+                      <input
+                        type="text"
+                        value={editFormData.acta_comprobacion_nro}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            acta_comprobacion_nro: e.target.value,
+                          })
+                        }
+                        required
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all hover:bg-slate-700"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Fecha
+                      </label>
+                      <input
+                        type="date"
+                        value={editFormData.fecha_acta_comprobacion}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            fecha_acta_comprobacion: e.target.value,
+                          })
+                        }
+                        required
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all hover:bg-slate-700"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Hora
+                      </label>
+                      <input
+                        type="time"
+                        value={editFormData.hora_acta_comprobacion}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            hora_acta_comprobacion: e.target.value,
+                          })
+                        }
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all hover:bg-slate-700"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
+                    Procedimiento
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Tipo
+                      </label>
+                      <select
+                        value={editFormData.procedimientos}
+                        onChange={(e) => {
+                          console.log(
+                            "Cambiando procedimiento a:",
+                            e.target.value
+                          );
+                          setEditFormData({
+                            ...editFormData,
+                            procedimientos: e.target.value,
+                          });
+                        }}
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all hover:bg-slate-700"
+                      >
+                        <option value="">Seleccione</option>
+                        {Object.values(PROCEDIMIENTOS_ENUM).map((proc) => (
+                          <option key={proc} value={proc}>
+                            {proc}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-300 mb-2">
+                        Detalle
+                      </label>
+                      <textarea
+                        maxLength={700}
+                        rows={4}
+                        value={editFormData.detalle_procedimiento}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            detalle_procedimiento: e.target.value,
+                          })
+                        }
+                        className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm resize-none focus:ring-2 focus:ring-amber-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
+                    Domicilio
+                  </h3>
+                  <input
+                    type="text"
+                    value={editFormData.domicilio_inspeccionado}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        domicilio_inspeccionado: e.target.value,
+                      })
+                    }
+                    className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
+                  />
+                </div>
+
+                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                  <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
+                    Observaciones
+                  </h3>
+                  <textarea
+                    maxLength={700}
+                    rows={6}
+                    value={editFormData.observaciones}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        observaciones: e.target.value,
+                      })
+                    }
+                    className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm resize-none focus:ring-2 focus:ring-amber-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
+                    placeholder="Escriba sus observaciones aquí..."
+                  />
+                  <div className="text-xs text-slate-400 mt-2 text-right font-medium">
+                    {editFormData.observaciones.length}/700 caracteres
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center pt-6 border-t-2 border-slate-700/50">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsEditModalOpen(false);
+                      setActaToEdit(null);
+                    }}
+                    className="bg-slate-700 text-white px-8 py-3 rounded-xl hover:bg-slate-600 transition-all duration-200 font-semibold shadow-lg"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-8 py-3 rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 shadow-xl hover:shadow-emerald-500/50 hover:scale-105 font-semibold"
+                  >
+                    Actualizar Acta
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </LoaderContent>
   );
 };

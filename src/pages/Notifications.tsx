@@ -492,8 +492,8 @@ const Notifications: React.FC = () => {
               ))
             ) : (
               <div className="text-center py-8">
-                <Bell className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">
+                <Bell className="w-12 h-12 text-white mx-auto mb-4" />
+                <p className="text-white">
                   No hay notificaciones próximas a vencer
                 </p>
               </div>

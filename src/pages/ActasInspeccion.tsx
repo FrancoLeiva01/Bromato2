@@ -1,80 +1,91 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect } from "react"
-import { Search, ChevronLeft, ChevronRight, Eye, Plus, X, FileText, Edit, Trash2 } from "lucide-react"
-import InspeccionesData from "../components/InspeccionesData"
-import { LoaderContent } from "@/components/LoaderComponent"
-import axios from "axios"
+import type React from "react";
+import { useState, useEffect } from "react";
+import {
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  Plus,
+  X,
+  FileText,
+  Edit,
+  Trash2,
+} from "lucide-react";
+import InspeccionesData from "../components/InspeccionesData";
+import { LoaderContent } from "@/components/LoaderComponent";
+import axios from "axios";
 
 interface ActaInspeccion {
-  id: number
-  numero: string
-  denuncia: string
-  fecha: string
-  turno: string
-  cargado: string
-  numeroNotificacion: string
-  razonSocial: string
-  fantasia: string
+  id: number;
+  numero: string;
+  denuncia: string;
+  fecha: string;
+  turno: string;
+  cargado: string;
+  numeroNotificacion: string;
+  razonSocial: string;
+  fantasia: string;
   // adicionales
-  nombre_razon_social?: string
-  cuit_cuil?: string
-  habilitacion_municipal?: string
-  fecha_constancia?: string
-  domicilio_declarado?: string
-  actividad_habilitada?: string
-  no_permite_inspeccion?: boolean
-  nombre_apellido_recibe?: string
-  dni_recibe?: string
-  cargo_funcion?: string
-  coincide_domicilio?: string
-  domicilio_efectivo?: string
-  actividad_desarrollada?: string
-  condiciones_higiene?: string[]
-  elementos_seguridad?: string[]
-  estado_agua?: string
-  lugar_deposito_residuos?: string
-  observaciones_agua?: string
-  muebles_materiales?: string
-  manejo?: string
-  estado?: string
-  certificacion_desinfeccion?: string
-  certificacion_exhibe?: string
-  observaciones_generales?: string
+  nombre_razon_social?: string;
+  cuit_cuil?: string;
+  habilitacion_municipal?: string;
+  fecha_constancia?: string;
+  domicilio_declarado?: string;
+  actividad_habilitada?: string;
+  no_permite_inspeccion?: boolean;
+  nombre_apellido_recibe?: string;
+  dni_recibe?: string;
+  cargo_funcion?: string;
+  coincide_domicilio?: string;
+  domicilio_efectivo?: string;
+  actividad_desarrollada?: string;
+  condiciones_higiene?: string[];
+  elementos_seguridad?: string[];
+  estado_agua?: string;
+  lugar_deposito_residuos?: string;
+  observaciones_agua?: string;
+  muebles_materiales?: string;
+  manejo?: string;
+  estado?: string;
+  certificacion_desinfeccion?: string;
+  certificacion_exhibe?: string;
+  observaciones_generales?: string;
 }
 
 enum CONDICION_ENUM {
-  BUENA = 'BUENA',
-  MALA = 'MALA',
+  BUENA = "BUENA",
+  MALA = "MALA",
 }
 
 enum CONFIRMACION_ENUM {
-  SI = 'SI',
-  NO = 'NO',
-  ENTRAMITE = 'ENTRAMITE',
+  SI = "SI",
+  NO = "NO",
+  ENTRAMITE = "ENTRAMITE",
 }
 
-
 const ActasInspeccion: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [selectedActa, setSelectedActa] = useState<ActaInspeccion | null>(null)
-  const [isFormOpen, setIsFormOpen] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [filterField, setFilterField] = useState("Todos")
-  const [filterTurno, setFilterTurno] = useState("Todos")
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [actaToEdit, setActaToEdit] = useState<ActaInspeccion | null>(null)
-  const itemsPerPage = 10
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedActa, setSelectedActa] = useState<ActaInspeccion | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [filterType, setFilterType] = useState("Todos");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterValue, setFilterValue] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterField, setFilterField] = useState("Todos");
+  const [filterTurno, setFilterTurno] = useState("Todos");
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [actaToEdit, setActaToEdit] = useState<ActaInspeccion | null>(null);
+  const itemsPerPage = 10;
 
-  const [actas, setActas] = useState<ActaInspeccion[]>([])
-  const [totalActas, setTotalActas] = useState(0)
+  const [actas, setActas] = useState<ActaInspeccion[]>([]);
+  const [totalActas, setTotalActas] = useState(0);
 
   const API_URL =
     typeof window !== "undefined" && (window as any).VITE_API_URL
       ? (window as any).VITE_API_URL
-      : "http://localhost:4000/api/v1"
+      : "http://localhost:4000/api/v1";
 
   const [formData, setFormData] = useState({
     nombre_razon_social: "",
@@ -101,7 +112,7 @@ const ActasInspeccion: React.FC = () => {
     certificacion_desinfeccion: "",
     certificacion_exhibe: "",
     observaciones_generales: "",
-  })
+  });
 
   const [editFormData, setEditFormData] = useState({
     nombre_razon_social: "",
@@ -128,9 +139,9 @@ const ActasInspeccion: React.FC = () => {
     certificacion_desinfeccion: "",
     certificacion_exhibe: "",
     observaciones_generales: "",
-  })
+  });
 
-// NORMALIZACION
+  // NORMALIZACION
 
   const normalizeActaFromBackend = (raw: any): ActaInspeccion => {
     return {
@@ -144,111 +155,131 @@ const ActasInspeccion: React.FC = () => {
       razonSocial: raw.razonSocial ?? raw.nombre_razon_social ?? "N/A",
       fantasia: raw.fantasia ?? "N/A",
       ...raw,
-    }
-  }
+    };
+  };
 
-// GET ACTAS
+  // GET ACTAS
 
   const getActas = async () => {
     try {
-      setIsLoading(true)
-      const res = await axios.get(`${API_URL}/acta-inspeccion?page=${currentPage}`)
-      console.log("Respuesta del backend:", res.data)
+      setIsLoading(true);
+      const res = await axios.get(
+        `${API_URL}/acta-inspeccion?page=${currentPage}`
+      );
+      console.log("Respuesta del backend:", res.data);
 
-      const payload = Array.isArray(res.data) ? res.data : (res.data?.data ?? res.data?.actas ?? res.data)
+      const payload = Array.isArray(res.data)
+        ? res.data
+        : res.data?.data ?? res.data?.actas ?? res.data;
 
-      const total = res.data.total ?? payload.length
-      setTotalActas(total)
+      const total = res.data.total ?? payload.length;
+      setTotalActas(total);
 
-      const normalized = payload.map(normalizeActaFromBackend)
-      setActas(normalized)
+      const normalized = payload.map(normalizeActaFromBackend);
+      setActas(normalized);
     } catch (error) {
-      console.error("Error al obtener actas:", error)
+      console.error("Error al obtener actas:", error);
       // Fallback to empty array if API fails
-      setActas([])
+      setActas([]);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    getActas()
-  }, [currentPage])
+    getActas();
+  }, [currentPage]);
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
+      setIsLoading(false);
+    }, 1000);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
-// CREATE
+  // CREATE
 
   const createActa = async (newActa: typeof formData) => {
     try {
       const payload = {
         acta_inspeccion: newActa,
-      }
+      };
 
-      const res = await axios.post(`${API_URL}/acta-inspeccion`, payload)
-      const createdRaw = res.data?.data ?? res.data
-      const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw
+      const res = await axios.post(`${API_URL}/acta-inspeccion`, payload);
+      const createdRaw = res.data?.data ?? res.data;
+      const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
 
-      const normalized = normalizeActaFromBackend(created)
-      setActas((prev) => [...prev, normalized])
+      const normalized = normalizeActaFromBackend(created);
+      setActas((prev) => [...prev, normalized]);
 
-      await getActas()
-      alert("✅ Acta de Inspección creada exitosamente")
+      await getActas();
+      alert("✅ Acta de Inspección creada exitosamente");
     } catch (error: any) {
-      console.error("❌ Error al crear Acta:", error)
-      alert(`Error al crear Acta: ${error.response?.data?.message || error.message}`)
+      console.error("❌ Error al crear Acta:", error);
+      alert(
+        `Error al crear Acta: ${error.response?.data?.message || error.message}`
+      );
     }
-  }
+  };
 
-// UPDATE
+  // UPDATE
 
-  const updateActa = async (id: number, updatedData: Partial<ActaInspeccion>) => {
+  const updateActa = async (
+    id: number,
+    updatedData: Partial<ActaInspeccion>
+  ) => {
     try {
-      const payload = updatedData
+      const payload = updatedData;
 
-      console.log("Actualizando acta ID:", id, "con payload:", payload)
-      const res = await axios.patch(`${API_URL}/acta-inspeccion/${id}`, payload)
-      console.log("✅ Acta actualizada:", res.data)
+      console.log("Actualizando acta ID:", id, "con payload:", payload);
+      const res = await axios.patch(
+        `${API_URL}/acta-inspeccion/${id}`,
+        payload
+      );
+      console.log("✅ Acta actualizada:", res.data);
 
-      await getActas()
-      alert("✅ Acta actualizada exitosamente")
+      await getActas();
+      alert("✅ Acta actualizada exitosamente");
     } catch (error: any) {
-      console.error("❌ Error al actualizar acta:", error)
-      alert(`Error al actualizar acta: ${error.response?.data?.message || error.message}`)
+      console.error("❌ Error al actualizar acta:", error);
+      alert(
+        `Error al actualizar acta: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     }
-  }
+  };
 
-// DELETE
+  // DELETE
 
   const deleteActa = async (id: number) => {
     if (!confirm("¿Está seguro de que desea eliminar esta acta?")) {
-      return
+      return;
     }
 
     try {
-      console.log("Eliminando acta:", id)
-      await axios.get(`${API_URL}/acta-inspeccion/delete/${id}`)
-      console.log("✅ Acta eliminada")
+      console.log("Eliminando acta:", id);
+      await axios.get(`${API_URL}/acta-inspeccion/delete/${id}`);
+      console.log("✅ Acta eliminada");
 
-      await getActas()
-      alert("✅ Acta eliminada exitosamente")
+      await getActas();
+      alert("✅ Acta eliminada exitosamente");
     } catch (error: any) {
-      console.error("❌ Error al eliminar acta:", error)
-      alert(`Error al eliminar acta: ${error.response?.data?.message || error.message}`)
+      console.error("❌ Error al eliminar acta:", error);
+      alert(
+        `Error al eliminar acta: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     }
-  }
+  };
 
   const filteredActas = actas.filter((acta) => {
-    const term = searchTerm.toLowerCase()
-    if (filterTurno !== "Todos" && acta.turno !== filterTurno) return false
-    if (!term.trim()) return true
+    const term = searchTerm.toLowerCase();
+    if (filterTurno !== "Todos" && acta.turno !== filterTurno) return false;
+    if (!term.trim()) return true;
     switch (filterField) {
       case "Todos":
         return (
@@ -258,29 +289,34 @@ const ActasInspeccion: React.FC = () => {
           acta.cargado.toLowerCase().includes(term) ||
           acta.razonSocial.toLowerCase().includes(term) ||
           acta.fantasia.toLowerCase().includes(term)
-        )
+        );
       case "Numero":
-        return acta.numero.toLowerCase().includes(term)
+        return acta.numero.toLowerCase().includes(term);
       case "Notificacion":
-        return acta.numeroNotificacion.toLowerCase().includes(term)
+        return acta.numeroNotificacion.toLowerCase().includes(term);
       case "RazonSocial":
-        return acta.razonSocial.toLowerCase().includes(term)
+        return acta.razonSocial.toLowerCase().includes(term);
       case "Fantasia":
-        return acta.fantasia.toLowerCase().includes(term)
+        return acta.fantasia.toLowerCase().includes(term);
       default:
-        return true
+        return true;
     }
-  })
+  });
 
-  const totalPages = Math.ceil(filteredActas.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentActas = filteredActas.slice(startIndex, startIndex + itemsPerPage)
+  const totalPages = Math.ceil(filteredActas.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentActas = filteredActas.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
-  const handlePreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1))
-  const handleNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+  const handlePreviousPage = () =>
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const handleNextPage = () =>
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
 
   const handleCloseForm = () => {
-    setIsFormOpen(false)
+    setIsFormOpen(false);
     setFormData({
       nombre_razon_social: "",
       cuit_cuil: "",
@@ -306,88 +342,87 @@ const ActasInspeccion: React.FC = () => {
       certificacion_desinfeccion: "",
       certificacion_exhibe: "",
       observaciones_generales: "",
-    })
-  }
+    });
+  };
 
   const handleOpenForm = () => {
-    setIsFormOpen(true)
-  }
+    setIsFormOpen(true);
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await createActa(formData)
-    handleCloseForm()
-  }
+    e.preventDefault();
+    await createActa(formData);
+    handleCloseForm();
+  };
 
   const handleEditFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (actaToEdit) {
-      await updateActa(actaToEdit.id, editFormData)
-      setIsEditModalOpen(false)
-      setActaToEdit(null)
+      await updateActa(actaToEdit.id, editFormData);
+      setIsEditModalOpen(false);
+      setActaToEdit(null);
     }
-  }
+  };
 
   return (
-    <LoaderContent isLoading={isLoading} loadingText="Cargando Actas..." minHeight="400px">
-      <div className="bg-slate-700 p-6 rounded-lg shadow-lg shadow-gray-600 ">
-        {/* TITULO */}
-        <div className="mb-6">
-          <div className="bg-slate-800 p-4 rounded-lg flex justify-center items-center shadow-inner">
-            <Search className="w-8 h-8 text-blue-500 mr-2" />
-            <h1 className="text-3xl font-bold text-white text-center">Actas de Inspección</h1>
+    <LoaderContent
+      isLoading={isLoading}
+      loadingText="Cargando Actas..."
+      minHeight="400px"
+    >
+      {/* TITULO */}
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-600/50 backdrop-blur-sm">
+              <div className="flex justify-center items-center space-x-4">
+                <div className="bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/30">
+                  <Search className="w-10 h-10 text-emerald-400" />
+                </div>
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                  Actas de Inscripcion
+                </h1>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* FILTROS */}
-        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
-            <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-              value={filterField}
-              onChange={(e) => setFilterField(e.target.value)}
-            >
-              <option value="Todos">Todos</option>
-              <option value="Numero">N° de Acta</option>
-              <option value="Notificacion">Notificación</option>
-              <option value="RazonSocial">Razón Social Comercio</option>
-              <option value="Fantasia">Nombre de Fantasía</option>
-            </select>
+        <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-slate-700/50 mb-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 flex-1">
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+                className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+              >
+                <option value="Todos">Todos los campos</option>
+                <option value="Numero">N° de Acta</option>
+                <option value="Propietario">Propietario</option>
+                <option value="Fantasia">Nombre Fantasía</option>
+                <option value="Razon"> Razón Social</option>
+              </select>
 
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value)
-                setCurrentPage(1)
-              }}
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-            />
-
-            <select
-              className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-              value={filterTurno}
-              onChange={(e) => {
-                setFilterTurno(e.target.value)
-                setCurrentPage(1)
-              }}
-            >
-              <option value="Todos">Todos los turnos</option>
-              <option value="Mañana">Mañana</option>
-              <option value="Tarde">Tarde</option>
-              <option value="Noche">Noche</option>
-              <option value="Finde">Finde</option>
-            </select>
-          </div>
-          {/* CREAR ACTA DE INSPECCION */}
+              <input
+                type="text"
+                placeholder="Buscar actas..."
+                value={filterValue}
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setFilterValue(e.target.value);
+                }}
+                className="flex-1 bg-slate-700/80 border border-slate-600/50 text-white placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+              />
+            </div>
+            {/* CREAR ACTA */}
           <button
-            onClick={handleOpenForm}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition-colors flex items-center space-x-2"
+            onClick={() => setIsFormOpen(true)}
+            className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-6 py-3 rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 flex items-center justify-center space-x-2 font-semibold"
           >
-            <Plus className="w-4 h-4" />
-            <span>Crear Acta de Inspeccion</span>
+            <Plus className="w-5 h-5" />
+            <span>Nueva Acta</span>
           </button>
+          </div>
         </div>
 
         {/* TABLA */}
@@ -395,35 +430,65 @@ const ActasInspeccion: React.FC = () => {
           <table className="w-full">
             <thead className="bg-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Número de Acta</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Denuncia</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Turno</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Razón Social</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fantasia</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cargado</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Notificación</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Opciones</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Número de Acta
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Denuncia
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Fecha
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Turno
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Razón Social
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Fantasia
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Cargado
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Notificación
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  Opciones
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {currentActas.length > 0 ? (
                 currentActas.map((acta) => (
                   <tr key={acta.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{acta.numero}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{acta.denuncia}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{acta.fecha}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{acta.turno}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{acta.razonSocial}</td>
-                    <td className="px-6 py-4 text-sm text-gray-500">{acta.fantasia}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                      {acta.numero}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      {acta.denuncia}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {acta.fecha}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {acta.turno}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {acta.razonSocial}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {acta.fantasia}
+                    </td>
                     <td className="px-6 py-4">
                       <span
                         className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                           acta.cargado === "Completada"
                             ? "bg-green-100 text-green-800"
                             : acta.cargado === "En proceso"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : "bg-gray-100 text-gray-800"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-gray-100 text-gray-800"
                         }`}
                       >
                         {acta.cargado}
@@ -435,8 +500,8 @@ const ActasInspeccion: React.FC = () => {
                           acta.numeroNotificacion === "Aprobada"
                             ? "bg-green-100 text-green-800"
                             : acta.numeroNotificacion === "Observaciones"
-                              ? "bg-orange-100 text-orange-800"
-                              : "bg-red-100 text-red-800"
+                            ? "bg-orange-100 text-orange-800"
+                            : "bg-red-100 text-red-800"
                         }`}
                       >
                         {acta.numeroNotificacion}
@@ -453,34 +518,47 @@ const ActasInspeccion: React.FC = () => {
                         </button>
                         <button
                           onClick={() => {
-                            setActaToEdit(acta)
+                            setActaToEdit(acta);
                             setEditFormData({
-                              nombre_razon_social: acta.nombre_razon_social || "",
+                              nombre_razon_social:
+                                acta.nombre_razon_social || "",
                               cuit_cuil: acta.cuit_cuil || "",
-                              habilitacion_municipal: acta.habilitacion_municipal || "",
+                              habilitacion_municipal:
+                                acta.habilitacion_municipal || "",
                               fecha_constancia: acta.fecha_constancia || "",
-                              domicilio_declarado: acta.domicilio_declarado || "",
-                              actividad_habilitada: acta.actividad_habilitada || "",
-                              no_permite_inspeccion: acta.no_permite_inspeccion || false,
-                              nombre_apellido_recibe: acta.nombre_apellido_recibe || "",
+                              domicilio_declarado:
+                                acta.domicilio_declarado || "",
+                              actividad_habilitada:
+                                acta.actividad_habilitada || "",
+                              no_permite_inspeccion:
+                                acta.no_permite_inspeccion || false,
+                              nombre_apellido_recibe:
+                                acta.nombre_apellido_recibe || "",
                               dni_recibe: acta.dni_recibe || "",
                               cargo_funcion: acta.cargo_funcion || "",
                               coincide_domicilio: acta.coincide_domicilio || "",
                               domicilio_efectivo: acta.domicilio_efectivo || "",
-                              actividad_desarrollada: acta.actividad_desarrollada || "",
-                              condiciones_higiene: acta.condiciones_higiene || [],
-                              elementos_seguridad: acta.elementos_seguridad || [],
+                              actividad_desarrollada:
+                                acta.actividad_desarrollada || "",
+                              condiciones_higiene:
+                                acta.condiciones_higiene || [],
+                              elementos_seguridad:
+                                acta.elementos_seguridad || [],
                               estado_agua: acta.estado_agua || "",
-                              lugar_deposito_residuos: acta.lugar_deposito_residuos || "",
+                              lugar_deposito_residuos:
+                                acta.lugar_deposito_residuos || "",
                               observaciones_agua: acta.observaciones_agua || "",
                               muebles_materiales: acta.muebles_materiales || "",
                               manejo: acta.manejo || "",
                               estado: acta.estado || "",
-                              certificacion_desinfeccion: acta.certificacion_desinfeccion || "",
-                              certificacion_exhibe: acta.certificacion_exhibe || "",
-                              observaciones_generales: acta.observaciones_generales || "",
-                            })
-                            setIsEditModalOpen(true)
+                              certificacion_desinfeccion:
+                                acta.certificacion_desinfeccion || "",
+                              certificacion_exhibe:
+                                acta.certificacion_exhibe || "",
+                              observaciones_generales:
+                                acta.observaciones_generales || "",
+                            });
+                            setIsEditModalOpen(true);
                           }}
                           className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
                           title="Editar acta"
@@ -500,7 +578,10 @@ const ActasInspeccion: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={9} className="text-center py-4 text-gray-500 italic">
+                  <td
+                    colSpan={9}
+                    className="text-center py-4 text-gray-500 italic"
+                  >
                     No se encontraron resultados
                   </td>
                 </tr>
@@ -509,18 +590,27 @@ const ActasInspeccion: React.FC = () => {
           </table>
         </div>
 
-        {selectedActa && <InspeccionesData actaData={selectedActa} onClose={() => setSelectedActa(null)} />}
+        {selectedActa && (
+          <InspeccionesData
+            actaData={selectedActa}
+            onClose={() => setSelectedActa(null)}
+          />
+        )}
 
         {isFormOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-      
               <div className="bg-slate-700 text-white p-6 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <FileText className="w-8 h-8 text-blue-500" />
-                  <h2 className="text-2xl font-bold">Nueva Acta de Inspección</h2>
+                  <h2 className="text-2xl font-bold">
+                    Nueva Acta de Inspección
+                  </h2>
                 </div>
-                <button onClick={handleCloseForm} className="text-white hover:text-red-500 transition-colors">
+                <button
+                  onClick={handleCloseForm}
+                  className="text-white hover:text-red-500 transition-colors"
+                >
                   <X className="w-6 h-6" />
                 </button>
               </div>
@@ -528,7 +618,6 @@ const ActasInspeccion: React.FC = () => {
               {/* FORM ESCROLEABLE*/}
               <div className="overflow-y-auto flex-1 p-6 bg-slate-500">
                 <form className="space-y-6" onSubmit={handleFormSubmit}>
-
                   {/* Sección 1: DATOS DE LA PERSONA HUMANA O JURÍDICA A INSPECCIONAR */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -553,11 +642,18 @@ const ActasInspeccion: React.FC = () => {
                         placeholder="CUIT/CUIL"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={formData.cuit_cuil}
-                        onChange={(e) => setFormData({ ...formData, cuit_cuil: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            cuit_cuil: e.target.value,
+                          })
+                        }
                       />
 
                       <div className="flex items-center space-x-4">
-                        <span className="text-sm font-medium text-gray-700">Habilitación Municipal:</span>
+                        <span className="text-sm font-medium text-gray-700">
+                          Habilitación Municipal:
+                        </span>
                         <label className="flex items-center space-x-2">
                           <input
                             type="radio"
@@ -596,7 +692,9 @@ const ActasInspeccion: React.FC = () => {
                             name="habilitacion"
                             value="tramite"
                             className="accent-orange-500"
-                            checked={formData.habilitacion_municipal === "tramite"}
+                            checked={
+                              formData.habilitacion_municipal === "tramite"
+                            }
                             onChange={(e) =>
                               setFormData({
                                 ...formData,
@@ -658,9 +756,11 @@ const ActasInspeccion: React.FC = () => {
                           }
                         />
                         <span className="text-xs text-gray-600">
-                          No se permite la realización de la inspección. En virtud de ello se procede a fijar el acta
-                          notificada en la puerta del inmueble, según lo establecido por el artículo 210° C.P.A.M. y se
-                          remite a J.F.M. en los términos del artículo 210° C.M.I.
+                          No se permite la realización de la inspección. En
+                          virtud de ello se procede a fijar el acta notificada
+                          en la puerta del inmueble, según lo establecido por el
+                          artículo 210° C.P.A.M. y se remite a J.F.M. en los
+                          términos del artículo 210° C.M.I.
                         </span>
                       </label>
                     </div>
@@ -670,7 +770,8 @@ const ActasInspeccion: React.FC = () => {
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      2. Datos Personales de la Persona Humana que nos Recibe la Inspección
+                      2. Datos Personales de la Persona Humana que nos Recibe la
+                      Inspección
                     </h3>
                     <div className="space-y-3">
                       <input
@@ -690,7 +791,12 @@ const ActasInspeccion: React.FC = () => {
                         placeholder="D.N.I."
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={formData.dni_recibe}
-                        onChange={(e) => setFormData({ ...formData, dni_recibe: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            dni_recibe: e.target.value,
+                          })
+                        }
                       />
                       <input
                         type="text"
@@ -710,14 +816,17 @@ const ActasInspeccion: React.FC = () => {
                   {/* Sección 3: INSPECCIÓN */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">3. Inspección</h3>
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
+                      3. Inspección
+                    </h3>
 
                     {/* a. Coincide el domicilio */}
 
                     <div className="mb-4">
                       <div className="flex items-center space-x-4 mb-2">
                         <span className="text-sm font-medium text-gray-700">
-                          a. ¿Coincide el domicilio declarado con el domicilio efectivo e inspeccionado?
+                          a. ¿Coincide el domicilio declarado con el domicilio
+                          efectivo e inspeccionado?
                         </span>
                         <label className="flex items-center space-x-2">
                           <input
@@ -810,19 +919,29 @@ const ActasInspeccion: React.FC = () => {
                               label: "Cantidad de baños con retrete",
                             },
                           ].map((item) => (
-                            <label key={item.id} className="flex items-center space-x-2">
+                            <label
+                              key={item.id}
+                              className="flex items-center space-x-2"
+                            >
                               <input
                                 type="checkbox"
                                 className="accent-blue-600"
-                                checked={formData.condiciones_higiene.includes(item.label)}
+                                checked={formData.condiciones_higiene.includes(
+                                  item.label
+                                )}
                                 onChange={(e) => {
                                   const newHigiene = e.target.checked
-                                    ? [...formData.condiciones_higiene, item.label]
-                                    : formData.condiciones_higiene.filter((h) => h !== item.label)
+                                    ? [
+                                        ...formData.condiciones_higiene,
+                                        item.label,
+                                      ]
+                                    : formData.condiciones_higiene.filter(
+                                        (h) => h !== item.label
+                                      );
                                   setFormData({
                                     ...formData,
                                     condiciones_higiene: newHigiene,
-                                  })
+                                  });
                                 }}
                               />
                               <span className="text-sm">{item.label}</span>
@@ -839,7 +958,8 @@ const ActasInspeccion: React.FC = () => {
                           {[
                             {
                               id: "seguridad-1",
-                              label: "¿Posee botiquín de primeros auxilios con los elementos mínimos?",
+                              label:
+                                "¿Posee botiquín de primeros auxilios con los elementos mínimos?",
                             },
                             { id: "seguridad-2", label: "Matafuego (varios)" },
                             {
@@ -853,22 +973,33 @@ const ActasInspeccion: React.FC = () => {
                             },
                             {
                               id: "seguridad-6",
-                              label: "¿Posee salida de emergencia bien señalizada?",
+                              label:
+                                "¿Posee salida de emergencia bien señalizada?",
                             },
                           ].map((item) => (
-                            <label key={item.id} className="flex items-center space-x-2">
+                            <label
+                              key={item.id}
+                              className="flex items-center space-x-2"
+                            >
                               <input
                                 type="checkbox"
                                 className="accent-blue-600"
-                                checked={formData.elementos_seguridad.includes(item.label)}
+                                checked={formData.elementos_seguridad.includes(
+                                  item.label
+                                )}
                                 onChange={(e) => {
                                   const newSeguridad = e.target.checked
-                                    ? [...formData.elementos_seguridad, item.label]
-                                    : formData.elementos_seguridad.filter((s) => s !== item.label)
+                                    ? [
+                                        ...formData.elementos_seguridad,
+                                        item.label,
+                                      ]
+                                    : formData.elementos_seguridad.filter(
+                                        (s) => s !== item.label
+                                      );
                                   setFormData({
                                     ...formData,
                                     elementos_seguridad: newSeguridad,
-                                  })
+                                  });
                                 }}
                               />
                               <span className="text-sm">{item.label}</span>
@@ -881,7 +1012,9 @@ const ActasInspeccion: React.FC = () => {
                     {/* d. Condiciones de agua */}
 
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-700 mb-3">d. Condiciones de agua</h4>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                        d. Condiciones de agua
+                      </h4>
                       <div className="space-y-3">
                         <div className="flex items-center space-x-4">
                           <span className="text-sm">Estado:</span>
@@ -964,14 +1097,18 @@ const ActasInspeccion: React.FC = () => {
                         placeholder="Manejo"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={formData.manejo}
-                        onChange={(e) => setFormData({ ...formData, manejo: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, manejo: e.target.value })
+                        }
                       />
                       <input
                         type="text"
                         placeholder="Estado"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={formData.estado}
-                        onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, estado: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -979,7 +1116,9 @@ const ActasInspeccion: React.FC = () => {
                   {/* Sección 4: DEBERES FORMALES */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">4. Deberes Formales</h3>
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
+                      4. Deberes Formales
+                    </h3>
                     <div className="flex items-center space-x-2">
                       <span className="text-sm font-normal text-gray-700">
                         Certificación de desinfección (ordenanza N° 2819):
@@ -1030,7 +1169,9 @@ const ActasInspeccion: React.FC = () => {
                             })
                           }
                         />
-                        <span className="text-sm">En caso afirmativo, exhibe: Sí</span>
+                        <span className="text-sm">
+                          En caso afirmativo, exhibe: Sí
+                        </span>
                       </label>
                       <label className="flex items-center space-x-2">
                         <input
@@ -1098,18 +1239,19 @@ const ActasInspeccion: React.FC = () => {
         {isEditModalOpen && actaToEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-
               {/* Header */}
 
               <div className="bg-slate-700 text-white p-6 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <FileText className="w-8 h-8 text-blue-500" />
-                  <h2 className="text-2xl font-bold">Editar Acta de Inspección #{actaToEdit.id}</h2>
+                  <h2 className="text-2xl font-bold">
+                    Editar Acta de Inspección #{actaToEdit.id}
+                  </h2>
                 </div>
                 <button
                   onClick={() => {
-                    setIsEditModalOpen(false)
-                    setActaToEdit(null)
+                    setIsEditModalOpen(false);
+                    setActaToEdit(null);
                   }}
                   className="text-white hover:text-red-500 transition-colors"
                 >
@@ -1119,7 +1261,6 @@ const ActasInspeccion: React.FC = () => {
 
               <div className="overflow-y-auto flex-1 p-6 bg-slate-500">
                 <form className="space-y-6" onSubmit={handleEditFormSubmit}>
-
                   {/* Sección 1: DATOS DE LA PERSONA HUMANA O JURÍDICA A INSPECCIONAR */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -1144,18 +1285,27 @@ const ActasInspeccion: React.FC = () => {
                         placeholder="CUIT/CUIL"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={editFormData.cuit_cuil}
-                        onChange={(e) => setEditFormData({ ...editFormData, cuit_cuil: e.target.value })}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            cuit_cuil: e.target.value,
+                          })
+                        }
                       />
 
                       <div className="flex items-center space-x-4">
-                        <span className="text-sm font-medium text-gray-700">Habilitación Municipal:</span>
+                        <span className="text-sm font-medium text-gray-700">
+                          Habilitación Municipal:
+                        </span>
                         <label className="flex items-center space-x-2">
                           <input
                             type="radio"
                             name="habilitacion-edit"
                             value="si"
                             className="accent-blue-500"
-                            checked={editFormData.habilitacion_municipal === "si"}
+                            checked={
+                              editFormData.habilitacion_municipal === "si"
+                            }
                             onChange={(e) =>
                               setEditFormData({
                                 ...editFormData,
@@ -1171,7 +1321,9 @@ const ActasInspeccion: React.FC = () => {
                             name="habilitacion-edit"
                             value="no"
                             className="accent-red-600"
-                            checked={editFormData.habilitacion_municipal === "no"}
+                            checked={
+                              editFormData.habilitacion_municipal === "no"
+                            }
                             onChange={(e) =>
                               setEditFormData({
                                 ...editFormData,
@@ -1187,7 +1339,9 @@ const ActasInspeccion: React.FC = () => {
                             name="habilitacion-edit"
                             value="tramite"
                             className="accent-orange-500"
-                            checked={editFormData.habilitacion_municipal === "tramite"}
+                            checked={
+                              editFormData.habilitacion_municipal === "tramite"
+                            }
                             onChange={(e) =>
                               setEditFormData({
                                 ...editFormData,
@@ -1249,9 +1403,11 @@ const ActasInspeccion: React.FC = () => {
                           }
                         />
                         <span className="text-xs text-gray-600">
-                          No se permite la realización de la inspección. En virtud de ello se procede a fijar el acta
-                          notificada en la puerta del inmueble, según lo establecido por el artículo 210° C.P.A.M. y se
-                          remite a J.F.M. en los términos del artículo 210° C.M.I.
+                          No se permite la realización de la inspección. En
+                          virtud de ello se procede a fijar el acta notificada
+                          en la puerta del inmueble, según lo establecido por el
+                          artículo 210° C.P.A.M. y se remite a J.F.M. en los
+                          términos del artículo 210° C.M.I.
                         </span>
                       </label>
                     </div>
@@ -1261,7 +1417,8 @@ const ActasInspeccion: React.FC = () => {
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
-                      2. Datos Personales de la Persona Humana que nos Recibe la Inspección
+                      2. Datos Personales de la Persona Humana que nos Recibe la
+                      Inspección
                     </h3>
                     <div className="space-y-3">
                       <input
@@ -1281,7 +1438,12 @@ const ActasInspeccion: React.FC = () => {
                         placeholder="D.N.I."
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={editFormData.dni_recibe}
-                        onChange={(e) => setEditFormData({ ...editFormData, dni_recibe: e.target.value })}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            dni_recibe: e.target.value,
+                          })
+                        }
                       />
                       <input
                         type="text"
@@ -1301,14 +1463,17 @@ const ActasInspeccion: React.FC = () => {
                   {/* Sección 3: INSPECCIÓN */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">3. Inspección</h3>
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
+                      3. Inspección
+                    </h3>
 
                     {/* a. Coincide el domicilio */}
 
                     <div className="mb-4">
                       <div className="flex items-center space-x-4 mb-2">
                         <span className="text-sm font-medium text-gray-700">
-                          a. ¿Coincide el domicilio declarado con el domicilio efectivo e inspeccionado?
+                          a. ¿Coincide el domicilio declarado con el domicilio
+                          efectivo e inspeccionado?
                         </span>
                         <label className="flex items-center space-x-2">
                           <input
@@ -1401,19 +1566,29 @@ const ActasInspeccion: React.FC = () => {
                               label: "Cantidad de baños con retrete",
                             },
                           ].map((item) => (
-                            <label key={item.id} className="flex items-center space-x-2">
+                            <label
+                              key={item.id}
+                              className="flex items-center space-x-2"
+                            >
                               <input
                                 type="checkbox"
                                 className="accent-blue-600"
-                                checked={editFormData.condiciones_higiene.includes(item.label)}
+                                checked={editFormData.condiciones_higiene.includes(
+                                  item.label
+                                )}
                                 onChange={(e) => {
                                   const newHigiene = e.target.checked
-                                    ? [...editFormData.condiciones_higiene, item.label]
-                                    : editFormData.condiciones_higiene.filter((h) => h !== item.label)
+                                    ? [
+                                        ...editFormData.condiciones_higiene,
+                                        item.label,
+                                      ]
+                                    : editFormData.condiciones_higiene.filter(
+                                        (h) => h !== item.label
+                                      );
                                   setEditFormData({
                                     ...editFormData,
                                     condiciones_higiene: newHigiene,
-                                  })
+                                  });
                                 }}
                               />
                               <span className="text-sm">{item.label}</span>
@@ -1430,7 +1605,8 @@ const ActasInspeccion: React.FC = () => {
                           {[
                             {
                               id: "seguridad-1",
-                              label: "¿Posee botiquín de primeros auxilios con los elementos mínimos?",
+                              label:
+                                "¿Posee botiquín de primeros auxilios con los elementos mínimos?",
                             },
                             { id: "seguridad-2", label: "Matafuego (varios)" },
                             {
@@ -1444,22 +1620,33 @@ const ActasInspeccion: React.FC = () => {
                             },
                             {
                               id: "seguridad-6",
-                              label: "¿Posee salida de emergencia bien señalizada?",
+                              label:
+                                "¿Posee salida de emergencia bien señalizada?",
                             },
                           ].map((item) => (
-                            <label key={item.id} className="flex items-center space-x-2">
+                            <label
+                              key={item.id}
+                              className="flex items-center space-x-2"
+                            >
                               <input
                                 type="checkbox"
                                 className="accent-blue-600"
-                                checked={editFormData.elementos_seguridad.includes(item.label)}
+                                checked={editFormData.elementos_seguridad.includes(
+                                  item.label
+                                )}
                                 onChange={(e) => {
                                   const newSeguridad = e.target.checked
-                                    ? [...editFormData.elementos_seguridad, item.label]
-                                    : editFormData.elementos_seguridad.filter((s) => s !== item.label)
+                                    ? [
+                                        ...editFormData.elementos_seguridad,
+                                        item.label,
+                                      ]
+                                    : editFormData.elementos_seguridad.filter(
+                                        (s) => s !== item.label
+                                      );
                                   setEditFormData({
                                     ...editFormData,
                                     elementos_seguridad: newSeguridad,
-                                  })
+                                  });
                                 }}
                               />
                               <span className="text-sm">{item.label}</span>
@@ -1471,7 +1658,9 @@ const ActasInspeccion: React.FC = () => {
 
                     {/* d. Condiciones de agua */}
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-700 mb-3">d. Condiciones de agua</h4>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">
+                        d. Condiciones de agua
+                      </h4>
                       <div className="space-y-3">
                         <div className="flex items-center space-x-4">
                           <span className="text-sm">Estado:</span>
@@ -1497,7 +1686,9 @@ const ActasInspeccion: React.FC = () => {
                               name="agua-estado-edit"
                               value="no-potable"
                               className="accent-red-600"
-                              checked={editFormData.estado_agua === "no-potable"}
+                              checked={
+                                editFormData.estado_agua === "no-potable"
+                              }
                               onChange={(e) =>
                                 setEditFormData({
                                   ...editFormData,
@@ -1554,14 +1745,24 @@ const ActasInspeccion: React.FC = () => {
                         placeholder="Manejo"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={editFormData.manejo}
-                        onChange={(e) => setEditFormData({ ...editFormData, manejo: e.target.value })}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            manejo: e.target.value,
+                          })
+                        }
                       />
                       <input
                         type="text"
                         placeholder="Estado"
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                         value={editFormData.estado}
-                        onChange={(e) => setEditFormData({ ...editFormData, estado: e.target.value })}
+                        onChange={(e) =>
+                          setEditFormData({
+                            ...editFormData,
+                            estado: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -1569,7 +1770,9 @@ const ActasInspeccion: React.FC = () => {
                   {/* Sección 4: DEBERES FORMALES */}
 
                   <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">4. Deberes Formales</h3>
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase">
+                      4. Deberes Formales
+                    </h3>
                     <div className="flex items-center space-x-2">
                       <span className="text-sm font-normal text-gray-700">
                         Certificación de desinfección (ordenanza N° 2819):
@@ -1580,7 +1783,9 @@ const ActasInspeccion: React.FC = () => {
                           name="certificacion-edit"
                           value="si"
                           className="accent-blue-600"
-                          checked={editFormData.certificacion_desinfeccion === "si"}
+                          checked={
+                            editFormData.certificacion_desinfeccion === "si"
+                          }
                           onChange={(e) =>
                             setEditFormData({
                               ...editFormData,
@@ -1596,7 +1801,9 @@ const ActasInspeccion: React.FC = () => {
                           name="certificacion-edit"
                           value="no"
                           className="accent-red-600"
-                          checked={editFormData.certificacion_desinfeccion === "no"}
+                          checked={
+                            editFormData.certificacion_desinfeccion === "no"
+                          }
                           onChange={(e) =>
                             setEditFormData({
                               ...editFormData,
@@ -1620,7 +1827,9 @@ const ActasInspeccion: React.FC = () => {
                             })
                           }
                         />
-                        <span className="text-sm">En caso afirmativo, exhibe: Sí</span>
+                        <span className="text-sm">
+                          En caso afirmativo, exhibe: Sí
+                        </span>
                       </label>
                       <label className="flex items-center space-x-2">
                         <input
@@ -1667,8 +1876,8 @@ const ActasInspeccion: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => {
-                        setIsEditModalOpen(false)
-                        setActaToEdit(null)
+                        setIsEditModalOpen(false);
+                        setActaToEdit(null);
                       }}
                       className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors"
                     >
@@ -1717,7 +1926,7 @@ const ActasInspeccion: React.FC = () => {
         </div>
       </div>
     </LoaderContent>
-  )
-}
+  );
+};
 
-export default ActasInspeccion
+export default ActasInspeccion;

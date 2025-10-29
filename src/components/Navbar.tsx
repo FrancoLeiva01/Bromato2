@@ -53,7 +53,7 @@ const {logoutMutation} = useAuth()
   if (!currentUser) return null;
 
   return (
-    <header className="bg-slate-800 border-b-4 border-orange-500 shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-slate-700 px-4 py-4 ">
+    <header className="bg-slate-800 border-b-4 border-orange-500 px-4 py-4 ">
       <div className="flex items-center justify-between max-w-full">
         <div className="flex items-center space-x-2 min-w-0 flex-1">
           <button

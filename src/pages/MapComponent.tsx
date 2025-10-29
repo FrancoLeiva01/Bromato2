@@ -9,7 +9,7 @@ import {
   useMap,
 } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
-import { MapPin, Trash2, Save } from "lucide-react";
+import { MapPin, Trash2, Save, X } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -54,7 +54,7 @@ function MapClickHandler({
 }
 
 const MapComponent: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // LOADER
   // Catamarca COORDENADAS y Guardado de pines
   const defaultCenter: LatLngExpression = [-28.4696, -65.7852];
   const [markers, setMarkers] = useState<MarkerData[]>(() => {
@@ -65,6 +65,8 @@ const MapComponent: React.FC = () => {
       return [];
     }
   });
+
+// LOADER
 
   useEffect(() => {
     setIsLoading(true);
@@ -106,11 +108,13 @@ const MapComponent: React.FC = () => {
 
   const handleSaveMarker = () => {
     if (selectedPosition && formData.title.trim()) {
-      console.log("[v0] Creating new marker with data:", {
+      console.log("Creating new marker with data:", {
         position: selectedPosition,
         title: formData.title,
         description: formData.description,
       });
+
+// NUEVO MARCADOR
 
       const newMarker: MarkerData = {
         id: Date.now().toString(),
@@ -136,6 +140,8 @@ const MapComponent: React.FC = () => {
       });
     }
   };
+
+// DELETE
 
   const handleDeleteMarker = (id: string) => {
     console.log("Deleting marker with id:", id);
@@ -194,9 +200,9 @@ const MapComponent: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setQuery("")}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-black hover:text-red-700"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-black hover:text-red-500"
                     >
-                      ✕
+                    <X className="w-6 h-6" />
                     </button>
                   )}
                 </div>

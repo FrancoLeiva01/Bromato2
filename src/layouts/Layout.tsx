@@ -28,7 +28,7 @@ const Layout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-600 flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-slate-900 flex flex-col overflow-x-hidden">
       <Navbar onSidebarToggle={toggleSidebar} isSidebarOpen={isSidebarOpen} onTutorialClick={openTutorial} />
 
       <div className="flex flex-1 min-w-0">

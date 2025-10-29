@@ -14,7 +14,7 @@ import {
   FolderOpen,
   X,
   Users,
-  BellRing
+  BellRing,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -37,7 +37,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       hasDropdown: true,
       subItems: [
         { icon: Tag, label: "Rubros", path: "/rubros" },
-        { icon: Store, label: "Grandes Contribuyentes", path: "/grandes-contribuyentes" },
+        {
+          icon: Store,
+          label: "Grandes Contribuyentes",
+          path: "/grandes-contribuyentes",
+        },
         { icon: UserCheck, label: "Inspectores", path: "/inspectores" },
       ],
     },
@@ -53,10 +57,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
           path: "/actas-inspeccion",
         },
         {
-         icon: BellRing,
-         label: "Notificaciones",
-         path: "/notifications",
-       },
+          icon: BellRing,
+          label: "Notificaciones",
+          path: "/notifications",
+        },
         {
           icon: ClipboardCheck,
           label: "Actas de comprobación",
@@ -93,7 +97,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       <aside
         className={`
         fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
-        w-64 bg-gradient-to-b from-slate-800 to-slate-600 text-white min-h-screen shadow-lg
+        w-64 bg-gradient-to-b from-slate-800 to-slate-800 text-white min-h-screen shadow-lg
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}
