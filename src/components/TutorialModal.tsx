@@ -52,9 +52,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
           </div>
 
           <div className="pl-4">
-            <h4 className="font-semibold text-white mb-3">
-              Pasos a seguir:
-            </h4>
+            <h4 className="font-semibold text-white mb-3">Pasos a seguir:</h4>
             <ol className="space-y-2 text-white">
               <li className="flex items-start space-x-2">
                 <span className="bg-orange-500 text-white rounded-full w-7 h-5 flex items-center justify-center text-xs font-semibold mt-0.5">
@@ -97,7 +95,8 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
                 <div>
                   <h5 className="font-semibold text-white">
                     Para crear Actas de Inspección tienes que hacerlo desde la
-                    Tabla de Comercios
+                    tabla de "Actas de inspeccion" en el apartado de Documentos
+                    dandole al boton de "+ Nueva Acta"
                   </h5>
                 </div>
               </div>
@@ -113,7 +112,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
                 <Building className="w-6 h-6 text-white" />
                 <div>
                   <h5 className="font-semibold text-white">
-                    Selecciona el comercio en el cual se realizo la inspección.
+                    Completas el formulario con todos sus campos obligatorios.
                   </h5>
                 </div>
               </div>
@@ -125,9 +124,9 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
               <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
               <div>
                 <p className="text-sm text-yellow-800">
-                  <span className="font-medium">💡</span> Recorda que a cada
-                  comercio pueden agregarse la cantidad de actas de inspección
-                  que se realizan sin volver a crearlo.
+                  <span className="font-medium">💡</span> Recorda Completar
+                  todos los campos obligatorios sino el formulario no va a Crear
+                  el Acta
                 </p>
               </div>
             </div>
@@ -136,16 +135,16 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
       ),
     },
     {
-      title: "Crear Comercios",
+      title: "Crear Actas de Comprobacion",
       content: (
         <div className="space-y-4">
           <div className="flex items-center justify-between p-4 bg-slate-700 rounded-lg border">
             <div className="flex items-center space-x-3">
               <FileText className="w-10 h-6 text-white" />
               <span className="font-medium text-white">
-                Para crear comercios tienes que hacerlo desde la pestaña
-                Pre-cargados , seleccionando la pestaña Comercios y dando al
-                boton "Nuevo Comercio"
+                Para crear un Acta de Comprobacion dirigete al apartado de
+                "Documentos" y luego a "Actas de comprobacion". Desde la tabla,
+                dale al boton de "+ Nueva Acta" y Completa el Formulario
               </span>
             </div>
           </div>

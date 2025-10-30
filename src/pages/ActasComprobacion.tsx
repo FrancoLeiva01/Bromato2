@@ -420,14 +420,14 @@ const ActasComprobacion: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
             <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-600/50 backdrop-blur-sm">
-                 <div className="flex flex-col sm:flex-row justify-center items-center text-center sm:text-left gap-4">
-            <div className="bg-cyan-500/10 p-3 rounded-xl border border-cyan-500/30">
-              <ClipboardCheck className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-              Actas de Comprobacion
-            </h1>
-          </div>
+              <div className="flex flex-col sm:flex-row justify-center items-center text-center sm:text-left gap-4">
+                <div className="bg-cyan-500/10 p-3 rounded-xl border border-cyan-500/30">
+                  <ClipboardCheck className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
+                </div>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                  Actas de Comprobacion
+                </h1>
+              </div>
             </div>
           </div>
 
@@ -521,7 +521,6 @@ const ActasComprobacion: React.FC = () => {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex justify-center space-x-2">
-                            
                             {/* BOTONES */}
 
                             <button
@@ -1129,7 +1128,7 @@ const ActasComprobacion: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-8 py-3 rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 shadow-xl hover:shadow-emerald-500/50 hover:scale-105 font-semibold"
+                    className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white px-8 py-3 rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all duration-300 font-semibold"
                   >
                     Actualizar Acta
                   </button>
