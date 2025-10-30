@@ -156,7 +156,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-cyan-500 border-b border-slate-500 p-6 flex items-center justify-between">
+        <div className="sticky top-0 bg-cyan-500 border-b border-slate-700 p-6 flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-white">Guía rápida</h2>
           </div>
@@ -183,7 +183,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
             {tutorialSteps.map((step, index) => (
               <div
                 key={index}
-                className="border border-gray-200 rounded-lg overflow-hidden"
+                className="border border-slate-500 rounded-lg overflow-hidden"
               >
                 <div
                   className={`p-4 cursor-pointer transition-colors ${

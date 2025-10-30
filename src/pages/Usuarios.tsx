@@ -208,7 +208,7 @@ const UsuariosTable: React.FC = () => {
                     setSearchTerm("");
                     setCurrentPage(1);
                   }}
-                  className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                  className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-purple-700 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
                 >
                   <option value="Filtros">Filtros</option>
                   <option value="Todos">Todos</option>
@@ -266,7 +266,7 @@ const UsuariosTable: React.FC = () => {
               </div>
 
               {/* Derecha: Botón */}
-              <button className="bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-blue-400 transition-all duration-300 flex items-center justify-center space-x-2 font-semibold shadow-lg">
+              <button className="bg-gradient-to-r from-purple-600 to-purple-400 text-white px-6 py-3 rounded-xl hover:from-gray-600 hover:to-gray-400 transition-all duration-300 flex items-center justify-center space-x-2 font-semibold shadow-lg">
                 <Plus className="w-5 h-5" />
                 <span>Nuevo Usuario</span>
               </button>

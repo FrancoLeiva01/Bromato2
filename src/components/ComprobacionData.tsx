@@ -31,18 +31,18 @@ const ComprobacionData: React.FC<ComprobacionDataProps> = ({ isOpen, onClose, ac
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-600 rounded-lg shadow-xl max-w-4xl w-full p-8 relative max-h-[90vh] overflow-y-auto">
+      <div className="bg-slate-800 rounded-lg shadow-xl max-w-4xl w-full p-8 relative max-h-[90vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-red-500 transition-colors">
           <X className="w-6 h-6" />
         </button>
 
         <div className="space-y-6">
-          <div className="text-center border-b border-gray-400 pb-4">
+          <div className="text-center border-b border-green-400 pb-4">
             <div className="flex items-center justify-center mb-2">
-              <ClipboardCheck className="w-8 h-8 text-green-500 mr-2" />
+              <ClipboardCheck className="w-8 h-8 text-green-600 mr-2" />
               <h2 className="text-2xl font-bold text-white">Acta de Comprobación</h2>
             </div>
-            <h3 className="text-xl font-bold text-gray-200">{acta.numero}</h3>
+            <h3 className="text-xl font-bold text-orange-400">{acta.numero}</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -78,7 +78,7 @@ const ComprobacionData: React.FC<ComprobacionDataProps> = ({ isOpen, onClose, ac
 
           {acta.domicilio_inspeccionado && (
             <div className="text-center">
-              <h3 className="text-sm font-medium text-white mb-2">Domicilio Inspeccionado</h3>
+              <h3 className="text-sm font-medium text-white mb-2 uppercase">Domicilio Inspeccionado</h3>
               <p className="text-gray-200">{acta.domicilio_inspeccionado}</p>
             </div>
           )}
@@ -86,7 +86,7 @@ const ComprobacionData: React.FC<ComprobacionDataProps> = ({ isOpen, onClose, ac
           {acta.procedimientos && (
             <div className="text-center">
               <h3 className="text-sm font-medium text-white mb-2">Procedimiento</h3>
-              <p className="text-gray-200">{acta.procedimientos}</p>
+              <p className="text-orange-400">{acta.procedimientos}</p>
             </div>
           )}
 

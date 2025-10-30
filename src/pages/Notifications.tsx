@@ -401,56 +401,63 @@ const Notifications: React.FC = () => {
 
   return (
     <LoaderContent isLoading={isLoading} loadingText="Cargando Notificaciones..." minHeight="400px">
-      {/* Proximas a vencer */}
+     {/* Próximas a vencer */}
+<div className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 max-w-full mx-auto p-6 space-y-6 rounded-2xl shadow-xl border border-slate-800/70 backdrop-blur-md">
+  <div className="bg-slate-800/60 rounded-2xl border border-slate-700/50 shadow-lg overflow-hidden">
+    {/* Encabezado */}
+    <div className="px-6 py-4 border-b border-slate-700/60 flex items-center justify-between">
+      <div className="flex items-center space-x-3">
+        <div className="bg-red-500/10 p-3 rounded-xl border border-red-500/30">
+          <FolderClock className="w-8 h-8 text-red-500" />
+        </div>
+        <h1 className="text-2xl font-bold text-white tracking-wide">
+          Próximas a Vencer
+        </h1>
+      </div>
+    </div>
 
-      <div className="bg-slate-800 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
-        <div
-          className="bg-slate-800 rounded-lg border-slate-800 "
-          style={{
-            borderLeftWidth: 10,
-            borderRightWidth: 10,
-            borderBottomWidth: 10,
-          }}
-        >
-          <div className="px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <FolderClock className="w-10 h-10 text-red-500" />
-                <h1 className="text-2xl font-bold text-white">Próximas a Vencer</h1>
+    {/* Contenido */}
+    <div className="p-6 space-y-3">
+      {currentNotifications.slice(0, 3).length > 0 ? (
+        currentNotifications.slice(0, 3).map((notification) => (
+          <div
+            key={`preview-${notification.id}`}
+            className="flex items-start gap-4 p-5 bg-slate-700/60 border border-slate-600/60 rounded-xl hover:border-red-500 hover:bg-slate-700/80 transition-all duration-200 shadow-md"
+          >
+            <div className="flex-shrink-0 mt-1">
+              <TriangleAlert className="w-6 h-6 text-red-500" />
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <p className="font-bold text-white capitalize">
+                  {notification.detalle_notificacion}
+                </p>
+                <span className="text-xs text-slate-300">
+                  {notification.fecha_vencimiento}
+                </span>
               </div>
+
+              <h3 className="text-sm text-slate-400 font-medium mt-1">
+                {notification.tipo_infraccion.join(", ")}
+              </h3>
             </div>
           </div>
-
-          <div className="">
-            {currentNotifications.slice(0, 3).length > 0 ? (
-              currentNotifications.slice(0, 3).map((notification) => (
-                <div
-                  key={`preview-${notification.id}`}
-                  className=" mb-1 p-6 hover:bg-red-700 transition-colors border-l-4 border-l-red-600 bg-slate-600 rounded-lg"
-                >
-                  <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 mt-1">
-                      <TriangleAlert className="w-5 h-5 text-red-500" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between capitalize">
-                        <p className="mt-1 font-extrabold text-white">{notification.detalle_notificacion}</p>
-                        {/* Cuando se vea los tipos de infraccion, poner primero el h3 */}
-                        <h3 className="text-sm font-medium text-gray-900">{notification.tipo_infraccion.join(", ")}</h3>
-                        <span className="text-xs text-white">{notification.fecha_vencimiento}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-8">
-                <Bell className="w-12 h-12 text-white mx-auto mb-4" />
-                <p className="text-white">No hay notificaciones próximas a vencer</p>
-              </div>
-            )}
+        ))
+      ) : (
+        <div className="text-center py-8">
+          <div className="bg-red-500/10 p-4 w-fit mx-auto rounded-full border border-red-500/30">
+            <Bell className="w-10 h-10 text-red-500 mx-auto" />
           </div>
+          <p className="text-slate-300 mt-4 font-medium">
+            No hay notificaciones próximas a vencer
+          </p>
         </div>
+      )}
+    </div>
+  </div>
+</div>
+
 
         {/* Lista de notis */}
 
@@ -1078,7 +1085,6 @@ const Notifications: React.FC = () => {
             </div>
           </div>
         )}
-      </div>
     </LoaderContent>
   )
 }
