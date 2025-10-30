@@ -116,7 +116,7 @@ const Calendar: React.FC = () => {
       loadingText="Cargando Inicio..."
       minHeight="400px"
     >
-      <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-800 to-slate-800 p-4 sm:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-800 to-slate-800 p-4 sm:p-8 rounded-lg">
         <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-600/50 backdrop-blur-sm">
           {/* HEADER */}
           <div className="flex flex-col sm:flex-row justify-center items-center text-center sm:text-left gap-4">

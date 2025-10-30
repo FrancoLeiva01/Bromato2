@@ -371,7 +371,7 @@ const ActasInspeccion: React.FC = () => {
       minHeight="400px"
     >
       {/* TITULO */}
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8">
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8 rounded-lg">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
             <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-600/50 backdrop-blur-sm">

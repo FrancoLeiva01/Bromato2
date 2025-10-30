@@ -445,9 +445,9 @@ const Notifications: React.FC = () => {
     >
       {/* Proximas a vencer */}
 
-      <div className="bg-slate-700 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
+      <div className="bg-slate-800 max-w-full mx-auto p-6 space-y-6 rounded-lg ">
         <div
-          className="bg-slate-800 rounded-lg border-slate-800"
+          className="bg-slate-800 rounded-lg border-slate-800 "
           style={{
             borderLeftWidth: 10,
             borderRightWidth: 10,
@@ -515,7 +515,7 @@ const Notifications: React.FC = () => {
               <ClipboardList className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500" />
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-              Calendario de Notificaciones
+             Lista de Notificaciones
             </h1>
           </div>
               </div>
@@ -541,7 +541,7 @@ const Notifications: React.FC = () => {
 
                   <input
                     type="text"
-                    placeholder="Buscar actas..."
+                    placeholder="Buscar Notificacion..."
                     value={filterValue}
                     onChange={(e) => {
                       setCurrentPage(1);

@@ -1,13 +1,22 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { UserCheck, Eye, Plus, X, Edit, ShieldBan } from "lucide-react";
+import {
+  UserCheck,
+  Eye,
+  Plus,
+  X,
+  Edit,
+  ShieldBan,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
 import { LoaderContent } from "@/components/LoaderComponent";
 
 // Campos
 
 interface Inspector {
-  id: number;   // quitarlo?
+  id: number; // quitarlo?
   nombres: string;
   apellidos: string;
   activo: boolean;
@@ -21,13 +30,13 @@ export enum FUNCION_INSPECTOR {
   CONTROL_MD = "CONTROL M/D",
 }
 
-
 const Inspectores: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true); // Loader
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const [filterType, setFilterType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterValue, setFilterValue] = useState("");
   const [selectedInspector, setSelectedInspector] = useState<Inspector | null>(
     null
   );
@@ -35,17 +44,19 @@ const Inspectores: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [inspectores, setInspectores] = useState<Inspector[]>([]);
-  const [inspectorToEdit, setInspectorToEdit] = useState<Inspector | null>(null);
+  const [inspectorToEdit, setInspectorToEdit] = useState<Inspector | null>(
+    null
+  );
 
   // Loader
-useEffect(() => {
-    setIsLoading(true)
+  useEffect(() => {
+    setIsLoading(true);
     const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
+      setIsLoading(false);
+    }, 1000);
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => clearTimeout(timer);
+  }, []);
 
   const [formData, setFormData] = useState({
     nombres: "",
@@ -55,7 +66,7 @@ useEffect(() => {
   });
 
   const API_URL = "http://localhost:4000/api/v1";
-  
+
   const normalizeActivoFromBackend = (value: any): boolean => {
     if (typeof value === "boolean") return value;
     if (typeof value === "number") return value === 1;
@@ -63,7 +74,7 @@ useEffect(() => {
       return value.toLowerCase() === "true" || value === "1";
     return false;
   };
-  
+
   const normalizeInspectorFromBackend = (raw: any): Inspector => {
     return {
       id: raw.id,
@@ -77,25 +88,23 @@ useEffect(() => {
     };
   };
 
-  
   const [totalInspectores, setTotalInspectores] = useState(0);
-  
-  
+
   // GET
-  
+
   const getInspectores = async () => {
     try {
       setIsLoading(true);
       const res = await axios.get(`${API_URL}/inspector?page=${currentPage}`);
       console.log("Respuesta del backend:", res.data);
-      
+
       const payload = Array.isArray(res.data)
-      ? res.data
-      : res.data?.data ?? res.data?.inspectores ?? res.data;
-      
+        ? res.data
+        : res.data?.data ?? res.data?.inspectores ?? res.data;
+
       const total = res.data.total ?? payload.length;
       setTotalInspectores(total);
-      
+
       const normalized = payload.map(normalizeInspectorFromBackend);
       setInspectores(normalized);
     } catch (error) {
@@ -104,51 +113,54 @@ useEffect(() => {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     getInspectores();
   }, [currentPage]);
-  
-  
+
   // CREATE
-  
+
   const createInspector = async (newInspector: typeof formData) => {
     try {
       const payload = {
-      nombres: newInspector.nombres,
-      apellidos: newInspector.apellidos,
-      cuil: newInspector.cuil,
-      nro_legajo: newInspector.nro_legajo,
-      funcion: FUNCION_INSPECTOR.CONTROL_MD  
-    };
+        nombres: newInspector.nombres,
+        apellidos: newInspector.apellidos,
+        cuil: newInspector.cuil,
+        nro_legajo: newInspector.nro_legajo,
+        funcion: FUNCION_INSPECTOR.CONTROL_MD,
+      };
 
-    const res = await axios.post(`${API_URL}/inspector`, payload);
-    const createdRaw = res.data?.data ?? res.data;
-    const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
-    
-    const normalized = normalizeInspectorFromBackend(created);
-    
-    // 👇 Actualiza el estado de la tabla sin depender del backend
-    setInspectores((prev) => [...prev, normalized]);
-    
-    // Si querés actualizar desde el backend también:
-    await getInspectores();
-    
-    alert("✅ Inspector creado exitosamente");
-  } catch (error: any) {
-    console.error("❌ Error al crear inspector:", error);
-    alert(`Error al crear inspector: ${error.response?.data?.message || error.message}`);
-  }
-};
+      const res = await axios.post(`${API_URL}/inspector`, payload);
+      const createdRaw = res.data?.data ?? res.data;
+      const created = Array.isArray(createdRaw) ? createdRaw[0] : createdRaw;
 
-// UPDATE
+      const normalized = normalizeInspectorFromBackend(created);
 
-const updateInspector = async (
-  id: number,
-  updatedData: Partial<Inspector>
-) => {
-  try {
-    const payload = {
+      // 👇 Actualiza el estado de la tabla sin depender del backend
+      setInspectores((prev) => [...prev, normalized]);
+
+      // Si querés actualizar desde el backend también:
+      await getInspectores();
+
+      alert("✅ Inspector creado exitosamente");
+    } catch (error: any) {
+      console.error("❌ Error al crear inspector:", error);
+      alert(
+        `Error al crear inspector: ${
+          error.response?.data?.message || error.message
+        }`
+      );
+    }
+  };
+
+  // UPDATE
+
+  const updateInspector = async (
+    id: number,
+    updatedData: Partial<Inspector>
+  ) => {
+    try {
+      const payload = {
         nombres: updatedData.nombres,
         apellidos: updatedData.apellidos,
         cuil: updatedData.cuil,
@@ -158,18 +170,22 @@ const updateInspector = async (
       console.log("📤 Actualizando inspector ID:", id, "con payload:", payload);
       const res = await axios.patch(`${API_URL}/inspector/${id}`, payload);
       console.log("✅ Inspector actualizado:", res.data);
-      
+
       // Recargar la lista completa después de actualizar
       await getInspectores();
-      
+
       alert("✅ Inspector actualizado exitosamente");
     } catch (error: any) {
       console.error("❌ Error al actualizar inspector:", error);
       console.error("❌ Respuesta del error:", error.response?.data);
-      alert(`Error al actualizar inspector: ${error.response?.data?.message || error.message}`);
+      alert(
+        `Error al actualizar inspector: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     }
   };
-  
+
   const toggleInspectorActivo = async (inspector: Inspector) => {
     try {
       const payload = { activo: String(!inspector.activo) };
@@ -182,59 +198,65 @@ const updateInspector = async (
       alert(`Error: ${error.response?.data?.message || error.message}`);
     }
   };
-  
+
   // DELETE
-  
+
   const deleteInspector = async (id: number) => {
     if (!confirm("¿Está seguro de que desea desactivar este inspector?")) {
       return;
     }
-    
+
     try {
       console.log("🗑️ Desactivando inspector:", id);
       // Usar PATCH para cambiar activo a false (soft delete)
-      await axios.get(`${API_URL}/inspector/delete/${id}`, { data: { activo: "false" } });
+      await axios.get(`${API_URL}/inspector/delete/${id}`, {
+        data: { activo: "false" },
+      });
       console.log("✅ Inspector desactivado");
-      
+
       // Recargar la lista después de desactivar
-      
+
       await getInspectores();
-      
+
       alert("✅ Inspector desactivado exitosamente");
     } catch (error: any) {
       console.error("❌ Error al desactivar inspector:", error);
       console.error("❌ Respuesta del error:", error.response?.data);
-      alert(`Error al desactivar inspector: ${error.response?.data?.message || error.message}`);
+      alert(
+        `Error al desactivar inspector: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     }
   };
-  
+
   // Filtrado
   const filteredInspectores = Array.isArray(inspectores)
-  ? inspectores.filter((inspector) => {
-    if (!filterType || !searchTerm) return true;
-    if (filterType === "apellido")
-      return inspector.apellidos
-    .toLowerCase()
-    .includes(searchTerm.toLowerCase());
-    if (filterType === "identificador")
-      return (inspector.identificador ?? "").includes(searchTerm);
-    return true;
-  })
-  : [];
-  
+    ? inspectores.filter((inspector) => {
+        if (!filterType || !searchTerm) return true;
+        if (filterType === "apellido")
+          return inspector.apellidos
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+        if (filterType === "nro_legajo")
+          return (inspector.nro_legajo ?? "").includes(searchTerm);
+        return true;
+      })
+    : [];
+
   const totalPages = Math.max(1, Math.ceil(totalInspectores / itemsPerPage));
-  
+
   // El backend ya envía datos paginados, no necesitamos hacer slice
   const currentInspectores = filteredInspectores;
-  
+
   const handlePrevious = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
-  
+
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
-  
+
   const handleSearch = () => setCurrentPage(1);
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -244,7 +266,7 @@ const updateInspector = async (
     setSelectedInspector(inspector);
     setIsModalOpen(true);
   };
-  
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await createInspector(formData);
@@ -256,7 +278,7 @@ const updateInspector = async (
     });
     setIsFormOpen(false);
   };
-  
+
   const handleEditClick = (inspector: Inspector) => {
     setInspectorToEdit(inspector);
     setEditFormData({
@@ -267,8 +289,8 @@ const updateInspector = async (
     });
     setIsEditModalOpen(true);
   };
-  
-// EDITAR INSPECTOR
+
+  // EDITAR INSPECTOR
 
   const [editFormData, setEditFormData] = useState({
     nombres: "",
@@ -292,190 +314,223 @@ const updateInspector = async (
       minHeight="400px"
     >
       <>
-        <div className="bg-slate-700 p-6 rounded-lg shadow-[8px_8px_10px_rgba(3,3,3,3.1)] shadow-gray-600 ">
-
+        <div className="bg-slate-900 p-6 rounded-lg">
           {/* Titulo */}
 
-          <div className="mb-6">
-            <div className="bg-slate-800 rounded-lg p-4 flex justify-center items-center">
-              <UserCheck className="w-8 h-8 text-blue-500 mr-2" />
-              <h1 className="text-3xl font-bold text-white text-center">
-                Inspectores
-              </h1>
+          <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8 rounded-lg">
+            <div className="max-w-7xl mx-auto">
+              <div className="mb-8">
+                <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 p-6 rounded-2xl shadow-2xl border border-slate-600/50 backdrop-blur-sm">
+                  <div className="flex flex-col sm:flex-row justify-center items-center text-center sm:text-left gap-4">
+                    <div className="bg-cyan-500/10 p-3 rounded-xl border border-cyan-500/30">
+                      <UserCheck className="w-8 h-8 sm:w-10 sm:h-10 text-blue-500" />
+                    </div>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                      Inspectores
+                    </h1>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* Filtros + boton nuevo inspector */}
+            {/* Filtros + boton nuevo inspector */}
 
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-5 space-y-3 md:space-y-0 justify-between">
-            <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0">
-              <select
-                className="border border-gray-100 rounded-lg px-3 py-1 text-sm text-black"
-                value={filterType}
-                onChange={(e) => {
-                  setFilterType(e.target.value);
-                  setSearchTerm("");
-                  setCurrentPage(1);
-                }}
-              >
-                <option value="">Filtros</option>
-                <option value="apellido">Apellido</option>
-                <option value="identificador">Identificador</option>
-              </select>
-              {filterType && (
-                <input
-                  type="text"
-                  placeholder={`Buscar por ${filterType}...`}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="border border-gray-100 rounded-lg px-3 py-1 text-sm"
-                />
-              )}
-              <button
-                className="flex items-center px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-blue-400 transition-colors"
-                onClick={handleSearch}
-              >
-                Buscar
-              </button>
+            <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-slate-700/50 mb-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 flex-1">
+                  <select
+                    value={filterType}
+                    onChange={(e) => {
+                      setFilterType(e.target.value);
+                      setSearchTerm("");
+                      setCurrentPage(1);
+                    }}
+                    className="bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                  >
+                    <option value="">Filtros</option>
+                    <option value="apellido">Apellido</option>
+                    <option value="nro_legajo">Nro.Legajo</option>
+                  </select>
+
+                  {filterType && (
+                    <input
+                      type="text"
+                      placeholder={`Buscar por ${filterType}...`}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="flex-1 bg-slate-700/80 border border-slate-600/50 text-white placeholder-slate-400 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all hover:bg-slate-700 shadow-lg"
+                    />
+                  )}
+                </div>
+
+                {/*   BOTON NUEVO INSPECTOR + */}
+
+                <button
+                  onClick={() => setIsFormOpen(true)}
+                  className="bg-gradient-to-r from-cyan-600 to-cyan-400 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-blue-400 transition-all duration-300 flex items-center justify-center space-x-2 font-semibold"
+                >
+                  <Plus className="w-5 h-5" />
+                  <span>Nueva Inspector</span>
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setIsFormOpen(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-300 transition-colors flex items-center space-x-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Nuevo Inspector</span>
-            </button>
-          </div>
 
-          {/* Tabla */}
+            {/* Tabla */}
 
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-slate-500">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                      ID
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                      Nombre
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                      Apellido
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                      Activo
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                      Funcion
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                      Identificador
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-                      Detalles
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {currentInspectores.length > 0 ? (
-                    currentInspectores.map((inspector) => (
-                      <tr key={inspector.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {inspector.id}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {inspector.nombres}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {inspector.apellidos}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full cursor-pointer ${
-                              inspector.activo
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
-                            }`}
-                            onClick={() => toggleInspectorActivo(inspector)}
-                            title="Click para cambiar estado"
-                          >
-                            {inspector.activo ? "Activo" : "Inactivo"}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {inspector.funcion}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {inspector?.nro_legajo || inspector?.cuil}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex space-x-2">
-                            <button
-                              className="text-blue-600 hover:text-blue-900 transition-colors p-1 rounded hover:bg-blue-50"
-                              onClick={() => handleViewDetails(inspector)}
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 border-b-2 border-cyan-500">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">
+                        ID
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        Nombre
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        Apellido
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        Activo
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        Funcion
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        Nro. Legajo
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-white uppercase tracking-wider">
+                        Detalles
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-700/50">
+                    {currentInspectores.length > 0 ? (
+                      currentInspectores.map((inspector, index) => (
+                        <tr
+                          key={inspector.id}
+                          className={`${
+                            index % 2 === 0
+                              ? "bg-slate-800/30"
+                              : "bg-slate-800/50"
+                          } hover:bg-slate-700/50 transition-all duration-200 hover:shadow-lg`}
+                        >
+                          <td className="px-6 py-4 text-sm font-semibold text-white">
+                            {inspector.id}
+                          </td>
+
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            {inspector.nombres}
+                          </td>
+
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            {inspector.apellidos}
+                          </td>
+
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            <span
+                              className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full cursor-pointer ${
+                                inspector.activo
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-red-100 text-red-800"
+                              }`}
+                              onClick={() => toggleInspectorActivo(inspector)}
+                              title="Click para cambiar estado"
                             >
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <button
-                              className="text-blue-600 hover:text-blue-900 transition-colors"
-                              onClick={() => handleEditClick (inspector)}
-                              title="Editar inspector"
-                            >
-                              <Edit className="w-4 h-4" />
-                            </button>
-                            <button
-                              className="text-red-600 hover:text-red-900 transition-colors"
-                              onClick={() => deleteInspector(inspector.id)}
-                            >
-                              <ShieldBan className="w-4 h-4" />
-                            </button>
+                              {inspector.activo ? "Activo" : "Inactivo"}
+                            </span>
+                          </td>
+
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            {inspector.funcion}
+                          </td>
+
+                          <td className="px-6 py-4 text-sm text-slate-300">
+                            {inspector?.nro_legajo || inspector?.cuil}
+                          </td>
+
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div className="flex space-x-2">
+                              <button
+                                onClick={() => handleViewDetails(inspector)}
+                                className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-cyan-500/30"
+                                title="Ver detalles"
+                              >
+                                <Eye className="w-5 h-5" />
+                              </button>
+                              <button
+                                className="text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-amber-500/30"
+                                onClick={() => handleEditClick(inspector)}
+                                title="Editar inspector"
+                              >
+                                <Edit className="w-5 h-5" />
+                              </button>
+
+                              <button
+                                className="text-red-500 hover:text-red-300 hover:bg-red-500/10 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 border border-transparent hover:border-red-500/30"
+                                onClick={() => deleteInspector(inspector.id)}
+                              >
+                                <ShieldBan className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={5} className="text-center py-8">
+                          <div className="flex flex-col items-center space-y-3">
+                            <div className="text-6xl opacity-20">📋</div>
+                            <p className="text-slate-400 text-lg font-medium">
+                              No se encontraron resultados
+                            </p>
+                            <p className="text-slate-500 text-sm">
+                              Intenta ajustar los filtros de busqueda
+                            </p>
                           </div>
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td
-                        colSpan={8}
-                        className="px-6 py-4 text-center text-sm text-gray-500"
-                      >
-                        No se encontraron inspectores.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
-            {/* Paginación */}
+              {/* PAGINACION */}
 
-            <div className="bg-white px-4 py-3 border-t border-gray-200 sm:px-6 flex justify-center">
-              <div className="flex items-center space-x-2">
+              <div className="bg-slate-800/80 px-6 py-5 flex items-center justify-center space-x-4 border-t border-slate-700/50">
                 <button
                   onClick={handlePrevious}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
-                    currentPage === 1
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  disabled={currentPage === 1 || totalPages === 0}
+                  className={`p-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    currentPage === 1 || totalPages === 0
+                      ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
+                      : "bg-slate-700 text-white hover:bg-slate-600 border border-slate-600 hover:scale-105 shadow-lg"
                   }`}
                 >
-                  Anterior
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
-                <span className="px-4 py-2 text-sm font-medium text-gray-700">
-                  Página {currentPage} de {totalPages}
-                </span>
+
+                <div className="bg-slate-700/50 px-6 py-3 rounded-xl border border-slate-600/50">
+                  <span className="text-sm font-semibold text-slate-200">
+                    Página{" "}
+                    <span className="text-white">
+                      {totalPages === 0 ? 0 : currentPage}
+                    </span>{" "}
+                    de <span className="text-white">{totalPages}</span>
+                  </span>
+                </div>
+
                 <button
                   onClick={handleNext}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
-                    currentPage === totalPages
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-blue-700 text-white hover:bg-blue-400"
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  className={`p-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                    currentPage === totalPages || totalPages === 0
+                      ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
+                      : "bg-gradient-to-r from-cyan-600 to-cyan-500 text-white hover:from-cyan-500 hover:to-cyan-400 hover:scale-105"
                   }`}
                 >
-                  Siguiente
+                  <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -485,7 +540,7 @@ const updateInspector = async (
         {/* Modal detalles */}
 
         {isModalOpen && selectedInspector && (
-          <div className="fixed inset-0 bg-blue-200 bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-cyan-200/30 bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-slate-600 rounded-lg shadow-xl max-w-2xl w-full p-8 relative">
               <button
                 onClick={handleCloseModal}
@@ -591,14 +646,14 @@ const updateInspector = async (
                 type="submit"
                 className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-400 transition-colors"
               >
-               Crear +
+                Crear +
               </button>
             </form>
           </div>
         )}
 
         {/* Formulario Editar Inspector */}
-        
+
         {isEditModalOpen && inspectorToEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
             <form
@@ -625,7 +680,10 @@ const updateInspector = async (
                   placeholder="Nombre"
                   value={editFormData.nombres}
                   onChange={(e) =>
-                    setEditFormData({ ...editFormData, nombres: e.target.value })
+                    setEditFormData({
+                      ...editFormData,
+                      nombres: e.target.value,
+                    })
                   }
                   required
                   className="border rounded p-2"
@@ -635,7 +693,10 @@ const updateInspector = async (
                   placeholder="Apellido"
                   value={editFormData.apellidos}
                   onChange={(e) =>
-                    setEditFormData({ ...editFormData, apellidos: e.target.value })
+                    setEditFormData({
+                      ...editFormData,
+                      apellidos: e.target.value,
+                    })
                   }
                   required
                   className="border rounded p-2"
@@ -654,7 +715,10 @@ const updateInspector = async (
                   placeholder="Número de Legajo"
                   value={editFormData.nro_legajo}
                   onChange={(e) =>
-                    setEditFormData({ ...editFormData, nro_legajo: e.target.value })
+                    setEditFormData({
+                      ...editFormData,
+                      nro_legajo: e.target.value,
+                    })
                   }
                   className="border rounded p-2"
                 />
