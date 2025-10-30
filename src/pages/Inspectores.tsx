@@ -336,8 +336,8 @@ const Inspectores: React.FC = () => {
             {/* Filtros + boton nuevo inspector */}
 
             <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-slate-700/50 mb-6">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                <div className="flex flex-col sm:flex-row gap-3 flex-1">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 flex-1">
                   <select
                     value={filterType}
                     onChange={(e) => {
@@ -588,16 +588,16 @@ const Inspectores: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
             <form
               onSubmit={handleFormSubmit}
-              className="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg relative"
+              className="bg-slate-800 rounded-lg p-6 w-full max-w-lg shadow-lg relative"
             >
               <button
                 onClick={() => setIsFormOpen(false)}
                 type="button"
-                className="absolute top-4 right-4 text-gray-500 hover:text-red-600"
+                className="absolute top-4 right-4 text-white hover:text-red-600"
               >
                 <X className="w-5 h-5" />
               </button>
-              <h2 className="text-xl font-bold mb-4 text-center">
+              <h2 className="text-white text-xl font-bold mb-4 text-center">
                 Agregar Nuevo Inspector
               </h2>
 
@@ -644,7 +644,7 @@ const Inspectores: React.FC = () => {
 
               <button
                 type="submit"
-                className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-400 transition-colors"
+                className="mt-4 w-full bg-cyan-600 text-white py-2 rounded hover:bg-cyan-700 transition-colors"
               >
                 Crear +
               </button>
@@ -658,7 +658,7 @@ const Inspectores: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
             <form
               onSubmit={handleEditFormSubmit}
-              className="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg relative"
+              className="bg-slate-800 rounded-lg p-6 w-full max-w-lg shadow-lg relative"
             >
               <button
                 onClick={() => {
@@ -666,11 +666,11 @@ const Inspectores: React.FC = () => {
                   setInspectorToEdit(null);
                 }}
                 type="button"
-                className="absolute top-4 right-4 text-gray-500 hover:text-red-600"
+                className="absolute top-4 right-4 text-white hover:text-red-600"
               >
                 <X className="w-5 h-5" />
               </button>
-              <h2 className="text-xl font-bold mb-4 text-center">
+              <h2 className="text-white text-xl font-bold mb-4 text-center">
                 Editar Inspector
               </h2>
 
@@ -726,7 +726,7 @@ const Inspectores: React.FC = () => {
 
               <button
                 type="submit"
-                className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-400 transition-colors"
+                className="mt-4 w-full bg-cyan-600 text-white py-2 rounded hover:bg-cyan-700 transition-colors"
               >
                 Actualizar
               </button>

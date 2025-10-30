@@ -40,7 +40,7 @@ const TutorialModal: React.FC<TutorialModalProps> = ({
       title: "Crear notificaciones",
       content: (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-cyan-500 rounded-lg border border-slate-700">
+          <div className="flex items-center justify-between p-4 bg-slate-500 rounded-lg border border-slate-700">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                 <span className="text-blue-600 font-semibold">?</span>

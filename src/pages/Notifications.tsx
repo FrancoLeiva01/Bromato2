@@ -648,7 +648,7 @@ const Notifications: React.FC = () => {
             className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
             style={{ marginTop: 0 }}
           >
-            <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
+            <div className="bg-slate-800 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
               <button
                 onClick={handleCloseForm}
                 className="absolute top-3 right-3 text-white hover:text-red-500 transition-colors"
@@ -657,7 +657,7 @@ const Notifications: React.FC = () => {
               </button>
               <br />
 
-              <div className="bg-slate-800 rounded-lg p-4 flex items-center justify-center">
+              <div className="bg-slate-700 rounded-lg p-4 flex items-center justify-center">
                 <Bell className="w-8 h-8 text-orange-500 mr-2" />
                 <h2 className="text-3xl font-bold text-white text-center">Nueva Notificación</h2>
               </div>
@@ -870,7 +870,7 @@ const Notifications: React.FC = () => {
 
         {isEditModalOpen && notificationToEdit && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <div className="bg-slate-600 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
+            <div className="bg-slate-800 rounded-xl p-6 w-full max-w-3xl shadow-lg relative overflow-y-auto max-h-[90vh]">
               <button
                 onClick={() => {
                   setIsEditModalOpen(false)
@@ -882,7 +882,7 @@ const Notifications: React.FC = () => {
               </button>
               <br />
 
-              <div className="bg-slate-800 rounded-lg p-4 flex items-center justify-center">
+              <div className="bg-slate-700 rounded-lg p-4 flex items-center justify-center">
                 <Bell className="w-8 h-8 text-orange-500 mr-2" />
                 <h2 className="text-3xl font-bold text-white text-center">Editar Notificación</h2>
               </div>
