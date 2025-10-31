@@ -4,7 +4,6 @@ import type React from "react";
 import { useState, useEffect, useMemo } from "react";
 import {
   Store,
-  Plus,
   Eye,
   X,
   Edit,
@@ -197,11 +196,6 @@ const GrandesContribuyentes: React.FC = () => {
                 </select>
               )}
             </div>
-
-            <button className="bg-gradient-to-r from-red-600 to-orange-600 text-white px-6 py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 flex items-center justify-center space-x-2 font-semibold">
-              <Plus className="w-5 h-5" />
-              <span>Nuevo Gran Contribuyente</span>
-            </button>
           </div>
 
           {/* --- Tabla --- */}

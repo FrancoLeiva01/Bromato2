@@ -39,7 +39,7 @@ const ComprobacionData: React.FC<ComprobacionDataProps> = ({ isOpen, onClose, ac
              className="absolute -top-1 -right-1 text-white hover:text-red-500 p-4 mb-3"
              title="Cerrar"
            >
-             <X className="w-5 h-5" />
+             <X className="w-6 h-6" />
            </button>
 
       <div className="space-y-6">

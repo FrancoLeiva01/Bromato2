@@ -41,7 +41,7 @@ interface Acta {
 interface Inspector {
   id: number;
   nombres: string;
-  identificador: string;
+  nro_legajo?: string;
 }
 
 enum PROCEDIMIENTOS_ENUM {
@@ -653,7 +653,7 @@ const ActasComprobacion: React.FC = () => {
       {isFormOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col border-2 border-slate-700/50">
-            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white p-6 flex items-center justify-between border-b-2 border-emerald-500/30">
+            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white p-6 flex items-center justify-between border-b-2 border-emerald-500">
               <div className="flex items-center space-x-4">
                 <div className="bg-emerald-500/10 p-3 rounded-xl border border-emerald-500/30">
                   <ClipboardCheck className="w-8 h-8 text-emerald-500" />
@@ -664,7 +664,7 @@ const ActasComprobacion: React.FC = () => {
               </div>
               <button
                 onClick={handleCloseForm}
-                className="text-slate-400 hover:text-red-400 hover:bg-red-500/10 p-2 rounded-xl transition-all duration-200"
+                className="text-slate-400 hover:text-red-500 hover:bg-red-500/10 p-2 rounded-xl transition-all duration-200"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -674,7 +674,7 @@ const ActasComprobacion: React.FC = () => {
 
             <div className="overflow-y-auto flex-1 p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
               <form className="space-y-6" onSubmit={handleFormSubmit}>
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
                   <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
                     <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
                       1
@@ -739,7 +739,7 @@ const ActasComprobacion: React.FC = () => {
 
                 {/* CAMPO 2. PROCEDIMIENTOS */}
 
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
                   <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
                     <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
                       2
@@ -798,7 +798,7 @@ const ActasComprobacion: React.FC = () => {
 
                 {/* CAMPO 3. DOMICILIO */}
 
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
                   <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
                     <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
                       3
@@ -822,7 +822,7 @@ const ActasComprobacion: React.FC = () => {
 
                 {/* CAMPO 4. INSPECTORES */}
 
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
                   <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
                     <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
                       4
@@ -842,12 +842,12 @@ const ActasComprobacion: React.FC = () => {
                               inspector.id
                             )}
                             onChange={() => handleInspectorToggle(inspector.id)}
-                            className="accent-cyan-500 w-5 h-5 rounded"
+                            className="accent-green-500 w-5 h-5 rounded"
                           />
-                          <span className="text-sm text-slate-300 font-medium">
+                          <span className="text-sm text-white font-medium">
                             {inspector.nombres}{" "}
-                            <span className="text-slate-500">
-                              • Legajo: {inspector.identificador}
+                            <span className="text-slate-400">
+                              • Legajo: {inspector.nro_legajo}
                             </span>
                           </span>
                         </label>
@@ -892,7 +892,7 @@ const ActasComprobacion: React.FC = () => {
 
                 {/* CAMPO 6. OBSERVACIONES */}
 
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
                   <h3 className="text-lg font-bold text-cyan-400 mb-5 uppercase tracking-wide flex items-center space-x-2">
                     <span className="bg-cyan-500/10 px-3 py-1 rounded-lg border border-cyan-500/30">
                       6
@@ -943,7 +943,7 @@ const ActasComprobacion: React.FC = () => {
       {isEditModalOpen && actaToEdit && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col border-2 border-slate-700/50">
-            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white p-6 flex items-center justify-between border-b-2 border-amber-500/30">
+            <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 text-white p-6 flex items-center justify-between border-b-2 border-amber-500">
               <div className="flex items-center space-x-4">
                 <div className="bg-amber-500/10 p-3 rounded-xl border border-amber-500/30">
                   <ClipboardCheck className="w-8 h-8 text-amber-400" />
@@ -957,7 +957,7 @@ const ActasComprobacion: React.FC = () => {
                   setIsEditModalOpen(false);
                   setActaToEdit(null);
                 }}
-                className="text-slate-400 hover:text-red-400 hover:bg-red-500/10 p-2 rounded-xl transition-all duration-200"
+                className="text-slate-400 hover:text-red-500 hover:bg-red-500/10 p-2 rounded-xl transition-all duration-200"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -965,7 +965,7 @@ const ActasComprobacion: React.FC = () => {
 
             <div className="overflow-y-auto flex-1 p-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
               <form className="space-y-6" onSubmit={handleEditFormSubmit}>
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-500/50 shadow-xl">
                   <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
                     Datos del Acta
                   </h3>
@@ -1025,7 +1025,7 @@ const ActasComprobacion: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-500/50 shadow-xl">
                   <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
                     Procedimiento
                   </h3>
@@ -1076,7 +1076,7 @@ const ActasComprobacion: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-500/50 shadow-xl">
                   <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
                     Domicilio
                   </h3>
@@ -1093,7 +1093,7 @@ const ActasComprobacion: React.FC = () => {
                   />
                 </div>
 
-                <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 shadow-xl">
+                <div className="bg-slate-600/50 backdrop-blur-sm p-6 rounded-xl border border-slate-500/50 shadow-xl">
                   <h3 className="text-lg font-bold text-amber-400 mb-5 uppercase tracking-wide">
                     Observaciones
                   </h3>
@@ -1115,7 +1115,7 @@ const ActasComprobacion: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center pt-6 border-t-2 border-slate-700/50">
+                <div className="flex justify-between items-center pt-6 border-t-2 border-slate-500/50">
                   <button
                     type="button"
                     onClick={() => {
