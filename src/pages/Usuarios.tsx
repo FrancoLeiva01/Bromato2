@@ -406,7 +406,7 @@ const UsuariosTable: React.FC = () => {
                 className={`p-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                   currentPage === totalPages || totalPages === 0
                     ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-cyan-600 to-cyan-500 text-white hover:from-cyan-500 hover:to-cyan-400 hover:scale-105"
+                    : "bg-gradient-to-r from-purple-600 to-pink-500 text-white hover:from-cyan-500 hover:to-cyan-400 hover:scale-105"
                 }`}
               >
                 <ChevronRight className="w-5 h-5" />

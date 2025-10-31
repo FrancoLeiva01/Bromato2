@@ -312,7 +312,7 @@ const GrandesContribuyentes: React.FC = () => {
                 className={`p-3 rounded-xl transition-all ${
                   currentPage === totalPages || totalPages === 0
                     ? "bg-slate-700/50 text-slate-500 cursor-not-allowed"
-                    : "bg-gradient-to-r from-cyan-600 to-cyan-500 text-white hover:scale-105"
+                    : "bg-gradient-to-r from-orange-600 to-orange-500 text-white hover:scale-105"
                 }`}
               >
                 <ChevronRight className="w-5 h-5" />
