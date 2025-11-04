@@ -697,7 +697,7 @@ const ActasComprobacion: React.FC = () => {
                         }
                         required
                         className="w-full bg-slate-700/80 border border-slate-600/50 text-white rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-slate-400 transition-all hover:bg-slate-700"
-                        placeholder="Ej: AC-2024-001"
+                        placeholder="Ej: 12345"
                       />
                     </div>
                     <div>
